@@ -1,0 +1,51 @@
+.menuItems{
+    width: 17%;
+    padding-top: 2%;
+    box-sizing: border-box;
+}
+.menuPointContainer{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10%;
+}
+.menuPoint{
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    /*height: 48px;*/
+    padding: 13px 0 13px 9% ;
+    /*background: #896DC8;*/
+    border-radius: 12px;
+}
+.menuPoint p{
+    margin-left:10% ;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 150%;
+    color:#414141;
+}
+.menuPointContainer>p{
+    margin-left: 9%;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 158%;
+    color: #818181;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    /*margin-top: 10%;*/
+    margin-bottom: 7%;
+}
+.menuPoint:hover{
+    transition: 0.2s;
+    background-color: #bbafea;
+    color:white;
+}
+.menuPoint:hover p{
+    color:white;
+    transition: 0.2s;
+}
+.menuPoint:active{
+    background-color: #896DC8;
+    color: white;
+}

@@ -1,0 +1,28 @@
+.BlogItem{
+    max-width: 100%;
+    min-width: 100%;
+    padding: 20px 20px 15px 20px;
+    background: #F3EEFF;
+    border-radius: 12px;
+    margin-top: 20px;
+    box-sizing: border-box;
+}
+.blogSpace {
+    width: 57%;
+    /*margin-left: 20px;*/
+    box-sizing: border-box;
+}
+
+.downFuncItems{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+.blogSpace>h2{
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 150%;
+    color: #838383;
+    margin-bottom: -10px;
+}
