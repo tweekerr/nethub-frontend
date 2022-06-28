@@ -3,18 +3,18 @@ import { createSlice } from '@reduxjs/toolkit'
 export const createArticleSlice = createSlice({
     name: 'createArticle',
     initialState: {
-        title:"",
-        subTitle:"",
-        mainTxt:"",
-        tags:[],
-        originalLink:""
+        title: "",
+        subTitle: "",
+        mainTxt: "",
+        tags: [],
+        originalLink: ""
     },
     reducers: {
         updateTitle: (state, action) => {
 
             state.title = action.payload
         },
-        updateSubTitle: (state, action)=> {
+        updateSubTitle: (state, action) => {
             state.subTitle = action.payload
         },
         updateMainTxt: (state, action) => {
@@ -29,6 +29,6 @@ export const createArticleSlice = createSlice({
     }
 })
 
-export const { updateTitle, updateSubTitle, updateMainTxt,updateTags, updateOriginalLink } = createArticleSlice.actions
-
+export const { updateTitle, updateSubTitle, updateMainTxt, updateTags, updateOriginalLink } = createArticleSlice.actions
+export const createArticlesActions = createArticleSlice.actions;
 export default createArticleSlice.reducer
