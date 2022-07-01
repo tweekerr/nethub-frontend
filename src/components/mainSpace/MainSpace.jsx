@@ -4,19 +4,19 @@ import BlogSpace from "./blog/BlogSpace"
 import styles from "../../index.scss"
 import classes from "./MainSpace.module.scss"
 import NewsSpace from "./news/NewsSpace";
+import Layout from "../../layout/Layout";
 
 const MainSpace = () => {
 
     return (
         <div>
-            <div className="mainContainer" >
+            <Layout>
                 <div className={classes.mainSpaceContainer}>
-                    <MenuItems/>
                     <BlogSpace/>
                     <NewsSpace/>
                 </div>
+            </Layout>
 
-            </div>
         </div>
     );
 };

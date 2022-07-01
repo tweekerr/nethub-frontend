@@ -19,8 +19,6 @@ const TinyInput = ({value,setValue, tinyTitle}) => {
                 apiKey={"ssa5k3d1x7l2e9g73u0dg6hfah65pzgh4iqkd9ulzslfywn1"}
                 value={value}
                 onEditorChange={(value, editor) => setValue(value)}
-
-
             />
         </div>
     );

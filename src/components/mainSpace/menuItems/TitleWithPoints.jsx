@@ -9,9 +9,9 @@ const TitleWithPoints = ({whichIsActive, menuItemsKeys}) => {
     return (
         <div className={classes.menuPointContainer}>
             <p>menu items</p>
-            {menuItemsKeys.map(({svgId, pId}) => {
+            {menuItemsKeys.map(({svgid, pId}) => {
                 return (<div key={pId} className={classes.menuPoint}>
-                    <SvgSelector id={svgId}/>
+                    <SvgSelector id={svgid}/>
                     <p>{pId}</p>
                 </div>)
             })

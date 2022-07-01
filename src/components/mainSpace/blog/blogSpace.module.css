@@ -8,8 +8,11 @@
     box-sizing: border-box;
 }
 .blogSpace {
-    width: 57%;
+    /*width: 57%;*/
     /*margin-left: 20px;*/
+    /*box-sizing: border-box;*/
+    width: 69%;
+    margin-left: 20px;
     box-sizing: border-box;
 }
 

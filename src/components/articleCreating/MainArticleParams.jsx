@@ -18,7 +18,6 @@ const MainArticleParams = ({ titleParams }) => {
   const [subTitleValue, setSubTitleValue] = useState('');
   const [txtValue, setTxtValue] = useState('');
 
-  const dispatch = useDispatch();
 
   return (
     <div className={classes.mainArticleParams}>

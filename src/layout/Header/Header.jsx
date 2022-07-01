@@ -1,9 +1,9 @@
 import React from 'react';
-import SvgSelector from '../basisComps/SvgSelector/SvgSelector';
-import BasicInput from '../basisComps/BasicInput/BasicInput';
+import SvgSelector from '../../components/basisComps/SvgSelector/SvgSelector';
+import BasicInput from '../../components/basisComps/BasicInput/BasicInput';
 import classes from './Header.module.css';
 import LoggedUserBar from './LoggedUserBar';
-import BasicLinker from '../basisComps/BasicLinker';
+import BasicLinker from '../../components/basisComps/BasicLinker';
 import { updateArticleId } from '../../store/plugArticleSlice';
 import { useDispatch } from 'react-redux';
 import { api } from '../../api';
@@ -26,10 +26,9 @@ const Header = (config) => {
             <BasicLinker
               onClick={createArticlePlug}
               linktxt={'Створити статтю'}
-              svgId={'DriveFileRenameOutlineIcon'}
+              svgid={'DriveFileRenameOutlineIcon'}
             />
           </div>
-
           <div className={classes.userEntry}>
             {/*<UnloggedUserBar/>*/}
             <LoggedUserBar />

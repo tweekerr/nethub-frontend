@@ -1,7 +1,7 @@
 .articleCreatingSpace{
   display: flex;
   flex-direction: row;
-  width: 100%;
+  //width: 100%;
   justify-content: space-between;
 }
 //MAIN ARTICLE PARAMS
@@ -22,8 +22,8 @@
   margin-bottom: 2%;
 }
 .createArticle{
-  width: 57%;
-  /*margin-left: 20px;*/
+  width: 69%;
+  margin-left: 20px;
   box-sizing: border-box;
 }
 .createArticle>h2{
@@ -41,7 +41,7 @@
   margin-bottom: 1%;
 }
 .articleSettings{
-  width: 23%;
+  width: 27%;
 }
 .articleSettings>button{
   width: 100%;

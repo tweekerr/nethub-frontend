@@ -10,7 +10,8 @@ const NewsSpace = () => {
   const [newsItems, setNewsItems] = useState([]);
 
   useEffect(() => {
-    api.getNews.then((res) => {
+    api.getNews().then((res) => {
+      console.log(res)
       setNewsItems(res);
     });
   }, []);

@@ -8,39 +8,39 @@ const MenuItems = () => {
   // TODO: must be removed to constsnts
   const menuItemsKeys = [
     {
-      svgId: 'TerrainIcon',
+      svgid: 'TerrainIcon',
       pId: 'Onhovered item',
     },
     {
-      svgId: 'TerrainIcon',
+      svgid: 'TerrainIcon',
       pId: 'PhotosIcon',
     },
     {
-      svgId: 'TerrainIcon',
+      svgid: 'TerrainIcon',
       pId: 'Good item',
     },
     {
-      svgId: 'TerrainIcon',
+      svgid: 'TerrainIcon',
       pId: 'Onhovered item',
     },
     {
-      svgId: 'TerrainIcon',
+      svgid: 'TerrainIcon',
       pId: 'PhotosIcon',
     },
     {
-      svgId: 'TerrainIcon',
+      svgid: 'TerrainIcon',
       pId: 'Good item',
     },
     {
-      svgId: 'TerrainIcon',
+      svgid: 'TerrainIcon',
       pId: 'Onhovered item',
     },
     {
-      svgId: 'TerrainIcon',
+      svgid: 'TerrainIcon',
       pId: 'PhotosIcon',
     },
     {
-      svgId: 'TerrainIcon',
+      svgid: 'TerrainIcon',
       pId: 'Good item',
     },
   ];

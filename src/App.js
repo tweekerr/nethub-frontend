@@ -1,4 +1,4 @@
-import Header from "./components/Header/Header";
+import Header from "./layout/Header/Header";
 // import MainSpace from "./components/mainSpace/MainSpace";
 // import NewsSpace from "./components/mainSpace/news/NewsSpace";
 // import MenuItems from "./components/mainSpace/menuItems/MenuItems";
@@ -13,22 +13,13 @@ const LANGUAGE = "uk";
 
 function App() {
 
-
     switchLocal()
 
     return (
         <BrowserRouter>
 
             <div className="App">
-                <Header />
                 <AppRouter />
-                {/*<MainSpace/>*/}
-
-                {/*<Routes>*/}
-                {/*    <Route path="/" element = {<MainSpace/>} />*/}
-                {/*    <Route path="/" element = {<NewsSpace/>} />*/}
-                {/*    <Route path="/" element = {<MenuItems/>} />*/}
-                {/*</Routes>*/}
             </div>
         </BrowserRouter>
     );

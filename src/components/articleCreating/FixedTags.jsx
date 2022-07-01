@@ -15,11 +15,10 @@ export default function FixedTags(props) {
         }
     }
 
-
     return (
         <div className={classes.fixedTags}>
             {/*<BasicInput {...props} width={"75%"} placeholder={"ex: dotnet"}/>*/}
-            <BasicTagsInput width={"150px"} {...props} middleTags={middleTags} setMiddleTags={setMiddleTags}/>
+            <BasicTagsInput width={"150px"} {...props} placeholder={"Теги"} middleTags={middleTags} setMiddleTags={setMiddleTags}/>
             <button onClick={tagsSlice}>
                 <SvgSelector id={"AddIcon"}/>
             </button>

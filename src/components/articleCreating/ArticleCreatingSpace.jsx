@@ -3,8 +3,9 @@ import MenuItems from "../mainSpace/menuItems/MenuItems";
 import classes from './ArticleCreating.module.scss'
 import CreateArticle from "./CreateArticle";
 import ArticleSettings from "./ArticleSettings";
+import Layout from "../../layout/Layout";
 
-const ArticleCreatingSpace = () => {
+const ArticleCreatingSpace = (props) => {
     // let [article, setArticle] = useState({
     //     title:"",
     //     subTitle:"",
@@ -12,17 +13,14 @@ const ArticleCreatingSpace = () => {
     //     tags:[],
     //     originalLink:""
     // })
-
     return (
-        <div className="mainContainer">
+        <Layout >
             <div className={classes.articleCreatingSpace}>
-                <MenuItems/>
                 <CreateArticle/>
                 <ArticleSettings/>
-
             </div>
+        </Layout>
 
-        </div>
     );
 };
 

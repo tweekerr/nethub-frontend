@@ -19,8 +19,8 @@ const SvgSelector = ({id}) => {
                     <path d="M4.76989 42V21.6364H9.07528V30.0384H17.8153V21.6364H22.1108V42H17.8153V33.5881H9.07528V42H4.76989ZM38.2386 21.6364H42.544V34.8608C42.544 36.3456 42.1894 37.6449 41.4801 38.7585C40.7775 39.8722 39.7931 40.7405 38.527 41.3636C37.2609 41.9801 35.786 42.2884 34.1023 42.2884C32.4119 42.2884 30.9337 41.9801 29.6676 41.3636C28.4015 40.7405 27.4171 39.8722 26.7145 38.7585C26.0118 37.6449 25.6605 36.3456 25.6605 34.8608V21.6364H29.9659V34.4929C29.9659 35.2685 30.1349 35.9579 30.473 36.5611C30.8177 37.1643 31.3016 37.6383 31.9247 37.983C32.5478 38.3277 33.2737 38.5 34.1023 38.5C34.9375 38.5 35.6634 38.3277 36.2798 37.983C36.9029 37.6383 37.3835 37.1643 37.7216 36.5611C38.0663 35.9579 38.2386 35.2685 38.2386 34.4929V21.6364ZM46.0863 42V21.6364H54.2397C55.7378 21.6364 56.9873 21.8584 57.9883 22.3026C58.9892 22.7467 59.7416 23.3632 60.2454 24.152C60.7492 24.9342 61.0011 25.8357 61.0011 26.8565C61.0011 27.652 60.842 28.3513 60.5238 28.9545C60.2056 29.5511 59.7681 30.0417 59.2113 30.4261C58.6611 30.804 58.0314 31.0724 57.3221 31.2315V31.4304C58.0977 31.4635 58.8235 31.6823 59.4996 32.0866C60.1824 32.491 60.7359 33.0578 61.1602 33.7869C61.5844 34.5095 61.7965 35.3712 61.7965 36.3722C61.7965 37.4527 61.5281 38.4171 60.9911 39.2656C60.4608 40.1075 59.6753 40.7737 58.6346 41.2642C57.5939 41.7547 56.3112 42 54.7866 42H46.0863ZM50.3917 38.4801H53.9016C55.1014 38.4801 55.9764 38.2514 56.5266 37.794C57.0768 37.33 57.3519 36.7135 57.3519 35.9446C57.3519 35.3812 57.216 34.884 56.9442 34.4531C56.6725 34.0223 56.2847 33.6842 55.7809 33.4389C55.2837 33.1937 54.6905 33.071 54.0011 33.071H50.3917V38.4801ZM50.3917 30.1577H53.5835C54.1734 30.1577 54.6971 30.0549 55.1545 29.8494C55.6185 29.6373 55.9831 29.339 56.2482 28.9545C56.52 28.5701 56.6559 28.1094 56.6559 27.5724C56.6559 26.8366 56.3941 26.2434 55.8704 25.7926C55.3533 25.3419 54.6175 25.1165 53.663 25.1165H50.3917V30.1577Z" fill="#3A0CA3"/>
                 </g>
                 <defs>
-                    <filter id="filter0_d_427_3137" x="0.769775" y="0.636353" width="53.6467" height="28.662" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                        <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+                    <filter id="filter0_d_427_3137" x="0.769775" y="0.636353" width="53.6467" height="28.662" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+                        <feFlood floodOpacity="0" result="BackgroundImageFix"/>
                         <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
                         <feOffset dy="-1"/>
                         <feGaussianBlur stdDeviation="2"/>
@@ -29,8 +29,8 @@ const SvgSelector = ({id}) => {
                         <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_427_3137"/>
                         <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_427_3137" result="shape"/>
                     </filter>
-                    <filter id="filter1_d_427_3137" x="2.76978" y="17.6364" width="61.0269" height="24.652" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                        <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+                    <filter id="filter1_d_427_3137" x="2.76978" y="17.6364" width="61.0269" height="24.652" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+                        <feFlood floodOpacity="0" result="BackgroundImageFix"/>
                         <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
                         <feOffset dy="-2"/>
                         <feGaussianBlur stdDeviation="1"/>
