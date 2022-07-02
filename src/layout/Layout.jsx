@@ -1,13 +1,13 @@
 import React from 'react';
 import Header from "./Header/Header";
-import MenuItems from "../components/mainSpace/menuItems/MenuItems";
+import Sidebar from "../components/mainSpace/sidebar/Sidebar";
 
 const Layout = (props) => {
     return (
         <div>
             <Header/>
             <div className={"mainContainer"}>
-                    <MenuItems/>
+                    <Sidebar/>
                     {props.children}
                     {props.aside ? props.aside : null}
             </div>

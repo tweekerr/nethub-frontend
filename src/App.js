@@ -1,7 +1,7 @@
 import Header from "./layout/Header/Header";
 // import MainSpace from "./components/mainSpace/MainSpace";
 // import NewsSpace from "./components/mainSpace/news/NewsSpace";
-// import MenuItems from "./components/mainSpace/menuItems/MenuItems";
+// import Sidebar from "./components/mainSpace/sidebar/Sidebar";
 import 'typeface-inter'
 import moment from "moment";
 import 'moment/locale/uk'

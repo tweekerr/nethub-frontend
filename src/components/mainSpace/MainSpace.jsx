@@ -1,5 +1,5 @@
 import React from 'react';
-import MenuItems from "./menuItems/MenuItems";
+import Sidebar from "./sidebar/Sidebar";
 import BlogSpace from "./blog/BlogSpace"
 import styles from "../../index.scss"
 import classes from "./MainSpace.module.scss"

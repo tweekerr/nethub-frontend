@@ -13,18 +13,30 @@
     display:flex;
     flex-direction: row;
     align-items: center;
-    /*height: 48px;*/
-    padding: 13px 0 13px 9% ;
-    /*background: #896DC8;*/
+    height: 48px;
     border-radius: 12px;
 }
+
+.menuPoint svg{
+    flex:30%;
+    display: grid;
+    place-items: center;
+}
+
 .menuPoint p{
-    margin-left:10% ;
+    flex:70%;
     font-weight: 700;
     font-size: 14px;
     line-height: 150%;
     color:#414141;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none;   /* Chrome/Safari/Opera */
+    -khtml-user-select: none;    /* Konqueror */
+    -moz-user-select: none;      /* Firefox */
+    -ms-user-select: none;       /* Internet Explorer/Edge */
+    user-select: none;
 }
+
 .menuPointContainer>p{
     margin-left: 9%;
     font-weight: 400;
@@ -37,6 +49,7 @@
     margin-bottom: 7%;
 }
 .menuPoint:hover{
+    cursor: pointer;
     transition: 0.2s;
     background-color: #bbafea;
     color:white;
@@ -45,7 +58,14 @@
     color:white;
     transition: 0.2s;
 }
-.menuPoint:active{
+.menuPointActive {
     background-color: #896DC8;
     color: white;
 }
+.menuPointActive p{
+    color:white;
+}
+/*.menuPoint:active{*/
+/*    background-color: #896DC8;*/
+/*    color: white;*/
+/*}*/
