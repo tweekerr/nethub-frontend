@@ -7,9 +7,8 @@ const TinyInput = ({value,setValue, tinyTitle}) => {
 
     useEffect(() => setValue(value ?? ''), [value]);
 
-    const plugArticleStore = useSelector(state => state.plugArticleReducer)
+    // const plugArticleStore = useSelector(state => state.plugArticleReducer)
 
-    console.log(plugArticleStore)
 
 
     return (

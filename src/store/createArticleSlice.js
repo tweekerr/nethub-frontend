@@ -11,7 +11,6 @@ export const createArticleSlice = createSlice({
     },
     reducers: {
         updateTitle: (state, action) => {
-
             state.title = action.payload
         },
         updateSubTitle: (state, action) => {
