@@ -1,5 +1,5 @@
 import React from 'react';
-import Sidebar from "./sidebar/Sidebar";
+import Sidebar from "../../layout/sidebar/Sidebar";
 import BlogSpace from "./blog/BlogSpace"
 import styles from "../../index.scss"
 import classes from "./MainSpace.module.scss"

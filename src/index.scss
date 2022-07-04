@@ -9,8 +9,9 @@ body {
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  monospace;
 }
+
 //reset css
 /* http://meyerweb.com/eric/tools/css/reset/
    v2.0 | 20110126
@@ -38,35 +39,42 @@ time, mark, audio, video {
   vertical-align: baseline;
 
 }
+
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
   display: block;
 }
+
 body {
   line-height: 1;
 
 }
+
 ol, ul {
   list-style: none;
 }
+
 blockquote, q {
   quotes: none;
 }
+
 blockquote:before, blockquote:after,
 q:before, q:after {
   content: '';
   content: none;
 }
+
 table {
   border-collapse: collapse;
   border-spacing: 0;
 }
-html{
+
+html {
   font-family: 'Inter', sans-serif;
   //FOR FIREFOX
   scrollbar-color: #458245 #714826; /* «цвет ползунка» «цвет полосы скроллбара» */
-  scrollbar-width: thin;  /* толщина */
+  scrollbar-width: thin; /* толщина */
   //FOR OTHER BROWSERS
   ::-webkit-scrollbar {
     width: 8px; /* ширина для вертикального скролла */
@@ -87,13 +95,24 @@ html{
 
 
 }
-.mainContainer{
+
+.mainContainer {
   max-width: 73%;
   margin: 0 auto;
   display: flex;
   flex-direction: row;
 }
-a{
+
+a {
   text-decoration: none;
   color: black;
+}
+
+.nonCopyrable {
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
 }

@@ -6,7 +6,7 @@ import ArticleSettings from "./ArticleSettings";
 const CreateArticle = () => {
     return (
         <div className={classes.createArticle}>
-            <h2>Створення статті</h2>
+            <h2 className={'nonCopyrable'}>Створення статті</h2>
             <MainArticleParams titleParams={"Загальні налаштування"}/>
             <MainArticleParams titleParams={"Локалізація країни"}/>
         </div>

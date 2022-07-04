@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import SvgSelector from "../../basisComps/SvgSelector/SvgSelector";
+import SvgSelector from "../../components/basisComps/SvgSelector/SvgSelector";
 import classes from "./Sidebar.module.css"
 
 

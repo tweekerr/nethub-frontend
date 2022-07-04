@@ -3,11 +3,9 @@ import classes from './ArticleCreating.module.scss';
 import TitleInput from '../basisComps/titleInput/TitleInput';
 import TinyInput from './TinyInput';
 import {useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import {useActions} from '../../utils';
 
 // import {createArticleSlice, updateMainTxt, updateSubTitle, updateTitle} from '../../store/createArticleSlice';
-import {useActions} from '../../utils';
-import {updateSubTitle} from "../../store/createArticleSlice";
 
 const MainArticleParams = ({titleParams}) => {
 
@@ -16,8 +14,8 @@ const MainArticleParams = ({titleParams}) => {
     const [subTitleValue, setSubTitleValue] = useState('');
     const [txtValue, setTxtValue] = useState('');
 
-    const articleStoreSelector = useSelector(state=> state.articleReducer)
-    console.log(articleStoreSelector)
+    // const articleStoreSelector = useSelector(state=> state.articleReducer)
+    // console.log(articleStoreSelector)
 
 
     return (

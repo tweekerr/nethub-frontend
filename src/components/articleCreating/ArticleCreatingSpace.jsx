@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import Sidebar from "../mainSpace/sidebar/Sidebar";
+import Sidebar from "../../layout/sidebar/Sidebar";
 import classes from './ArticleCreating.module.scss'
 import CreateArticle from "./CreateArticle";
 import ArticleSettings from "./ArticleSettings";
