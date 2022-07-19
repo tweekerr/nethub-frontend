@@ -36,14 +36,13 @@ header{
     width: 100%;
     justify-content: space-between;
 }
-.userNameAvatar a{
+.userNameAvatar h6{
     text-decoration: none;
     font-weight: 600;
     font-size: 16px;
     line-height: 24px;
-    color: #838383;
 
-    /*margin-left: 10%;*/
+    margin-left: 10%;
 }
 .avatarBlock{
     display: flex;

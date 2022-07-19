@@ -8,9 +8,12 @@ import BasicLinker from '../../components/basisComps/BasicLinker';
 import { api } from '../../api';
 import { useActions } from 'utils';
 import { Switch } from '@mui/material';
+import { useAppSelector } from 'store';
+import UnloggedUserBar from './UnloggedUserBar';
 
 const Header: React.FC = () => {
   const { updateArticleId, switchTheme } = useActions();
+  const { isLogin } = useAppSelector((state) => state.generalReducer);
 
   const createArticlePlug = () => {
     api.createArticles({}).then((res) => {
@@ -20,7 +23,7 @@ const Header: React.FC = () => {
 
   return (
     <header>
-      <div className="mainContainer">
+      <div className="headerContainer">
         <div className={classes.headerContainer}>
           <SvgSelector id="navbarLogo" />
           <div className={classes.inputWithLink}>
@@ -38,8 +41,7 @@ const Header: React.FC = () => {
             <Switch onClick={() => switchTheme()} />
           </div>
           <div className={classes.userEntry}>
-            {/*<UnloggedUserBar/>*/}
-            <LoggedUserBar />
+            {isLogin ? <LoggedUserBar /> : <UnloggedUserBar />}
           </div>
         </div>
       </div>

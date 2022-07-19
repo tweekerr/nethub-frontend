@@ -8,12 +8,12 @@ const BlogSpace = () => {
   const [blogItems, setBlogItems] = useState([]);
 
   useEffect(() => {
-    api.getArticles().then((res) => {
-      setBlogItems(res);
-    });
+    // api.getArticles().then((res) => {
+    //   setBlogItems(res);
+    // });
   }, []);
 
-  //todo: тут створити стор для блогу(редакс)
+  //TODO: тут створити стор для блогу(редакс)
   return (
     <div className={classes.blogSpace}>
       <h2>Blog</h2>
@@ -24,7 +24,6 @@ const BlogSpace = () => {
           createdTime={item.created}
         />
       ))}
-
     </div>
   );
 };

@@ -1,5 +1,13 @@
-export type ILanguage = "uk" | "de";
+import { UserCredential } from 'firebase/auth';
 
-export const IGeneral = {
-  theme: "light" | "dark",
+export type ILanguage = 'uk' | 'de';
+
+export type IGeneral = {
+  theme: 'light' | 'dark';
 };
+
+export type APIError = {
+  message: string;
+  status: number;
+  type: string;
+}
