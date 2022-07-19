@@ -101,6 +101,14 @@ html {
   margin: 0 auto;
   display: flex;
   flex-direction: row;
+  min-height: calc(100vh - 78px);
+}
+
+.headerContainer {
+  max-width: 73%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
 }
 
 a {
