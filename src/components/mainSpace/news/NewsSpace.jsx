@@ -11,7 +11,6 @@ const NewsSpace = () => {
 
   useEffect(() => {
     api.getNews().then((res) => {
-      console.log(res)
       setNewsItems(res);
     });
   }, []);
