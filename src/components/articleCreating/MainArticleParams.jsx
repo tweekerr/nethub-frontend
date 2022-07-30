@@ -36,8 +36,8 @@ const MainArticleParams = ({titleParams}) => {
                 setValue={(val) => {
                     updateSubTitle(val);
                 }}
-                titleToInput={'Заголовок статті'}
-                placeholder={'Заголовок вашої статті'}
+                titleToInput={'Підзаголовок статті'}
+                placeholder={'Підзаголовок вашої статті'}
                 width={'100%'}
             />
             <TinyInput

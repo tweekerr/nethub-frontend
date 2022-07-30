@@ -16,6 +16,8 @@ const NewsSpace = () => {
     });
   }, []);
 
+
+
   return (
     <div className={classes.newsSpace}>
       <h2>News</h2>

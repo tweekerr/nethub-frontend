@@ -7,6 +7,7 @@ import BasicLinker from '../../components/basisComps/BasicLinker';
 import { updateArticleId } from '../../store/plugArticleSlice';
 import { useDispatch } from 'react-redux';
 import { api } from '../../api';
+import UnloggedUserBar from "./UnloggedUserBar";
 
 const Header = (config) => {
   const dispatch = useDispatch();

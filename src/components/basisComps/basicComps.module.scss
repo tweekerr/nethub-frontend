@@ -1,5 +1,5 @@
 //RATE COUNTER
-.rateCounter{
+.rateCounter {
   display: flex;
   flex-direction: row;
   padding: 6px 11px 6px 9px;
@@ -10,28 +10,32 @@
   align-items: center;
   justify-content: space-between;
 }
-.rateCounter button{
+
+.rateCounter button {
   background-color: #fff;
   border: none;
   padding: 0;
   margin: 0;
 }
-.rateCounter button:hover{
+
+.rateCounter button:hover {
   cursor: pointer;
 }
-.rateCounter p{
+
+.rateCounter p {
   font-weight: 700;
   font-size: 14px;
   line-height: 17px;
   -webkit-touch-callout: none; /* iOS Safari */
-  -webkit-user-select: none;   /* Chrome/Safari/Opera */
-  -khtml-user-select: none;    /* Konqueror */
-  -moz-user-select: none;      /* Firefox */
-  -ms-user-select: none;       /* Internet Explorer/Edge */
+  -webkit-user-select: none; /* Chrome/Safari/Opera */
+  -khtml-user-select: none; /* Konqueror */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
   user-select: none;
 }
+
 //FUNCBTNS
-.funcBtns{
+.funcBtns {
   display: flex;
   flex-direction: row;
   padding: 6px 14px 6px 16px;
@@ -42,36 +46,40 @@
   align-items: center;
   justify-content: space-between;
 }
-.funcBtns button{
+
+.funcBtns button {
   background-color: #fff;
   border: none;
   padding: 0;
   margin: 0;
 }
-.funcBtns button:hover{
+
+.funcBtns button:hover {
   cursor: pointer;
 }
+
 //THEME TAG
-.themeTag{
+.themeTag {
   display: flex;
   box-sizing: border-box;
   height: 26px;
   padding: 5px 14px;
   background: #896DC8;
   border-radius: 10px;
-  align-items:center;
-  text-align:center;
+  align-items: center;
+  text-align: center;
   justify-content: center;
   font-weight: 700;
   font-size: 12px;
   line-height: 15px;
-  color:white;
+  color: white;
   margin-right: 3%;
   margin-top: 2%;
 }
+
 //BASIC LINKER
-.basicLink{
-  display:flex;
+.basicLink {
+  display: flex;
   flex-direction: row;
   align-items: center;
   color: #212121;
@@ -80,22 +88,32 @@
   line-height: 20px;
   min-width: 25%;
 }
-.basicLink p{
+
+.basicLink p {
   margin-right: 10px;
 }
+
+.basicLink p:hover {
+  text-decoration: underline;
+}
+
+
+
 //TITLE INPUT
-.titleInput{
+.titleInput {
   width: 100%;
   margin-bottom: 20px;
 }
-.titleInput p{
+
+.titleInput p {
   font-weight: 500;
   font-size: 16px;
   line-height: 20px;
   color: #212121;
-  margin-bottom: 10px   ;
+  margin-bottom: 10px;
 }
-.BasicInput{
+
+.BasicInput {
   background: white;
   border-radius: 5px;
 }

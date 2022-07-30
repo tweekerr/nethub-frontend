@@ -10,6 +10,7 @@ const ArticleSettingsItem = ({props}) => {
     const [tagsValue, setTagsValue]=useState("")
     const dispatch = useDispatch()
 
+    // console.log(tagsValue)
 
     return (
             <div className={classes.articleSettingsItem}>
