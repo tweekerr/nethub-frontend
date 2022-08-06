@@ -9,3 +9,9 @@ export type APIError = {
   status: number;
   type: string;
 };
+
+export interface TinyConfig {
+  plugins: string[];
+  key: string;
+  toolbar: string;
+}

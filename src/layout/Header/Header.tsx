@@ -16,7 +16,7 @@ const Header: React.FC = () => {
   const { isLogin } = useAppSelector((state) => state.generalReducer);
 
   const createArticlePlug = () => {
-    api.createArticles({}).then((res) => {
+    api.createArticles().then((res) => {
       updateArticleId(res.id);
     });
   };

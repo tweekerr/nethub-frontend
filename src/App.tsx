@@ -31,7 +31,6 @@ function App() {
   useEffect(() => {
     if (localStorage.getItem('token') && localStorage.getItem('refreshToken'))
       dispatch(checkAuth());
-    if (!isLogin && !loading) navigate('/login');
     if (error) alert(error);
   }, [isLogin]);
 

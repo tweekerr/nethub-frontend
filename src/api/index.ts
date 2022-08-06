@@ -50,9 +50,21 @@ _api.interceptors.response.use(
 );
 
 export const api = {
-  createArticles: async (articles: any) => {
-    return _api.post('').then((res) => res.data);
+  createArticles: async () => {
+    return _api
+      .post('/articles', {
+        name: 'string',
+        tags: ['string'],
+        translatedArticleLink: 'string',
+      })
+      .then((res) => res.data);
   },
+  addImgaesToArticle: (id: string, formdata: FormData) => {
+    return _api
+      .post(`/articles/${id}/images`, formdata)
+      .then((res) => res.data);
+  },
+
   getArticles: async () => {
     return _api
       .get('/articles?code=ua&page=1&perPage=20')

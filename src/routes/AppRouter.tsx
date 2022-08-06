@@ -19,7 +19,7 @@ export const AppRouter: React.FC = () => {
           {publicPaths.map(({ path, Component }) => (
             <Route key={path} path={path} element={<Component />} />
           ))}
-          <Route path="*" element={<Navigate to={'/'} />} />
+          <Route path="*" element={<Navigate to={'/login'} />} />
         </Routes>
       )}
     </>
