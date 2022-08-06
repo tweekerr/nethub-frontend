@@ -1,5 +1,3 @@
-import { UserCredential } from 'firebase/auth';
-
 export type ILanguage = 'uk' | 'de';
 
 export type IGeneral = {
@@ -10,4 +8,4 @@ export type APIError = {
   message: string;
   status: number;
   type: string;
-}
+};

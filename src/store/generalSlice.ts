@@ -21,6 +21,8 @@ const generalSlice = createSlice({
       state.user = action.payload;
     },
     logout: (state) => {
+      localStorage.removeItem('token');
+      localStorage.removeItem('refreshToken');
       state.isLogin = false;
       state.user = {};
     },
@@ -29,7 +31,7 @@ const generalSlice = createSlice({
     [checkAuth.fulfilled.type]: (state, action: PayloadAction<any>) => {
       state.loading = false;
       state.isLogin = true;
-      state.user = action.payload.data;
+      state.user = action.payload;
       state.error = '';
     },
     [checkAuth.pending.type]: (state, action) => {

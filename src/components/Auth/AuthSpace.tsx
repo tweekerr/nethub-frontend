@@ -1,7 +1,7 @@
 import { Box, Grid, Typography } from '@mui/material';
 import { signInWithPopup } from 'firebase/auth';
 import Header from 'layout/Header/Header';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyledButton, StyledForm, StyledRoot } from './styled';
 import { auth, provider } from '../../api/firebase';
 import { UserCredential } from '@firebase/auth';
@@ -13,7 +13,6 @@ export const AuthSpace: React.FC = () => {
 
   const submitLogin = () => {
     signInWithPopup(auth, provider).then(async (cred: UserCredential) => {
-      console.log(cred);
       const { displayName: username, email } = cred.user;
       const userInfo = {
         username,

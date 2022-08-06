@@ -16,3 +16,13 @@ export const publicPaths = [
     Component: AuthSpace,
   },
 ];
+export const privatePaths = [
+  {
+    path: '/createArt',
+    Component: ArticleCreatingSpace,
+  },
+  {
+    path: '/',
+    Component: MainSpace,
+  },
+];

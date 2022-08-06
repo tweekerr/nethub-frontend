@@ -17,8 +17,9 @@ const BlogSpace = () => {
   return (
     <div className={classes.blogSpace}>
       <h2>Blog</h2>
-      {blogItems.map((item) => (
+      {blogItems.map((item, index) => (
         <BlogItem
+          key={index}
           itemTitle={item.localizations[0].title}
           itemDescription={item.localizations[0].description}
           createdTime={item.created}

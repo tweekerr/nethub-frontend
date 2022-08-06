@@ -31,7 +31,10 @@ _api.interceptors.response.use(
           `${
             process.env.REACT_APP_GENERAL_BACK_POINT || BACKLINK
           }/user/refresh-tokens`,
-          localStorage.getItem('token'),
+          {
+            accessToken: localStorage.getItem('token'),
+            refreshToken: localStorage.getItem('refreshToken'),
+          },
           { headers: { 'Content-Type': 'application/json' } }
         );
         console.log('response', response);
@@ -60,9 +63,9 @@ export const api = {
   },
   authenticate: async (user: any) => {
     return _api.post('/user/sso', user).then((res) => {
-      const { token } = res.data;
-      console.log('token saved');
+      const { token, refreshToken } = res.data;
       localStorage.setItem('token', token);
+      localStorage.setItem('refreshToken', refreshToken);
     });
   },
 };
