@@ -2,7 +2,9 @@ import React, { useEffect } from 'react';
 import classes from './NewsSpace.module.scss';
 import NewsItem from './NewsItem';
 import { useState } from 'react';
-import { api } from '../../../api';
+import { api } from '../../../api/api';
+
+//TODO: TO TSX
 
 const NewsSpace = () => {
   //TODO: тут стор, в котрий я буду закидувати все, що мені прийде

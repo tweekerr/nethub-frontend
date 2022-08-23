@@ -1,6 +1,8 @@
 import React from 'react';
 import BasicInput from '../BasicInput/BasicInput';
-import classes from '../basicComps.module.scss';
+import classes from '../ВasicComps.module.scss';
+
+//TODO: TO TSX
 
 const TitleInput = (props) => {
   return (

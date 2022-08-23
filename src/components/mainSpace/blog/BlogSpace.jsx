@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
-import classes from './blogSpace.module.css';
+import React, {useEffect, useState} from 'react';
+import classes from './BlogSpace.module.scss';
 import BlogItem from './BlogItem';
-import { useState } from 'react';
-import { api } from '../../../api';
+
+//TODO: TO TSX
 
 const BlogSpace = () => {
   const [blogItems, setBlogItems] = useState([]);

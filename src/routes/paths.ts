@@ -1,6 +1,5 @@
-import { AuthSpace } from 'components/Auth/AuthSpace';
-import ArticleCreatingSpace from '../components/articleCreating/ArticleCreatingSpace';
 import MainSpace from '../components/mainSpace/MainSpace';
+import ArticleCreatingSpace from '../components/ArticleCreating/ArticleCreatingSpace'
 
 export const publicPaths = [
   {
@@ -13,7 +12,7 @@ export const publicPaths = [
   },
   {
     path: '/login',
-    Component: AuthSpace,
+    Component: ArticleCreatingSpace,
   },
 ];
 export const privatePaths = [

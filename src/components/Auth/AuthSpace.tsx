@@ -1,29 +1,30 @@
-import { Box, Grid, Typography } from '@mui/material';
-import { signInWithPopup } from 'firebase/auth';
-import Header from 'layout/Header/Header';
-import React, { useEffect } from 'react';
-import { StyledButton, StyledForm, StyledRoot } from './styled';
-import { auth, provider } from '../../api/firebase';
-import { UserCredential } from '@firebase/auth';
-import { api } from '../../api';
-import { useActions } from 'utils';
+import {Box, Grid, Typography} from '@mui/material';
+import {signInWithPopup} from 'firebase/auth';
+import React, {FC, useEffect} from 'react';
+import {StyledButton, StyledForm, StyledRoot} from './styled';
+import {auth, provider} from '../../api/firebase';
+import {UserCredential} from '@firebase/auth';
+import {api} from '../../api/api';
+import {useActions} from "../../utils";
+import Header from "../Layout/Header/Header";
 
-export const AuthSpace: React.FC = () => {
-  const { login } = useActions();
+export const AuthSpace: FC = () => {
+  const {login} = useActions();
 
   const submitLogin = () => {
     signInWithPopup(auth, provider).then(async (cred: UserCredential) => {
-      const { displayName: username, email } = cred.user;
+      const {displayName: username, email} = cred.user;
       const userInfo = {
-        username,
+        username: "abc",
         firstname: username,
         email,
         providerMetadata: {
-          //@ts-ignore
+          // @ts-ignore
           token: cred._tokenResponse.oauthIdToken,
         },
         provider: 'google',
       };
+
       api.authenticate(userInfo).then(() => {
         login(userInfo);
       });
@@ -31,8 +32,8 @@ export const AuthSpace: React.FC = () => {
   };
 
   return (
-    <Box sx={{ backgroundColor: 'background.default' }}>
-      <Header />
+    <Box sx={{backgroundColor: 'background.default'}}>
+      <Header/>
       <div className={'mainContainer'}>
         <StyledRoot>
           <Typography
@@ -60,7 +61,7 @@ export const AuthSpace: React.FC = () => {
             <Grid mt={2} container>
               <StyledButton onClick={submitLogin}>
                 <img
-                  style={{ height: '25px', width: '25px', marginRight: '10px' }}
+                  style={{height: '25px', width: '25px', marginRight: '10px'}}
                   src="https://www.freepnglogos.com/uploads/google-logo-png/google-logo-png-suite-everything-you-need-know-about-google-newest-0.png"
                   alt=""
                 />

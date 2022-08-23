@@ -1,13 +1,12 @@
 import React from 'react';
-//@ts-ignore
 import classes from './ArticleCreating.module.scss';
 import CreateArticle from './CreateArticle';
 import ArticleSettings from './ArticleSettings';
-import Layout from '../../layout/Layout';
+import Layout from "../Layout/Layout";
 
 const ArticleCreatingSpace = () => {
   return (
-    <Layout>
+    <Layout aside>
       <div className={classes.articleCreatingSpace}>
         <CreateArticle />
         <ArticleSettings />

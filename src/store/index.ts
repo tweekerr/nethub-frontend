@@ -1,5 +1,5 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+import {combineReducers, configureStore} from '@reduxjs/toolkit';
+import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
 import createArticleSlice from './createArticleSlice';
 import generalSlice from './generalSlice';
 import createArticlePlugSlice from './plugArticleSlice';

@@ -1,5 +1,7 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { checkAuth } from './thunks/authThunk';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {checkAuth} from './thunks/authThunk';
+import {ILanguage} from "../react-app-env";
+import Localizations from "../constants/localizations";
 
 const initialState = {
   theme: 'light',
@@ -7,6 +9,7 @@ const initialState = {
   user: {},
   loading: false,
   error: '',
+  language: Localizations.Ukrainian
 };
 
 const generalSlice = createSlice({
@@ -26,6 +29,9 @@ const generalSlice = createSlice({
       state.isLogin = false;
       state.user = {};
     },
+    setLanguage: (state, action: PayloadAction<ILanguage>) => {
+      state.language = action.payload
+    }
   },
   extraReducers: {
     [checkAuth.fulfilled.type]: (state, action: PayloadAction<any>) => {

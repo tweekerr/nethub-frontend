@@ -1,26 +1,26 @@
-import React, { useCallback, useRef } from 'react';
-import { Editor } from '@tinymce/tinymce-react';
-//@ts-ignore
+import React, {useCallback, useRef} from 'react';
+import {Editor} from '@tinymce/tinymce-react';
 import classes from './ArticleCreating.module.scss';
-import { api } from 'api';
-import { tinyConfig } from 'utils/constants';
+import {api} from "../../api/api";
+import {tinyConfig} from "../../utils/constants";
 
-interface IProps {
-  value: string;
-  setValue: (value: string) => void;
-  tinyTitle: string;
+interface ITinyInputProps {
+  data: string;
+  setData: (value: string) => void;
+  editorTitle: string;
 }
 
-const TinyInput: React.FC<IProps> = ({ value, setValue, tinyTitle }) => {
-  const editorRef = useRef<any>(null);
+const TinyInput: React.FC<ITinyInputProps> = ({data, setData, editorTitle}) => {
+  const editorRef = useRef<Editor>(null);
 
   const log = useCallback(async () => {
     if (editorRef.current) {
-      const { id } = await api.createArticles();
+      const {id} = await api.createArticles();
       sessionStorage.setItem('articleId', id);
       await editorRef.current
-        .uploadImages()
-        .then(() => console.log(editorRef.current.getContent()));
+        .editor
+        ?.uploadImages()
+        .then(() => console.log(editorRef.current?.editor?.getContent()));
     }
   }, []);
 
@@ -30,16 +30,16 @@ const TinyInput: React.FC<IProps> = ({ value, setValue, tinyTitle }) => {
     if (!id) return;
     const fd = new FormData();
     fd.append('file', blobInfo.blob());
-    const { location } = await api.addImgaesToArticle(id, fd);
+    const {location} = await api.addImgaesToArticle(id, fd);
     sessionStorage.removeItem('articleId');
     return location;
   };
 
   return (
     <div className={classes.tinyInput}>
-      <p>{tinyTitle}</p>
+      <p>{editorTitle}</p>
       <Editor
-        onInit={(evt, editor) => (editorRef.current = editor)}
+        onInit={(evt, editor) => (editorRef.current!.editor = editor)}
         apiKey={tinyConfig.key}
         init={{
           height: 500,

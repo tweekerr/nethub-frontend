@@ -1,4 +1,4 @@
-import { api } from 'api';
+import {api} from "../api/api";
 
 export const saveImages = async (blobInfo: any) => {
   const id = sessionStorage.getItem('articleId');

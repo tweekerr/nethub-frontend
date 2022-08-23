@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { _api } from 'api';
-import { APIError } from 'types';
+import {_api} from "../../api/api";
+import {APIError} from "../../react-app-env";
 
 export const checkAuth = createAsyncThunk(
   'general/checkAuth',

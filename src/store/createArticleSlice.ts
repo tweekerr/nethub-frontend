@@ -1,39 +1,36 @@
-import { createSlice } from '@reduxjs/toolkit';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import IArticle from "../types/IArticle";
 
-const createArticleSlice = createSlice({
+const initialState: IArticle = {
+  title: '',
+  subTitle: '',
+  body: '',
+  tags: [],
+  originalLink: null
+}
+
+
+export const createArticleSlice = createSlice({
   name: 'createArticle',
-  initialState: {
-    title: '',
-    subTitle: '',
-    mainTxt: '',
-    tags: [],
-    originalLink: '',
-  },
+  initialState: initialState,
   reducers: {
-    updateTitle: (state, action) => {
+    updateTitle: (state, action: PayloadAction<string>) => {
       state.title = action.payload;
     },
-    updateSubTitle: (state, action) => {
+    updateSubTitle: (state, action: PayloadAction<string>) => {
       state.subTitle = action.payload;
     },
-    updateMainTxt: (state, action) => {
-      state.mainTxt = action.payload;
+    updateBody: (state, action: PayloadAction<string>) => {
+      state.body = action.payload;
     },
-    updateTags: (state, action) => {
+    updateTags: (state, action: PayloadAction<string>) => {
       state.tags = state.tags.concat(action.payload);
     },
-    updateOriginalLink: (state, action) => {
+    updateOriginalLink: (state, action: PayloadAction<string | null>) => {
       state.originalLink = action.payload;
     },
   },
 });
 
-export const {
-  updateTitle,
-  updateSubTitle,
-  updateMainTxt,
-  updateTags,
-  updateOriginalLink,
-} = createArticleSlice.actions;
 export const createArticlesActions = createArticleSlice.actions;
 export default createArticleSlice.reducer;

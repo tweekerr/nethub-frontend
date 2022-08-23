@@ -1,7 +1,9 @@
 import React from 'react';
 import SvgSelector from './SvgSelector/SvgSelector';
-import classes from './basicComps.module.scss';
+import classes from './ВasicComps.module.scss';
 import { Typography } from '@mui/material';
+
+//TODO: TO TSX
 
 const BasicLinker = ({ ...props }) => {
   return (

@@ -1,4 +1,4 @@
-import { TinyConfig } from 'types';
+import {TinyConfig} from "../react-app-env";
 
 export const tinyConfig: TinyConfig = {
   plugins: [

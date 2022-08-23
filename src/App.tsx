@@ -1,57 +1,42 @@
-import 'typeface-inter';
-import moment from 'moment';
 import 'moment/locale/uk';
-import 'moment/locale/de';
-import { useNavigate } from 'react-router-dom';
-import { AppRouter } from './routes/AppRouter';
+import 'moment/locale/en-gb';
+import {useNavigate} from 'react-router-dom';
 
-import { ILanguage } from 'types';
-import { createTheme, ThemeProvider } from '@mui/material';
-import { useAppDispatch, useAppSelector } from 'store';
-import React, { useEffect } from 'react';
-import { darkTheme, lightTheme } from 'constants/themes';
-import { checkAuth } from 'store/thunks/authThunk';
-import { Loader } from 'design-core/loader';
+import {createTheme, ThemeProvider} from '@mui/material';
+import {useAppDispatch, useAppSelector} from './store';
+import React, {useEffect, useMemo} from 'react';
+import {darkTheme, lightTheme} from './constants/themes';
+import {checkAuth} from './store/thunks/authThunk';
+import {Loader} from './components/UI/loader/Loader';
+import {switchLocal} from "./utils/localization";
+import AppRouter from './components/AppRouter';
 
-const LANGUAGE: ILanguage = 'uk';
 
 function App() {
-  switchLocal(LANGUAGE);
-  const { theme, isLogin, loading, error } = useAppSelector(
-    (state) => state.generalReducer
-  );
+  const {theme, isLogin, loading, error, language} = useAppSelector((state) => state.generalReducer);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const themeOptions = React.useMemo(
+  const themeOptions = useMemo(
     () => createTheme(theme === 'light' ? lightTheme : darkTheme),
     [theme]
   );
 
   useEffect(() => {
+    switchLocal(language);
+    if (!isLogin && !loading) navigate('/login');
     if (localStorage.getItem('token') && localStorage.getItem('refreshToken'))
       dispatch(checkAuth());
     if (error) alert(error);
   }, [isLogin]);
 
-  if (loading) return <Loader />;
+  if (loading) return <Loader/>;
 
   return (
     <ThemeProvider theme={themeOptions}>
-      <AppRouter />
+      <AppRouter/>
     </ThemeProvider>
   );
 }
-
-const switchLocal = (language: ILanguage) => {
-  switch (language) {
-    case 'uk':
-      moment.locale('uk');
-      break;
-    case 'de':
-      moment.locale('de');
-      break;
-  }
-};
 
 export default App;

@@ -1,5 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+//TODO: ASK
+
 const createArticlePlugSlice = createSlice({
   name: 'plugArticleId',
   initialState: {
