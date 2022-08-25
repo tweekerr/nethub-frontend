@@ -16,7 +16,7 @@ import GoogleAuthButton from "./Buttons/GoogleAuthButton";
 import TitleInput from "../basisComps/titleInput/TitleInput";
 import {useAppDispatch, useAppSelector} from "../../store";
 import {generalActions} from "../../store/generalSlice";
-import Test from "./Buttons/Test";
+import TelegramAuthButton from "./Buttons/TelegramAuthButton";
 
 export const AuthSpace = () => {
   const dispatch = useAppDispatch();
@@ -41,9 +41,9 @@ export const AuthSpace = () => {
 
   const submitLogin = (e: React.MouseEvent, provider: ProviderType) => {
     e.preventDefault();
-    sso(setRequest, setProfileImageToRedux, provider).then((res) => {
+    sso(setRequest, setProfileImageToRedux, provider).then((_) => {
       setSecondExpanded(true);
-    });
+    }).catch((e) => console.log(e));
   };
 
   return (
@@ -76,7 +76,7 @@ export const AuthSpace = () => {
             <Grid mt={2} container>
               <GoogleAuthButton onClick={(e) => submitLogin(e, ProviderType.GOOGLE)}/>
               <button onClick={() => setSecondExpanded(!secondExpanded)}>set</button>
-              <Test/>
+              <TelegramAuthButton onClick={(e) => submitLogin(e, ProviderType.TELEGRAM)}/>
 
 
             </Grid>
