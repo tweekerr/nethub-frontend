@@ -8,8 +8,8 @@ const ArticleCreatingSpace = () => {
   return (
     <Layout>
       <div className={classes.articleCreatingSpace}>
-        <CreateArticle />
-        <ArticleSettings />
+        <CreateArticle/>
+        <ArticleSettings/>
       </div>
     </Layout>
   );

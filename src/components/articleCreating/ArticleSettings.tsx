@@ -1,9 +1,9 @@
 import React, {FC} from 'react';
-import ArticleSettingsItem from './ArticleSettingsItem';
 import classes from './ArticleCreating.module.scss';
 import SettingsInputItem from './SettingsInputItem';
 import UiButton from '../UI/button/UiButton';
 import {useAppSelector} from "../../store";
+import ArticleSettingsItem from './ArticleSettingsItem';
 
 const ArticleSettings: FC = () => {
   const articleStoreSelector = useAppSelector(state => state.articleReducer)
