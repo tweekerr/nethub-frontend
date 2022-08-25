@@ -20,13 +20,13 @@ const NewsSpace = () => {
   return (
     <div className={classes.newsSpace}>
       <h2>News</h2>
-      {newsItems.map((item, index) => (
-        <NewsItem
-          key={index}
-          newsTitle={item.title.rendered}
-          newsDescription={item.excerpt.rendered}
-        />
-      ))}
+      {/*{newsItems.map((item, index) => (*/}
+      {/*  <NewsItem*/}
+      {/*    key={index}*/}
+      {/*    newsTitle={item.title.rendered}*/}
+      {/*    newsDescription={item.excerpt.rendered}*/}
+      {/*  />*/}
+      {/*))}*/}
     </div>
   );
 };

@@ -5,23 +5,12 @@ import classes from "./ВasicComps.module.scss"
 
 const RateCounter: FC = () => {
 
-  //TODO: ASK
-
-  // const coloredCounter = document.querySelector(".coloredCounter")
-  // if (counter > 0) {
-  //   coloredCounter?.style?.color = "#0CA312";
-  // } else if (counter < 0) {
-  //   coloredCounter?.style?.color = "#F50000";
-  // }
-
   const [counter, setCounter] = useState(0);
 
-  const plusCounter = (e: React.MouseEvent) => {
-    e.preventDefault()
-    setCounter(counter + 1)
+  const plusCounter = () => {
+    setCounter((previous) => previous + 1)
   }
-  const minusCounter = (e: React.MouseEvent) => {
-    e.preventDefault()
+  const minusCounter = () => {
     setCounter(counter - 1)
   }
 

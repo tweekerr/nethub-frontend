@@ -30,7 +30,7 @@ const TinyInput: React.FC<ITinyInputProps> = ({data, setData, editorTitle}) => {
     if (!id) return;
     const fd = new FormData();
     fd.append('file', blobInfo.blob());
-    const {location} = await api.addImgaesToArticle(id, fd);
+    const {location} = await api.addImagesToArticle(id, fd);
     sessionStorage.removeItem('articleId');
     return location;
   };

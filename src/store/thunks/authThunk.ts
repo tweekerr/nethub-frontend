@@ -1,4 +1,4 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import {createAsyncThunk} from '@reduxjs/toolkit';
 import {_api} from "../../api/api";
 import {APIError} from "../../react-app-env";
 
@@ -19,3 +19,14 @@ export const checkAuth = createAsyncThunk(
     }
   }
 );
+
+export const sso = createAsyncThunk(
+  'general/sso',
+  async (_, thunkApi) => {
+    try {
+
+    } catch (error: APIError | any) {
+      return thunkApi.rejectWithValue(error.message);
+    }
+  }
+)

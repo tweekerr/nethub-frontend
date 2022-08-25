@@ -4,16 +4,14 @@ import classes from './MainSpace.module.scss';
 import NewsSpace from './news/NewsSpace';
 import Layout from '../Layout/Layout';
 
-const MainSpace: FC = () => {
+const MainSpace = () => {
   return (
-    <>
-      <Layout aside>
+      <Layout>
         <div className={classes.mainSpaceContainer}>
           <BlogSpace/>
           <NewsSpace/>
         </div>
       </Layout>
-    </>
   );
 };
 

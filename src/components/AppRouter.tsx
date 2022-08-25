@@ -1,28 +1,19 @@
 import React, {FC} from 'react';
-import {Navigate, Route, Routes} from 'react-router-dom';
-import {useAppSelector} from "../store";
-import {privatePaths, publicPaths} from "../routes/paths";
+import {Route, Routes} from 'react-router-dom';
+import {paths} from "../routes/paths";
+import Authorized from "./Auth/Authorized";
 
 const AppRouter: FC = () => {
-  const { isLogin } = useAppSelector((state) => state.generalReducer);
   return (
-    <>
-      {isLogin ? (
-        <Routes>
-          {privatePaths.map(({ path, Component }) => (
-            <Route key={path} path={path} element={<Component />} />
-          ))}
-          <Route path="*" element={<Navigate to={'/'} />} />
-        </Routes>
-      ) : (
-        <Routes>
-          {publicPaths.map(({ path, Component }) => (
-            <Route key={path} path={path} element={<Component />} />
-          ))}
-          <Route path="*" element={<Navigate to={'/login'} />} />
-        </Routes>
+    <Routes>
+      {paths.map(({path, component, authorized}) =>
+        <Route key={path} path={path} element={
+          authorized ? <Authorized>{component}</Authorized>
+            : component()}
+        />
       )}
-    </>
+      <Route path={'*'} element={<h1>Not Found</h1>}/>
+    </Routes>
   );
 };
 

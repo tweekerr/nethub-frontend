@@ -11,7 +11,7 @@ interface IMainArticleProps {
   titleParams: string
 }
 
-const MainArticleParams: FC<IMainArticleProps> = ({titleParams}) => {
+const CreateArticleForm: FC<IMainArticleProps> = ({titleParams}) => {
 
   const {updateTitle, updateBody, updateSubTitle} = useActions();
   const [titleValue, setTitleValue] = useState('');
@@ -31,7 +31,7 @@ const MainArticleParams: FC<IMainArticleProps> = ({titleParams}) => {
         setValue={(title: string) => {
           updateTitle(title);
         }}
-        titleToInput={'Заголовок статті'}
+        title={'Заголовок статті'}
         placeholder={'Заголовок вашої статті'}
         width={'100%'}
       />
@@ -40,7 +40,7 @@ const MainArticleParams: FC<IMainArticleProps> = ({titleParams}) => {
         setValue={(subTitle: string) => {
           updateSubTitle(subTitle);
         }}
-        titleToInput={'Заголовок статті'}
+        title={'Заголовок статті'}
         placeholder={'Заголовок вашої статті'}
         width={'100%'}
       />
@@ -55,4 +55,4 @@ const MainArticleParams: FC<IMainArticleProps> = ({titleParams}) => {
   );
 };
 
-export default MainArticleParams;
+export default CreateArticleForm;

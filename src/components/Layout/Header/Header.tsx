@@ -1,6 +1,6 @@
 import React from 'react';
 import SvgSelector from '../../basisComps/SvgSelector/SvgSelector';
-import BasicInput from '../../basisComps/BasicInput/BasicInput';
+import UiInput from '../../UI/input/UiInput';
 import classes from './Header.module.scss'
 import LoggedUserBar from './LoggedUserBar';
 import BasicLinker from '../../basisComps/BasicLinker';
@@ -11,31 +11,31 @@ import {useActions} from "../../../utils";
 import {useAppSelector} from "../../../store";
 
 const Header: React.FC = () => {
-  const {updateArticleId, switchTheme} = useActions();
+  const { switchTheme} = useActions();
   const {isLogin} = useAppSelector((state) => state.generalReducer);
 
-  const createArticlePlug = () => {
-    api.createArticles().then((res) => {
-      updateArticleId(res.id);
-    });
-  };
+  // const createArticlePlug = () => {
+  //   api.createArticles().then((res) => {
+  //     updateArticleId(res.id);
+  //   });
+  // };
 
   return (
-    <header>
+    <header className={classes.header}>
       {/*<div className="headerWrapper">*/}
       {/*//TODO: ASK*/}
       <div>
         <div className={classes.headerContainer}>
           <SvgSelector id="navbarLogo"/>
           <div className={classes.inputWithLink}>
-            <BasicInput
+            <UiInput
               placeholder={'Пошук'}
               value={''}
               setValue={() => console.log(' ')}
               width={"470px"}
             />
             <BasicLinker
-              onClick={createArticlePlug}
+              onClick={() => {}}
               linktxt={'Створити статтю'}
               svgid={'DriveFileRenameOutlineIcon'}
             />

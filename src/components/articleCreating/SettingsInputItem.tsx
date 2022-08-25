@@ -15,7 +15,7 @@ const SettingsInputItem: FC = () => {
         setValue={(link: string) => {
           dispatch(createArticleSlice.actions.updateOriginalLink(link))
         }}
-        titleToInput={"Посилання на оригінал "}
+        title={"Посилання на оригінал "}
         placeholder={"Посилання на статтю"}
         width={"100%"}/>
       <p>*якщо стаття переведена, вкажіть посилання на оригінал</p>

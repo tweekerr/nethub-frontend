@@ -1,4 +1,7 @@
-//TODO: reset css here
+*{
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
 
@@ -12,7 +15,6 @@ code {
   monospace;
 }
 
-//reset css
 /* http://meyerweb.com/eric/tools/css/reset/
    v2.0 | 20110126
    License: none (public domain)
@@ -72,14 +74,12 @@ table {
 
 html {
   font-family: 'Inter', sans-serif;
-  //FOR FIREFOX
   scrollbar-color: #458245 #714826; /* «цвет ползунка» «цвет полосы скроллбара» */
-  scrollbar-width: thin; /* толщина */
-  //FOR OTHER BROWSERS
+  /*scrollbar-width: thin;!* толщина *!*/
   ::-webkit-scrollbar {
     width: 8px; /* ширина для вертикального скролла */
     height: 5px; /* высота для горизонтального скролла */
-    //background-color: #143861;
+    background-color: #143861;
   }
 
   /* ползунок скроллбара */
@@ -92,11 +92,9 @@ html {
   ::-webkit-scrollbar-thumb:hover {
     background-color: #63439f;
   }
-
-
 }
 
-.mainContainer {
+.layoutContainer {
   max-width: 73%;
   margin: 0 auto;
   display: flex;

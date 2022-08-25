@@ -6,7 +6,7 @@ export const saveImages = async (blobInfo: any) => {
   if (!id) return;
   const fd = new FormData();
   fd.append('file', blobInfo.blob());
-  const { location } = await api.addImgaesToArticle(id, fd);
+  const { location } = await api.addImagesToArticle(id, fd);
   console.log({ location });
   sessionStorage.removeItem('articleId');
   return location;

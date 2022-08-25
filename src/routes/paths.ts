@@ -1,27 +1,27 @@
 import MainSpace from '../components/mainSpace/MainSpace';
 import ArticleCreatingSpace from '../components/ArticleCreating/ArticleCreatingSpace'
+import {AuthSpace} from "../components/Auth/AuthSpace";
 
-export const publicPaths = [
-  {
-    path: '/createArt',
-    Component: ArticleCreatingSpace,
-  },
+interface IPath {
+  path: string,
+  component: () => JSX.Element,
+  authorized: boolean
+}
+
+export const paths: IPath[] = [
   {
     path: '/',
-    Component: MainSpace,
+    component: MainSpace,
+    authorized: false
   },
   {
     path: '/login',
-    Component: ArticleCreatingSpace,
-  },
-];
-export const privatePaths = [
-  {
-    path: '/createArt',
-    Component: ArticleCreatingSpace,
+    component: AuthSpace,
+    authorized: false
   },
   {
-    path: '/',
-    Component: MainSpace,
-  },
-];
+    path: '/articles',
+    component: ArticleCreatingSpace,
+    authorized: true,
+  }
+]
