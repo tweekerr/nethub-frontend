@@ -76,11 +76,7 @@ export const AuthSpace = () => {
             <Grid mt={2} container>
               <GoogleAuthButton onClick={(e) => submitLogin(e, ProviderType.GOOGLE)}/>
               <button onClick={() => setSecondExpanded(!secondExpanded)}>set</button>
-              <Test botName={'nethub_official_bot'}
-                    buttonSize={'large'}
-                    widgetVersion={19}
-              />
-
+              <Test/>
 
 
             </Grid>

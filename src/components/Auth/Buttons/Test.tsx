@@ -8,39 +8,47 @@ interface ITestProps {
   dataAuthUrl?: string
 }
 
-const Test: FC<ITestProps> = ({
-                                botName,
-                                buttonSize,
-                                cornerRadius,
-                                widgetVersion,
-                                dataAuthUrl
-                              }) => {
-  const instance = useRef<HTMLDivElement>(null);
+const Test: FC = () => {
+  function asd() {
+    //@ts-ignore
+    window.Telegram.Login.auth(
+      {bot_id: '5533270293', request_access: true},
+      (data: any) => {
+        if (!data) {
+          // authorization failed
+        }
 
-  useEffect(() => {
-    instance.current?.appendChild(script);
-  },[]);
-
-  function onAuth(user: any) {
-    console.log(user);
+        // Here you would want to validate data like described there https://core.telegram.org/widgets/login#checking-authorization
+        // doWhateverYouWantWithData(data);
+        console.log(data)
+      }
+    );
   }
 
+
+  const ref = useRef<HTMLDivElement>(null);
+
+  //
   const script = document.createElement("script");
-  script.src = "https://telegram.org/js/telegram-widget.js?" + widgetVersion;
-  script.setAttribute("data-telegram-login", botName);
-  script.setAttribute("data-size", buttonSize);
-  if (cornerRadius) {
-    script.setAttribute("data-radius", cornerRadius.toString());
-  }
-  script.setAttribute(
-    "data-onauth",
-    "Test.onAuth(user)"
-  );
+  script.src = "https://telegram.org/js/telegram-widget.js?19";
+  // script.setAttribute("data-telegram-login", botName);
+  // script.setAttribute("data-size", buttonSize);
+  // if (cornerRadius) {
+  //   script.setAttribute("data-radius", cornerRadius.toString());
+  // }
+  // script.setAttribute(
+  //   "data-onauth",
+  //   "Test.onAuth(user)"
+  // );
   script.async = true;
 
+  useEffect(() => {
+    ref.current?.appendChild(script)
+  }, [])
+
   return (
-    <div ref={instance}>
-      Test
+    <div ref={ref}>
+      <button onClick={asd}>Telegram</button>
     </div>
   );
 }
