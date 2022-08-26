@@ -2,33 +2,32 @@ import {signInWithPopup} from "firebase/auth";
 import {auth, provider} from "../api/firebase";
 import ISsoRequest from "../types/api/Sso/ISsoRequest";
 import React from "react";
+import {IReduxUser} from "../store/generalSlice";
 
 export enum ProviderType {
   TELEGRAM = 'telegram',
   GOOGLE = 'google'
 }
 
-export async function sso(setUser: React.Dispatch<ISsoRequest>,
-                          setPhoto: (photoLink: string) => void,
+export async function sso(setRequest: React.Dispatch<ISsoRequest>,
+                          setReduxUser: (username: string, photoLink: string | null) => void,
                           expandSecondStep: () => void,
                           provider: ProviderType) {
   switch (provider) {
     case ProviderType.GOOGLE:
-      const googlePhotoLink = await ssoGoogle(setUser);
-      setPhoto(googlePhotoLink ?? '');
+      const {username: googleUsername, profilePhoto: googlePhotoLink} = await ssoGoogle(setRequest);
+      setReduxUser(googleUsername, googlePhotoLink);
       break;
     case ProviderType.TELEGRAM:
-      const telegramPhotoLink = await ssoTelegram(setUser)
-      console.log(telegramPhotoLink)
-      setPhoto(telegramPhotoLink ?? '');
+      const {username: telegramUsername, profilePhoto: telegramPhotoLink} = await ssoTelegram(setRequest)
+      setReduxUser(telegramUsername, telegramPhotoLink);
       break;
   }
 
-  console.log('expand')
   expandSecondStep();
 }
 
-async function ssoGoogle(setUser: React.Dispatch<ISsoRequest>): Promise<string | null> {
+async function ssoGoogle(setRequest: React.Dispatch<ISsoRequest>): Promise<IReduxUser> {
   const credential = await signInWithPopup(auth, provider);
 
   const {user} = credential;
@@ -47,11 +46,11 @@ async function ssoGoogle(setUser: React.Dispatch<ISsoRequest>): Promise<string |
     provider: ProviderType.GOOGLE,
   };
 
-  setUser(userInfo);
-  return user.photoURL;
+  setRequest(userInfo);
+  return {username: user.displayName ?? user.email!, profilePhoto: user.photoURL};
 }
 
-async function ssoTelegram(setUser: React.Dispatch<ISsoRequest>): Promise<string | null> {
+async function ssoTelegram(setRequest: React.Dispatch<ISsoRequest>): Promise<IReduxUser> {
 
   return new Promise((resolve, reject) => {
     // @ts-ignore
@@ -80,13 +79,11 @@ async function ssoTelegram(setUser: React.Dispatch<ISsoRequest>): Promise<string
           provider: ProviderType.TELEGRAM,
         };
 
-        console.log('setUser')
-        setUser(userInfo);
+        setRequest(userInfo);
         // Here you would want to validate data like described there https://core.telegram.org/widgets/login#checking-authorization
         // doWhateverYouWantWithData(data);
-        console.log(data)
 
-        resolve(data.photo_url ?? null);
+        resolve({username: data.username ?? data.first_name ?? data.last_name, profilePhoto: data.photo_url});
       }
     );
   })

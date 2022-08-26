@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import {Route, Routes} from 'react-router-dom';
 import {paths} from "../routes/paths";
-import Authorized from "./Auth/Authorized";
+import Authorized from "./Auth/hoc/Authorized";
 
 const AppRouter: FC = () => {
   return (

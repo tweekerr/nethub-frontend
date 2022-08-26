@@ -2,7 +2,7 @@ export const menuItemsKeys = [
     {
         svgid: 'TerrainIcon',
         pId: 'Onhovered item',
-        link: '/createArt',
+        link: '/articles',
     },
     {
         svgid: 'TerrainIcon',

@@ -1,20 +1,32 @@
 import {Box} from '@mui/material';
-import React, {FC, PropsWithChildren} from 'react';
+import React, {FC, PropsWithChildren, ReactNode} from 'react';
 import Header from './Header/Header';
-import Sidebar from './Sidebar/Sidebar';
+import Body from "./Body";
+import {useAppSelector} from "../../store";
+import {Loader} from "../UI/loader/Loader";
 
-interface ILayoutProps extends PropsWithChildren {
-  rightBar?: () => JSX.Element
+export interface ILayoutProps extends PropsWithChildren {
+  showSidebar?: boolean,
+  customSidebar?: ReactNode,
+  rightBar?: ReactNode
 }
 
-const Layout: FC<ILayoutProps> = ({children, rightBar}) => {
+const Layout: FC<ILayoutProps> = ({children, showSidebar = true, customSidebar, rightBar}) => {
+  const {loading, error} = useAppSelector((state) => state.generalReducer);
+
   return (
     <Box sx={{bgcolor: 'background.default'}}>
       <Header/>
-      <div className={'layoutContainer'}>
-        <Sidebar/>
-        {children}
-      </div>
+      <Body showSidebar={showSidebar}
+            customSidebar={customSidebar}
+            rightBar={rightBar}
+      >
+        {loading
+          ? <Loader/>
+          : children
+        }
+      </Body>
+
       //Footer
     </Box>
   );

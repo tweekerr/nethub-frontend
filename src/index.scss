@@ -1,5 +1,6 @@
 *{
   box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
 }
 
 body {
@@ -37,7 +38,6 @@ time, mark, audio, video {
   padding: 0;
   border: 0;
   font-size: 100%;
-  font: inherit;
   vertical-align: baseline;
 
 }
@@ -73,7 +73,6 @@ table {
 }
 
 html {
-  font-family: 'Inter', sans-serif;
   scrollbar-color: #458245 #714826; /* «цвет ползунка» «цвет полосы скроллбара» */
   /*scrollbar-width: thin;!* толщина *!*/
   ::-webkit-scrollbar {

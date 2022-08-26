@@ -1,7 +1,7 @@
 import {Typography} from '@mui/material';
 import React, {FC, useState} from 'react';
 import SvgSelector from '../../basisComps/SvgSelector/SvgSelector';
-import classes from './Sidebar.module.scss';
+import classes from './Menu.module.scss';
 
 interface ITitleWithPointsProps {
   menuItemsKeys: any[]

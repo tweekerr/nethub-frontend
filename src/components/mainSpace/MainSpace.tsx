@@ -6,12 +6,9 @@ import Layout from '../Layout/Layout';
 
 const MainSpace = () => {
   return (
-      <Layout>
-        <div className={classes.mainSpaceContainer}>
-          <BlogSpace/>
-          <NewsSpace/>
-        </div>
-      </Layout>
+    <Layout rightBar={<NewsSpace/>}>
+      <BlogSpace/>
+    </Layout>
   );
 };
 

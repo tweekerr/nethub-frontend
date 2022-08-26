@@ -1,8 +1,7 @@
 import {Accordion, AccordionDetails, AccordionSummary, styled} from '@mui/material';
 
 export const StyledRoot = styled('div')({
-  width: 780,
-  margin: '0 auto',
+  width: '100%'
 });
 
 export const StyledFirstStep = styled('div')({

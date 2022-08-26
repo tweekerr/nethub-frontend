@@ -23,34 +23,38 @@ const CreateArticleForm: FC<IMainArticleProps> = ({titleParams}) => {
 
 
   return (
-    <div className={classes.mainArticleParams}>
-      <p>{titleParams}</p>
-      {/*{JSON.stringify(newArticle)}*/}
-      <TitleInput
-        value={titleValue}
-        setValue={(title: string) => {
-          updateTitle(title);
-        }}
-        title={'Заголовок статті'}
-        placeholder={'Заголовок вашої статті'}
-        width={'100%'}
-      />
-      <TitleInput
-        value={subTitleValue}
-        setValue={(subTitle: string) => {
-          updateSubTitle(subTitle);
-        }}
-        title={'Заголовок статті'}
-        placeholder={'Заголовок вашої статті'}
-        width={'100%'}
-      />
-      <TinyInput
-        data={bodyValue}
-        setData={(body: string) => {
-          updateBody(body);
-        }}
-        editorTitle={'Текст статті'}
-      />
+    <div className={classes.createArticle}>
+      <h2 className={'nonCopyrable'}>Створення статті</h2>
+
+      <div className={classes.mainArticleParams}>
+        <p>{titleParams}</p>
+        {/*{JSON.stringify(newArticle)}*/}
+        <TitleInput
+          value={titleValue}
+          setValue={(title: string) => {
+            updateTitle(title);
+          }}
+          title={'Заголовок статті'}
+          placeholder={'Заголовок вашої статті'}
+          width={'100%'}
+        />
+        <TitleInput
+          value={subTitleValue}
+          setValue={(subTitle: string) => {
+            updateSubTitle(subTitle);
+          }}
+          title={'Заголовок статті'}
+          placeholder={'Заголовок вашої статті'}
+          width={'100%'}
+        />
+        <TinyInput
+          data={bodyValue}
+          setData={(body: string) => {
+            updateBody(body);
+          }}
+          editorTitle={'Текст статті'}
+        />
+      </div>
     </div>
   );
 };

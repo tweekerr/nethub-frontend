@@ -7,14 +7,6 @@
     margin-top: 20px;
     box-sizing: border-box;
 }
-.blogSpace {
-    /*width: 57%;*/
-    /*margin-left: 20px;*/
-    /*box-sizing: border-box;*/
-    width: 69%;
-    margin-left: 20px;
-    box-sizing: border-box;
-}
 
 .downFuncItems{
     display: flex;
@@ -22,6 +14,11 @@
     justify-content: space-between;
     margin-top: 20px;
 }
+
+.blogSpace{
+  width: 100%;
+}
+
 .blogSpace>h2{
     font-weight: 700;
     font-size: 32px;

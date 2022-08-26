@@ -1,11 +1,11 @@
 import React from 'react';
 import TitleWithPoints from './TitleWithPoints';
-import classes from './Sidebar.module.scss';
-import {menuItemsKeys} from "./SidebarData";
+import classes from './Menu.module.scss';
+import {menuItemsKeys} from "./MenuData";
 
 const AMOUNT_OF_ITEMS = 3;
 
-const Sidebar = () => {
+const Menu = () => {
   // TODO: must be removed to constants
 
   return (
@@ -28,4 +28,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default Menu;

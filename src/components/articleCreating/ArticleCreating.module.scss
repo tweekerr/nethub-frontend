@@ -1,18 +1,10 @@
-.articleCreatingSpace{
-  display: flex;
-  flex-direction: row;
-  //width: 100%;
-  justify-content: space-between;
-}
 //MAIN ARTICLE PARAMS
 .mainArticleParams{
-  max-width: 100%;
-  min-width: 100%;
+  width: 100%;
   padding: 20px 20px 15px 20px;
   background: #F3EEFF;
   border-radius: 12px;
   margin-top: 20px;
-  box-sizing: border-box;
 }
 .mainArticleParams>p{
   font-weight: 700;
@@ -21,11 +13,11 @@
   color: #242D35;
   margin-bottom: 2%;
 }
+
 .createArticle{
-  width: 69%;
-  margin-left: 20px;
-  box-sizing: border-box;
+  width: 100%;
 }
+
 .createArticle>h2{
   font-weight: 700;
   font-size: 32px;
@@ -41,7 +33,7 @@
   margin-bottom: 1%;
 }
 .articleSettings{
-  width: 27%;
+  width: 100%;
 }
 .articleSettings>button{
   width: 100%;

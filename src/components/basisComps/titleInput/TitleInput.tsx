@@ -7,6 +7,7 @@ interface ITitleInputProps extends IUiInputProps {
 }
 
 const TitleInput: FC<ITitleInputProps> = ({title, placeholder, width, value, setValue}) => {
+
   return (
     <div className={classes.titleInput}>
       <p>{title}</p>

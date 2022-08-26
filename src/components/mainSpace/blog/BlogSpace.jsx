@@ -6,14 +6,23 @@ import BlogItem from './BlogItem';
 
 const BlogSpace = () => {
   const [blogItems, setBlogItems] = useState([{
-    localizations:[
+    localizations: [
       {
         title: 'Test title',
         description: 'wrrkgueglwej wrrkgueglwej wrrkgueglwej wrrkgueglwej qefgqegv wrrkgueglwejqewg wrgwrgwrgwrgfqwefweefg wdgwrgergwrgwe yumui,uiyjmnfgng  vxf bnvh y8uk egr',
       }
     ],
     created: Date.now(),
-  }]);
+  },
+    {
+      localizations: [
+        {
+          title: 'Test title',
+          description: 'wrrkgueglwej wrrkgueglwej wrrkgueglwej wrrkgueglwej qefgqegv wrrkgueglwejqewg wrgwrgwrgwrgfqwefweefg wdgwrgergwrgwe yumui,uiyjmnfgng  vxf bnvh y8uk egr',
+        }
+      ],
+      created: Date.now(),
+    }]);
 
   useEffect(() => {
     // api.getArticles().then((res) => {
@@ -23,7 +32,7 @@ const BlogSpace = () => {
 
   //TODO: тут створити стор для блогу(редакс)
   return (
-    <div className={classes.blogSpace}>
+    <div className={classes.blogSpaNce}>
       <h2>Blog</h2>
       {blogItems.map((item, index) => (
         <BlogItem

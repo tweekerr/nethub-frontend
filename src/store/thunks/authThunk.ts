@@ -19,14 +19,3 @@ export const checkAuth = createAsyncThunk(
     }
   }
 );
-
-export const sso = createAsyncThunk(
-  'general/sso',
-  async (_, thunkApi) => {
-    try {
-
-    } catch (error: APIError | any) {
-      return thunkApi.rejectWithValue(error.message);
-    }
-  }
-)

@@ -10,6 +10,7 @@ import {Loader} from './components/UI/loader/Loader';
 import {switchLocal} from "./utils/localization";
 import AppRouter from './components/AppRouter';
 import './App.module.css';
+import Layout from "./components/Layout/Layout";
 
 
 function App() {
@@ -26,9 +27,7 @@ function App() {
     if (localStorage.getItem('token') && localStorage.getItem('refreshToken'))
       dispatch(checkAuth());
     if (error) alert(error);
-  },);
-
-  if (loading) return <Loader/>;
+  }, []);
 
   return (
     <ThemeProvider theme={themeOptions}>

@@ -8,9 +8,9 @@ interface ILoaderProps {
 }
 
 export const Loader: React.FC<ILoaderProps> = ({
-                                           height = 'auto',
-                                           width = 'auto',
-                                         }) => {
+                                                 height = 'auto',
+                                                 width = 'auto',
+                                               }) => {
   return (
     <Wrapper>
       <img style={{height, width}} src={loader} alt="Loader"/>

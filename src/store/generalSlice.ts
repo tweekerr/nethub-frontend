@@ -5,7 +5,7 @@ import Localizations from "../constants/localizations";
 
 export interface IReduxUser {
   username: string,
-  profilePhoto: string
+  profilePhoto: string | null
 }
 
 interface IGeneralInitialState {
@@ -20,7 +20,7 @@ interface IGeneralInitialState {
 const initialState: IGeneralInitialState = {
   theme: 'light',
   isLogin: true,
-  user: {username: '', profilePhoto: ''},
+  user: {username: '', profilePhoto: null},
   loading: false,
   error: '',
   language: Localizations.Ukrainian
@@ -64,7 +64,7 @@ const generalSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
       state.user = {} as IReduxUser;
-      state.isLogin = false;
+      state.isLogin = true;
     },
   },
 });

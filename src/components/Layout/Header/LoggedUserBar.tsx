@@ -2,8 +2,9 @@ import React, {FC} from 'react';
 import Avatar from '@mui/material/Avatar';
 import classes from './Header.module.scss';
 import {Typography} from '@mui/material';
-import {useAppSelector} from "../../../store";
 import {useActions} from "../../../utils";
+import {useAppSelector} from "../../../store";
+import {createImageFromInitials} from "../../../utils/logoGenerator";
 
 // const {user} = useAppSelector(state => state.generalReducer)
 const LoggedUserBar: FC = () => {
@@ -12,7 +13,7 @@ const LoggedUserBar: FC = () => {
     return (
       <div className={classes.userNameAvatar}>
         <div className={classes.avatarBlock}>
-          <Avatar sx={{bgcolor: 'black'}}>N</Avatar>
+          <Avatar src={createImageFromInitials(500, user.username ?? 'NetHub')}></Avatar>
           <Typography variant="subtitle1" color={'primary'}>
             {/*{user?.username}*/}
             tweeker

@@ -1,0 +1,30 @@
+$defaultMargin: 15px
+$enableDevNet: false
+
+.bodyWrapper
+  display: flex
+  justify-content: center
+
+.left
+  width: 15%
+  margin: 0 $defaultMargin
+  @if $enableDevNet
+    background: red
+  display: flex
+  flex-direction: column
+  align-content: center
+
+.right
+  width: 20%
+  margin: 0 $defaultMargin
+  @if $enableDevNet
+    background: yellow
+
+
+.center
+  width: 50%
+  margin: 0 $defaultMargin
+  @if $enableDevNet
+    background: orange
+  display: flex
+  justify-content: center

@@ -16,7 +16,6 @@ const BasicTagsInput: FC<IBasicInputProps> = ({placeholder, width, middleTags, s
     <div>
       <Stack spacing={2} sx={{width: {width}}}>
         <Autocomplete
-          className={classes.UiInput}
           size='small'
           freeSolo
           id='free-solo-2-demo'
