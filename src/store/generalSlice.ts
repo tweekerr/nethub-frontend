@@ -5,7 +5,7 @@ import Localizations from "../constants/localizations";
 
 export interface IReduxUser {
   username: string,
-  profilePhotoLink: string
+  profilePhoto: string
 }
 
 interface IGeneralInitialState {
@@ -20,7 +20,7 @@ interface IGeneralInitialState {
 const initialState: IGeneralInitialState = {
   theme: 'light',
   isLogin: true,
-  user: {username: '', profilePhotoLink: ''},
+  user: {username: '', profilePhoto: ''},
   loading: false,
   error: '',
   language: Localizations.Ukrainian

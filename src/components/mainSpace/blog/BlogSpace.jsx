@@ -5,7 +5,15 @@ import BlogItem from './BlogItem';
 //TODO: TO TSX
 
 const BlogSpace = () => {
-  const [blogItems, setBlogItems] = useState([]);
+  const [blogItems, setBlogItems] = useState([{
+    localizations:[
+      {
+        title: 'Test title',
+        description: 'wrrkgueglwej wrrkgueglwej wrrkgueglwej wrrkgueglwej qefgqegv wrrkgueglwejqewg wrgwrgwrgwrgfqwefweefg wdgwrgergwrgwe yumui,uiyjmnfgng  vxf bnvh y8uk egr',
+      }
+    ],
+    created: Date.now(),
+  }]);
 
   useEffect(() => {
     // api.getArticles().then((res) => {

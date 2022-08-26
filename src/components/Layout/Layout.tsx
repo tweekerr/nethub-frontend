@@ -3,7 +3,11 @@ import React, {FC, PropsWithChildren} from 'react';
 import Header from './Header/Header';
 import Sidebar from './Sidebar/Sidebar';
 
-const Layout: FC<PropsWithChildren> = ({children}) => {
+interface ILayoutProps extends PropsWithChildren {
+  rightBar?: () => JSX.Element
+}
+
+const Layout: FC<ILayoutProps> = ({children, rightBar}) => {
   return (
     <Box sx={{bgcolor: 'background.default'}}>
       <Header/>

@@ -81,7 +81,7 @@ export const api = {
       const {token, refreshToken, profilePhotoLink, username} = response.data;
       localStorage.setItem('token', token);
       localStorage.setItem('refreshToken', refreshToken);
-      return {username, profilePhotoLink}
+      return {username, profilePhoto: profilePhotoLink}
     }
   }
 ;

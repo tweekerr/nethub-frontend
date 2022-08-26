@@ -10,7 +10,6 @@ import {
 } from './styled';
 import Header from "../Layout/Header/Header";
 import {ProviderType, sso} from "../../utils/sso";
-import {useActions} from '../../utils';
 import ISsoRequest from "../../types/api/Sso/ISsoRequest";
 import GoogleAuthButton from "./Buttons/GoogleAuthButton";
 import TitleInput from "../basisComps/titleInput/TitleInput";
@@ -22,28 +21,21 @@ export const AuthSpace = () => {
   const dispatch = useAppDispatch();
   const {user: reduxUser} = useAppSelector(state => state.generalReducer);
 
-  const {login} = useActions();
-  const [request, setRequest] = useState<ISsoRequest>({
-    username: 'tweeker',
-    firstname: '',
-    lastname: '',
-    middlename: '',
-    email: ''
-  } as ISsoRequest);
+  const [request, setRequest] = useState<ISsoRequest>({} as ISsoRequest);
   const [secondExpanded, setSecondExpanded] = useState(false);
 
   const setProfileImageToRedux = (photoLink: string) => dispatch(generalActions.setUser({
     ...reduxUser,
-    profilePhotoLink: photoLink
+    profilePhoto: photoLink
   }));
+
+  const expandSecondStep = () => setSecondExpanded(true);
 
   console.log(reduxUser, request);
 
   const submitLogin = (e: React.MouseEvent, provider: ProviderType) => {
     e.preventDefault();
-    sso(setRequest, setProfileImageToRedux, provider).then((_) => {
-      setSecondExpanded(true);
-    }).catch((e) => console.log(e));
+    sso(setRequest, setProfileImageToRedux, expandSecondStep, provider).catch((e) => console.log(e));
   };
 
   return (
@@ -75,9 +67,8 @@ export const AuthSpace = () => {
             </Typography>
             <Grid mt={2} container>
               <GoogleAuthButton onClick={(e) => submitLogin(e, ProviderType.GOOGLE)}/>
-              <button onClick={() => setSecondExpanded(!secondExpanded)}>set</button>
+              <button onClick={() => setSecondExpanded(!secondExpanded)}>expand</button>
               <TelegramAuthButton onClick={(e) => submitLogin(e, ProviderType.TELEGRAM)}/>
-
 
             </Grid>
           </StyledFirstStep>
