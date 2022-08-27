@@ -1,13 +1,10 @@
 import React, {FC} from 'react';
 import TextField from '@mui/material/TextField';
-import Stack from '@mui/material/Stack';
-import Autocomplete from '@mui/material/Autocomplete';
-import classes from '../../basisComps/ВasicComps.module.scss'
 
 export interface IUiInputProps {
   placeholder: string,
   width: string,
-  value: string,
+  value: string | null,
   setValue: (value: string) => void
 }
 

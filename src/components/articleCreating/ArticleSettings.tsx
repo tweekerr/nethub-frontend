@@ -2,52 +2,52 @@ import React, {FC, useState} from 'react';
 import classes from './ArticleCreating.module.scss';
 import UiButton from '../UI/button/UiButton';
 import {useAppDispatch, useAppSelector} from "../../store";
-import FixedTags from "./FixedTags";
+import ArticleTagsSettings from "./ArticleTagsSettings";
 import {createArticleSlice} from "../../store/createArticleSlice";
 import TitleInput from "../basisComps/titleInput/TitleInput";
+import IArticle from "../../types/IArticle";
 
-const ArticleSettings: FC = () => {
-  // const [article, setArticle] = userState
+interface IArticleSettingsProps {
+  article: IArticle,
+  setArticle: (article: IArticle) => void
+}
 
-  const articleStoreSelector = useAppSelector(state => state.articleReducer)
+const ArticleSettings: FC<IArticleSettingsProps> = ({article, setArticle}) => {
 
-  const [tagsValue, setTagsValue] = useState("")
-  const dispatch = useAppDispatch();
+    const handleSetLink = (link: string) => setArticle({...article, originalLink: link});
+    const handleSetTags = (tag: string) => setArticle({...article, tags: [...article.tags, tag]});
+    const handleDeleteTag = (tag: string) => setArticle({...article, tags: article.tags.filter(t => t !== tag)});
 
-  const [linkValue, setLinkValue] = useState("")
+    const articleSending = (e: React.MouseEvent) => {
+      e.preventDefault()
+      console.log(article)
+      //TODO: axios request to BACK
+    }
 
-  const articleSending = (e: React.MouseEvent) => {
-    e.preventDefault()
-    console.log(articleStoreSelector)
-    //TODO: axios request to BACK
+    return (
+      <div className={classes.articleSettings}>
+        <p className={'nonCopyrable'}>Налаштування</p>
+        <div className={classes.articleSettingsItem}>
+          <p>Теги по темам</p>
+          <ArticleTagsSettings
+            tags={article.tags}
+            addToAllTags={handleSetTags}
+            deleteTag={handleDeleteTag}
+          />
+        </div>
+        <div className={classes.settingsInputItem}>
+          <TitleInput
+            value={article.originalLink}
+            setValue={handleSetLink}
+            title={"Посилання на оригінал "}
+            placeholder={"Посилання на статтю"}
+            width={"100%"}/>
+          <p>*якщо стаття переведена, вкажіть посилання на оригінал</p>
+        </div>
+        <UiButton onClick={articleSending}>Створити статтю</UiButton>
+      </div>
+    );
   }
-
-  return (
-    <div className={classes.articleSettings}>
-      <p className={'nonCopyrable'}>Налаштування</p>
-      <div className={classes.articleSettingsItem}>
-        <p>Теги по темам</p>
-        <FixedTags
-          tag={tagsValue}
-          setTag={(tags: string) => {
-            dispatch(createArticleSlice.actions.updateTags(tags))
-          }}
-        />
-      </div>
-      <div className={classes.settingsInputItem}>
-        <TitleInput
-          value={linkValue}
-          setValue={(link: string) => {
-            dispatch(createArticleSlice.actions.updateOriginalLink(link))
-          }}
-          title={"Посилання на оригінал "}
-          placeholder={"Посилання на статтю"}
-          width={"100%"}/>
-        <p>*якщо стаття переведена, вкажіть посилання на оригінал</p>
-      </div>
-      <UiButton onClick={articleSending}>Створити статтю</UiButton>
-    </div>
-  );
-};
+;
 
 export default ArticleSettings;

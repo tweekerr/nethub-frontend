@@ -39,7 +39,13 @@ const TinyInput: React.FC<ITinyInputProps> = ({data, setData, editorTitle}) => {
     <div className={classes.tinyInput}>
       <p>{editorTitle}</p>
       <Editor
-        onInit={(evt, editor) => (editorRef.current!.editor = editor)}
+        ref={editorRef}
+        // onInit={(event, editor) => editorRef.current = editor}
+        initialValue={data}
+        onEditorChange={(newValue, editor) => {
+          setData(newValue);
+        }}
+        // onInit={(evt, editor) => (editorRef.current?.editor ?? editor)}
         apiKey={tinyConfig.key}
         init={{
           height: 500,

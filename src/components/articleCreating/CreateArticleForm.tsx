@@ -4,23 +4,21 @@ import TitleInput from '../basisComps/titleInput/TitleInput';
 import {useState} from 'react';
 import {useActions} from '../../utils';
 import TinyInput from "./TinyInput";
+import IArticle from "../../types/IArticle";
 
 // import {createArticleSlice, updateMainTxt, updateSubTitle, updateTitle} from '../../store/createArticleSlice';
 
 interface IMainArticleProps {
-  titleParams: string
+  titleParams: string,
+  article: IArticle,
+  setArticleValue: (key: string) => (value: any) => void
 }
 
-const CreateArticleForm: FC<IMainArticleProps> = ({titleParams}) => {
+const CreateArticleForm: FC<IMainArticleProps> = ({titleParams, article, setArticleValue}) => {
 
-  const {updateTitle, updateBody, updateSubTitle} = useActions();
-  const [titleValue, setTitleValue] = useState('');
-  const [subTitleValue, setSubTitleValue] = useState('');
-  const [bodyValue, setBodyValue] = useState('');
-
-  // const articleStoreSelector = useSelector(state=> state.articleReducer)
-  // console.log(articleStoreSelector)
-
+  const handleUpdateTitle = setArticleValue('title');
+  const handleUpdateSubTitle = setArticleValue('subTitle');
+  const handleUpdateBody = setArticleValue('body');
 
   return (
     <div className={classes.createArticle}>
@@ -28,30 +26,23 @@ const CreateArticleForm: FC<IMainArticleProps> = ({titleParams}) => {
 
       <div className={classes.mainArticleParams}>
         <p>{titleParams}</p>
-        {/*{JSON.stringify(newArticle)}*/}
         <TitleInput
-          value={titleValue}
-          setValue={(title: string) => {
-            updateTitle(title);
-          }}
+          value={article.title}
+          setValue={handleUpdateTitle}
           title={'Заголовок статті'}
           placeholder={'Заголовок вашої статті'}
           width={'100%'}
         />
         <TitleInput
-          value={subTitleValue}
-          setValue={(subTitle: string) => {
-            updateSubTitle(subTitle);
-          }}
+          value={article.subTitle}
+          setValue={handleUpdateSubTitle}
           title={'Заголовок статті'}
           placeholder={'Заголовок вашої статті'}
           width={'100%'}
         />
         <TinyInput
-          data={bodyValue}
-          setData={(body: string) => {
-            updateBody(body);
-          }}
+          data={article.body}
+          setData={handleUpdateBody}
           editorTitle={'Текст статті'}
         />
       </div>

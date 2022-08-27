@@ -11,7 +11,6 @@ const Authorized = ({children, redirectTo = '/login'}: IAuthorizedProps) => {
   const location = useLocation();
   const {isLogin} = useAppSelector(state => state.generalReducer);
 
-  console.log(isLogin);
   if (!isLogin)
     return <Navigate to='/login' state={{from: location}}/>
 

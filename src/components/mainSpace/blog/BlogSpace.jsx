@@ -32,7 +32,7 @@ const BlogSpace = () => {
 
   //TODO: тут створити стор для блогу(редакс)
   return (
-    <div className={classes.blogSpaNce}>
+    <div className={classes.blogSpace}>
       <h2>Blog</h2>
       {blogItems.map((item, index) => (
         <BlogItem

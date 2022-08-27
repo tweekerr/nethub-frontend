@@ -1,12 +1,13 @@
 //MAIN ARTICLE PARAMS
-.mainArticleParams{
+.mainArticleParams {
   width: 100%;
   padding: 20px 20px 15px 20px;
   background: #F3EEFF;
   border-radius: 12px;
   margin-top: 20px;
 }
-.mainArticleParams>p{
+
+.mainArticleParams > p {
   font-weight: 700;
   font-size: 20px;
   line-height: 24px;
@@ -14,32 +15,36 @@
   margin-bottom: 2%;
 }
 
-.createArticle{
+.createArticle {
   width: 100%;
 }
 
-.createArticle>h2{
+.createArticle > h2 {
   font-weight: 700;
   font-size: 32px;
   line-height: 150%;
   color: #838383;
   margin-bottom: -10px;
 }
+
 //Tiny Input
-.tinyInput p{
+.tinyInput p {
   font-weight: 500;
   font-size: 16px;
   line-height: 20px;
   margin-bottom: 1%;
 }
-.articleSettings{
+
+.articleSettings {
   width: 100%;
 }
-.articleSettings>button{
+
+.articleSettings > button {
   width: 100%;
   margin-top: 20px;
 }
-.articleSettingsItem{
+
+.articleSettingsItem {
   width: 100%;
   padding: 20px 20px 15px 20px;
   background: #F3EEFF;
@@ -47,7 +52,8 @@
   margin-top: 20px;
   box-sizing: border-box;
 }
-.articleSettings>p{
+
+.articleSettings > p {
   font-weight: 700;
   font-size: 32px;
   line-height: 150%;
@@ -56,13 +62,15 @@
 
 
 }
-.articleSettingsItem>p{
+
+.articleSettingsItem > p {
   font-weight: 500;
   font-size: 16px;
   line-height: 20px;
   margin-bottom: 10px;
 }
-.settingsInputItem{
+
+.settingsInputItem {
   width: 100%;
   padding: 20px 20px 15px 20px;
   background: #F3EEFF;
@@ -70,26 +78,35 @@
   margin-top: 20px;
   box-sizing: border-box;
 }
-.settingsInputItem>p{
+
+.settingsInputItem > p {
   font-weight: 400;
   font-size: 12px;
   line-height: 14px;
   color: #757575;
   margin-top: -10px;
 }
-.fixedTags{
+
+.fixedTags {
   //background: white;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
-.fixedTags button{
+
+.fixedTags button {
   display: flex;
   width: 20%;
-  border:none;
+  border: none;
   background: white;
   border-radius: 8px;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
+}
+
+.addedTags {
+  display: flex;
+  flex-wrap: wrap;
 }
 
