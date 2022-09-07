@@ -60,21 +60,21 @@ const SvgSelector: FC<ISvgSelectorProps> = ({id}) => {
 
     case "ArrowUp":
       return <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M3.75 7.5L9 2.25M9 2.25L14.25 7.5M9 2.25V15.75" stroke="#1A1A1A" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M3.75 7.5L9 2.25M9 2.25L14.25 7.5M9 2.25V15.75" stroke="#1A1A1A" strokeWidth="2"
+              strokeLinecap="round" strokeLinejoin="round"/>
       </svg>
 
 
     case "ArrowDown":
       return <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M14.25 10.5L9 15.75M9 15.75L3.75 10.5M9 15.75L9 2.25" stroke="#1A1A1A" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M14.25 10.5L9 15.75M9 15.75L3.75 10.5M9 15.75L9 2.25" stroke="#1A1A1A" strokeWidth="2"
+              strokeLinecap="round" strokeLinejoin="round"/>
       </svg>
     case "ExternalLink":
       return <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
           d="M9.16675 5.49996H5.50008C4.48756 5.49996 3.66675 6.32077 3.66675 7.33329V16.5C3.66675 17.5125 4.48756 18.3333 5.50008 18.3333H14.6667C15.6793 18.3333 16.5001 17.5125 16.5001 16.5V12.8333M12.8334 3.66663H18.3334M18.3334 3.66663V9.16663M18.3334 3.66663L9.16675 12.8333"
-          stroke="#1A1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          stroke="#1A1A1A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
       </svg>
 
     case "BookmarkBorderOutlined":

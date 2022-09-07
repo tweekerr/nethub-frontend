@@ -1,11 +1,13 @@
-import {ProviderType} from "../../../utils/sso";
+import {ProviderType} from "../../ProviderType";
 
 export default interface ISsoRequest {
-  username: string,
-  email: string,
-  firstname: string,
-  lastname: string,
-  middlename: string,
+  username: string | null,
+  email: string | null,
+  firstName: string | null,
+  lastName: string | null,
+  middleName: string | null,
   providerMetadata: object,
-  provider: ProviderType
+  provider: ProviderType,
+  providerKey: string,
+  type?: "register" | "login"
 }

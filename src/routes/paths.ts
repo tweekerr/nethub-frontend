@@ -8,20 +8,20 @@ interface IPath {
   authorized: boolean
 }
 
-export const paths: IPath[] = [
+export const paths = [
   {
     path: '/',
-    component: MainSpace,
+    Component: MainSpace,
     authorized: false
   },
   {
     path: '/login',
-    component: AuthSpace,
+    Component: AuthSpace,
     authorized: false
   },
   {
     path: '/articles',
-    component: ArticleCreatingSpace,
+    Component: ArticleCreatingSpace,
     authorized: true,
   }
 ]

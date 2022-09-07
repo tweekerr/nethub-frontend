@@ -10,19 +10,15 @@ export interface IReduxUser {
 
 interface IGeneralInitialState {
   theme: string,
-  isLogin: boolean,
+  isLogin: boolean | null,
   user: IReduxUser,
-  loading: boolean,
-  error: string,
   language: ILanguage
 }
 
 const initialState: IGeneralInitialState = {
   theme: 'light',
-  isLogin: true,
+  isLogin: null,
   user: {username: '', profilePhoto: null},
-  loading: false,
-  error: '',
   language: Localizations.Ukrainian
 };
 
@@ -48,23 +44,19 @@ const generalSlice = createSlice({
     },
     setUser: (state, action: PayloadAction<IReduxUser>) => {
       state.user = action.payload
+    },
+    setIsLoginFalse: (state) => {
+      state.isLogin = false
     }
   },
   extraReducers: {
     [checkAuth.fulfilled.type]: (state, action: PayloadAction<IReduxUser>) => {
-      state.loading = false;
       state.isLogin = true;
       state.user = action.payload;
-      state.error = '';
-    },
-    [checkAuth.pending.type]: (state, action) => {
-      state.loading = true;
     },
     [checkAuth.rejected.type]: (state, action: PayloadAction<string>) => {
-      state.loading = false;
-      state.error = action.payload;
       state.user = {} as IReduxUser;
-      state.isLogin = true;
+      state.isLogin = false;
     },
   },
 });

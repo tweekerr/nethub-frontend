@@ -6,20 +6,24 @@ export interface IUiInputProps {
   width: string,
   value: string | null,
   setValue: (value: string) => void
+  helperText?: string
+  error?: boolean
 }
 
-const UiInput: FC<IUiInputProps> = ({placeholder, width, value, setValue}) => {
+const UiInput: FC<IUiInputProps> = ({placeholder, width, value, setValue, helperText = '', error = false}) => {
 
   return (
-      <TextField
-        sx={{width: width}}
-        value={value ?? ''}
-        size={'small'}
-        onChange={(e) => {
-          setValue(e.target.value)
-        }}
-        label={[placeholder]}
-      />
+    <TextField
+      error={error}
+      helperText={helperText}
+      sx={{width: width, background: 'white'}}
+      value={value ?? ''}
+      size={'small'}
+      onChange={(e) => {
+        setValue(e.target.value)
+      }}
+      label={[placeholder]}
+    />
   );
 }
 

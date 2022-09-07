@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import Menu from "./Sidebar/Menu";
+import Menu from "./Menu/Menu";
 import {ILayoutProps} from "./Layout";
 import BarWrapper from "./BarWrapper";
 import classes from './Layout.module.sass'

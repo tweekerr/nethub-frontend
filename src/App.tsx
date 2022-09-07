@@ -2,20 +2,17 @@ import 'moment/locale/uk';
 import 'moment/locale/en-gb';
 
 import {createTheme, ThemeProvider} from '@mui/material';
-import {useAppDispatch, useAppSelector} from './store';
-import React, {useEffect, useMemo} from 'react';
+import {useAppSelector} from './store';
+import React, {Suspense, useEffect, useMemo} from 'react';
 import {darkTheme, lightTheme} from './constants/themes';
-import {checkAuth} from './store/thunks/authThunk';
-import {Loader} from './components/UI/loader/Loader';
 import {switchLocal} from "./utils/localization";
 import AppRouter from './components/AppRouter';
 import './App.module.css';
-import Layout from "./components/Layout/Layout";
-
+import './i18n'
+import {SnackbarProvider, VariantType, useSnackbar} from 'notistack';
 
 function App() {
-  const {theme, loading, error, language} = useAppSelector((state) => state.generalReducer);
-  const dispatch = useAppDispatch();
+  const {theme, language} = useAppSelector((state) => state.generalReducer);
 
   const themeOptions = useMemo(
     () => createTheme(theme === 'light' ? lightTheme : darkTheme),
@@ -24,15 +21,16 @@ function App() {
 
   useEffect(() => {
     switchLocal(language);
-    if (localStorage.getItem('token') && localStorage.getItem('refreshToken'))
-      dispatch(checkAuth());
-    if (error) alert(error);
   }, []);
 
   return (
-    <ThemeProvider theme={themeOptions}>
-      <AppRouter/>
-    </ThemeProvider>
+    <SnackbarProvider maxSnack={3} autoHideDuration={3000} preventDuplicate
+                      anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+    >
+      <ThemeProvider theme={themeOptions}>
+        <AppRouter/>
+      </ThemeProvider>
+    </SnackbarProvider>
   );
 }
 

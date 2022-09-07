@@ -11,7 +11,7 @@ const LoggedUserBar: FC = () => {
     const {user} = useAppSelector((state) => state.generalReducer);
     const {logout} = useActions();
     return (
-      <div className={classes.userNameAvatar}>
+      <div className={classes.loggedBar}>
         <div className={classes.avatarBlock}>
           <Avatar src={createImageFromInitials(500, user.username ?? 'NetHub')}></Avatar>
           <Typography variant="subtitle1" color={'primary'}>
@@ -20,7 +20,7 @@ const LoggedUserBar: FC = () => {
           </Typography>
         </div>
 
-        <Typography onClick={() => logout()} color={'primary'}>
+        <Typography className={classes.logOut} onClick={logout} color={'primary'}>
           Log out
         </Typography>
       </div>

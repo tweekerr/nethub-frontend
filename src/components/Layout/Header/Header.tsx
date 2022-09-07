@@ -5,7 +5,6 @@ import classes from './Header.module.scss'
 import layoutClasses from '../Layout.module.sass'
 import LoggedUserBar from './LoggedUserBar';
 import BasicLinker from '../../basisComps/BasicLinker';
-import {api} from '../../../api/api';
 import {Switch} from '@mui/material';
 import UnloggedUserBar from './UnloggedUserBar';
 import {useActions} from "../../../utils";

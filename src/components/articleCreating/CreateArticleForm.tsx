@@ -1,20 +1,19 @@
 import React, {FC} from 'react';
-import classes from './ArticleCreating.module.scss';
+import classes from './ArticleCreating.module.sass';
 import TitleInput from '../basisComps/titleInput/TitleInput';
-import {useState} from 'react';
-import {useActions} from '../../utils';
 import TinyInput from "./TinyInput";
-import IArticle from "../../types/IArticle";
-
-// import {createArticleSlice, updateMainTxt, updateSubTitle, updateTitle} from '../../store/createArticleSlice';
+import IArticle, {IArticleFormErrors} from "../../types/IArticle";
+import {StyledDiv} from '../UI/styled';
+import {Alert, AlertProps, Snackbar} from "@mui/material";
 
 interface IMainArticleProps {
   titleParams: string,
   article: IArticle,
-  setArticleValue: (key: string) => (value: any) => void
+  setArticleValue: (key: string) => (value: any) => void,
+  errors: IArticleFormErrors,
 }
 
-const CreateArticleForm: FC<IMainArticleProps> = ({titleParams, article, setArticleValue}) => {
+const CreateArticleForm: FC<IMainArticleProps> = ({titleParams, article, setArticleValue, errors}) => {
 
   const handleUpdateTitle = setArticleValue('title');
   const handleUpdateSubTitle = setArticleValue('subTitle');
@@ -24,9 +23,10 @@ const CreateArticleForm: FC<IMainArticleProps> = ({titleParams, article, setArti
     <div className={classes.createArticle}>
       <h2 className={'nonCopyrable'}>Створення статті</h2>
 
-      <div className={classes.mainArticleParams}>
+      <StyledDiv className={classes.mainArticleParams}>
         <p>{titleParams}</p>
         <TitleInput
+          error={errors.title}
           value={article.title}
           setValue={handleUpdateTitle}
           title={'Заголовок статті'}
@@ -34,6 +34,7 @@ const CreateArticleForm: FC<IMainArticleProps> = ({titleParams, article, setArti
           width={'100%'}
         />
         <TitleInput
+          error={errors.subTitle}
           value={article.subTitle}
           setValue={handleUpdateSubTitle}
           title={'Заголовок статті'}
@@ -41,13 +42,15 @@ const CreateArticleForm: FC<IMainArticleProps> = ({titleParams, article, setArti
           width={'100%'}
         />
         <TinyInput
+          error={errors.body}
           data={article.body}
           setData={handleUpdateBody}
           editorTitle={'Текст статті'}
         />
-      </div>
+      </StyledDiv>
     </div>
-  );
+  )
+    ;
 };
 
 export default CreateArticleForm;

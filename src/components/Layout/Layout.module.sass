@@ -1,5 +1,5 @@
 $defaultMargin: 15px
-$enableDevNet: true
+$enableDevNet: false
 
 .bodyWrapper
   display: flex
@@ -17,6 +17,7 @@ $enableDevNet: true
 .right
   width: 20%
   margin: 0 $defaultMargin
+  display: flex
   @if $enableDevNet
     background: yellow
 
@@ -28,3 +29,19 @@ $enableDevNet: true
     background: orange
   display: flex
   justify-content: center
+
+.flag
+  display: flex
+  flex-direction: column
+  width: 10px
+  position: fixed
+  left: 0
+
+  div
+    width: 100%
+    height: 50vh
+  .flagYellow
+    background: #FFD500
+
+  .flagBlue
+    background: #005BBB

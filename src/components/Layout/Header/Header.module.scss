@@ -42,9 +42,10 @@
   display: flex;
   vertical-align: middle;
   justify-content: space-between;
+  width: 100%;
 }
 
-.userNameAvatar {
+.loggedBar {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -52,7 +53,7 @@
   justify-content: space-between;
 }
 
-.userNameAvatar h6 {
+.loggedBar h6 {
   text-decoration: none;
   font-weight: 600;
   font-size: 16px;
@@ -61,11 +62,14 @@
   margin-left: 10%;
 }
 
+.logOut{
+  display: block;
+}
+
 .avatarBlock {
   display: flex;
   flex-direction: row;
   align-items: center;
-  width: 38%;
 }
 
 .avatarBlock a {

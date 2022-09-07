@@ -5,3 +5,11 @@ export default interface IArticle {
   tags: string[],
   originalLink: string | null
 }
+
+export interface IArticleFormErrors{
+  title: boolean,
+  subTitle: boolean,
+  body: boolean,
+  tags: boolean,
+  originalLink: boolean
+}

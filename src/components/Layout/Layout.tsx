@@ -2,8 +2,7 @@ import {Box} from '@mui/material';
 import React, {FC, PropsWithChildren, ReactNode} from 'react';
 import Header from './Header/Header';
 import Body from "./Body";
-import {useAppSelector} from "../../store";
-import {Loader} from "../UI/loader/Loader";
+import Flag from "./Flag";
 
 export interface ILayoutProps extends PropsWithChildren {
   showSidebar?: boolean,
@@ -12,19 +11,16 @@ export interface ILayoutProps extends PropsWithChildren {
 }
 
 const Layout: FC<ILayoutProps> = ({children, showSidebar = true, customSidebar, rightBar}) => {
-  const {loading, error} = useAppSelector((state) => state.generalReducer);
 
   return (
     <Box sx={{bgcolor: 'background.default'}}>
+      <Flag/>
       <Header/>
       <Body showSidebar={showSidebar}
             customSidebar={customSidebar}
             rightBar={rightBar}
       >
-        {loading
-          ? <Loader/>
-          : children
-        }
+        {children}
       </Body>
 
       //Footer

@@ -6,10 +6,12 @@ import Authorized from "./Auth/hoc/Authorized";
 const AppRouter: FC = () => {
   return (
     <Routes>
-      {paths.map(({path, component, authorized}) =>
+      {paths.map(({path, Component, authorized}) =>
         <Route key={path} path={path} element={
-          authorized ? <Authorized>{component}</Authorized>
-            : component()}
+          authorized ? <Authorized>
+              <Component/>
+            </Authorized>
+            : <Component/>}
         />
       )}
       <Route path={'*'} element={<h1>Not Found</h1>}/>

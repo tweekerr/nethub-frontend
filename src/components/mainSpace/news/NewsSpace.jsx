@@ -1,8 +1,7 @@
-import React, {useEffect} from 'react';
+import React, {useState} from 'react';
 import classes from './NewsSpace.module.scss';
 import NewsItem from './NewsItem';
-import {useState} from 'react';
-import {api} from '../../../api/api';
+import {Trans, useTranslation} from "react-i18next";
 
 //TODO: TO TSX
 
@@ -17,16 +16,19 @@ const NewsSpace = () => {
       rendered: 'asdasdasd'
     }
   }]);
-
   // useEffect(() => {
-    // api.getNews().then((res) => {
-    //   setNewsItems(res);
-    // });
+  // api.getNews().then((res) => {
+  //   setNewsItems(res);
+  // });
   // }, []);
+  const {t} = useTranslation();
 
   return (
     <div className={classes.newsSpace}>
-      <h2>News</h2>
+      <h2>
+        {t('news')}
+        {/*<Trans i18nKey={'news'}/>*/}
+      </h2>
       {newsItems.map((item, index) => (
         <NewsItem
           key={index}

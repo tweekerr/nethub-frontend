@@ -12,6 +12,7 @@ export const checkAuth = createAsyncThunk(
       });
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('refreshToken', response.data.refreshToken);
+      console.log('refresh', response.data)
       return thunkApi.fulfillWithValue(response.data);
     } catch (error: APIError | any) {
       console.error(error.message);

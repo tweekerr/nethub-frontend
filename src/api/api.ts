@@ -1,12 +1,14 @@
 import axios, {AxiosResponse} from 'axios';
 import {IReduxUser} from "../store/generalSlice";
-import IRefreshResponse from "../types/api/Refresh/IRefreshResponse";
+import IAuthResult from "../types/api/Refresh/IAuthResult";
 import IRefreshRequest from "../types/api/Refresh/IRefreshRequest";
 import ISsoRequest from "../types/api/Sso/ISsoRequest";
+import ICheckEmailResponse from "../types/api/CheckEmail/ICheckEmailRequest";
+import {ProviderType} from "../types/ProviderType";
 
 export const _api = axios.create({
   //TODO: must be general link
-  baseURL: process.env.REACT_APP_GENERAL_BACK_POINT,
+  baseURL: process.env.REACT_APP_IS_DEVELOPMENT ? process.env.REACT_APP_TEST_BACK_POINT : process.env.REACT_APP_GENERAL_BACK_POINT,
   withCredentials: true
 });
 
@@ -45,7 +47,7 @@ _api.interceptors.response.use(
         localStorage.setItem('token', response.data.accessToken);
         return _api.request(originalRequest);
       } catch (e) {
-        // localStorage.removeItem('token');
+        localStorage.removeItem('token');
         console.log('НЕ АВТОРИЗОВАНИЙ');
       }
     }
@@ -58,7 +60,7 @@ export const api = {
       return _api
         .post('/articles', {
           name: 'string',
-          tags: ['string'],
+          tags: ['string', 'string1', 'string2'],
           translatedArticleLink: 'string',
         })
         .then((res) => res.data);
@@ -76,12 +78,17 @@ export const api = {
     getNews: async () => {
       return _api.get('/news?Page=1&PerPage=3').then((res) => res.data);
     },
-    authenticate: async (user: ISsoRequest): Promise<IReduxUser> => {
-      const response: AxiosResponse<IRefreshResponse> = await _api.post('/user/sso', user);
+    authenticate: async (request: ISsoRequest): Promise<IReduxUser> => {
+      const response: AxiosResponse<IAuthResult> = await _api.post('/user/sso', request);
       const {token, refreshToken, profilePhotoLink, username} = response.data;
       localStorage.setItem('token', token);
       localStorage.setItem('refreshToken', refreshToken);
+      console.log('response', response.data)
       return {username, profilePhoto: profilePhotoLink}
-    }
+    },
+    checkIfExists: async (key: string, provider: ProviderType): Promise<ICheckEmailResponse> => {
+      const response: AxiosResponse<ICheckEmailResponse> = await _api.post('/user/check-user-exists', {key, provider})
+      return response.data;
+    },
   }
 ;
