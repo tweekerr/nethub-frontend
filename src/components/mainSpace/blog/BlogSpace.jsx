@@ -21,7 +21,7 @@ const BlogSpace = () => {
     //   {
     //   localizations: [
     //     {
-    //       title: 'Test title',
+    //       title: 'Test.tsx title',
     //       description: 'wrrkgueglwej wrrkgueglwej wrrkgueglwej wrrkgueglwej qefgqegv wrrkgueglwejqewg wrgwrgwrgwrgfqwefweefg wdgwrgergwrgwe yumui,uiyjmnfgng  vxf bnvh y8uk egr',
     //     }
     //   ],
@@ -30,7 +30,7 @@ const BlogSpace = () => {
     //   {
     //     localizations: [
     //       {
-    //         title: 'Test title',
+    //         title: 'Test.tsx title',
     //         description: 'wrrkgueglwej wrrkgueglwej wrrkgueglwej wrrkgueglwej qefgqegv wrrkgueglwejqewg wrgwrgwrgwrgfqwefweefg wdgwrgergwrgwe yumui,uiyjmnfgng  vxf bnvh y8uk egr',
     //       }
     //     ],
@@ -57,12 +57,12 @@ const BlogSpace = () => {
             itemDescription={item.localizations[0].description}
             createdTime={item.created}
           />
-        )) : <Skeleton/>}
+        )) : <Skeleton height={'100px'}/>}
       <UiButton onClick ={() => {setBlogItems([
         {
           localizations: [
             {
-              title: 'Test title',
+              title: 'Test.tsx title',
               description: 'wrrkgueglwej wrrkgueglwej wrrkgueglwej wrrkgueglwej qefgqegv wrrkgueglwejqewg wrgwrgwrgwrgfqwefweefg wdgwrgergwrgwe yumui,uiyjmnfgng  vxf bnvh y8uk egr',
             }
           ],

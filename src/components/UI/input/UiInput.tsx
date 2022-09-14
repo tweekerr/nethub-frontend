@@ -8,12 +8,22 @@ export interface IUiInputProps {
   setValue: (value: string) => void
   helperText?: string
   error?: boolean
+  disabled?: boolean
 }
 
-const UiInput: FC<IUiInputProps> = ({placeholder, width, value, setValue, helperText = '', error = false}) => {
+const UiInput: FC<IUiInputProps> = ({
+                                      placeholder,
+                                      width,
+                                      value,
+                                      setValue,
+                                      helperText = '',
+                                      error = false,
+                                      disabled = false
+                                    }) => {
 
   return (
     <TextField
+      disabled={disabled}
       error={error}
       helperText={helperText}
       sx={{width: width, background: 'white'}}

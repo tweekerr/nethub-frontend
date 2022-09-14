@@ -5,22 +5,32 @@ import {Typography} from '@mui/material';
 import {useActions} from "../../../utils";
 import {useAppSelector} from "../../../store";
 import {createImageFromInitials} from "../../../utils/logoGenerator";
+import {useNavigate} from "react-router-dom";
 
-// const {user} = useAppSelector(state => state.generalReducer)
 const LoggedUserBar: FC = () => {
     const {user} = useAppSelector((state) => state.generalReducer);
     const {logout} = useActions();
+    const navigate = useNavigate();
+
+    function handleLogout() {
+      logout();
+      navigate('/');
+    }
+
     return (
       <div className={classes.loggedBar}>
         <div className={classes.avatarBlock}>
-          <Avatar src={createImageFromInitials(500, user.username ?? 'NetHub')}></Avatar>
+          <Avatar
+            src={!user.profilePhotoLink
+              ? createImageFromInitials(500, user.username ?? 'NetHub')
+              : user.profilePhotoLink}/>
           <Typography variant="subtitle1" color={'primary'}>
-            {/*{user?.username}*/}
-            tweeker
+            {user.username}
+            {/*tweeker*/}
           </Typography>
         </div>
 
-        <Typography className={classes.logOut} onClick={logout} color={'primary'}>
+        <Typography className={classes.logOut} onClick={handleLogout} color={'primary'}>
           Log out
         </Typography>
       </div>

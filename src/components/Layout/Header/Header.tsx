@@ -9,10 +9,12 @@ import {Switch} from '@mui/material';
 import UnloggedUserBar from './UnloggedUserBar';
 import {useActions} from "../../../utils";
 import {useAppSelector} from "../../../store";
+import {useNavigate} from "react-router-dom";
 
 const Header: React.FC = () => {
   const {switchTheme} = useActions();
   const {isLogin} = useAppSelector((state) => state.generalReducer);
+  const navigate = useNavigate();
 
   // const createArticlePlug = () => {
   //   api.createArticles().then((res) => {
@@ -23,7 +25,9 @@ const Header: React.FC = () => {
   return (
     <header className={classes.header}>
       <div className={layoutClasses.left}>
-        <SvgSelector id="navbarLogo"/>
+        <a onClick={() => navigate('/')}>
+          <SvgSelector className={classes.logo} id="navbarLogo"/>
+        </a>
       </div>
       <div className={layoutClasses.center}>
         <div className={classes.headerCenter}>

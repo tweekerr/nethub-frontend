@@ -4,7 +4,6 @@ import TitleInput from '../basisComps/titleInput/TitleInput';
 import TinyInput from "./TinyInput";
 import IArticle, {IArticleFormErrors} from "../../types/IArticle";
 import {StyledDiv} from '../UI/styled';
-import {Alert, AlertProps, Snackbar} from "@mui/material";
 
 interface IMainArticleProps {
   titleParams: string,

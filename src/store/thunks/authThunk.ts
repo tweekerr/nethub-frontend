@@ -1,6 +1,9 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {_api} from "../../api/api";
 import {APIError} from "../../react-app-env";
+import {getAccessToken, getRefreshToken, setTokensData} from "../../utils/localStorageProvider";
+import {AxiosResponse} from "axios";
+import IAuthResult from "../../types/api/Refresh/IAuthResult";
 
 export const checkAuth = createAsyncThunk(
   'general/checkAuth',
@@ -20,3 +23,20 @@ export const checkAuth = createAsyncThunk(
     }
   }
 );
+
+
+export async function checkAuth2() {
+  try {
+    const response: AxiosResponse<IAuthResult> = await _api.post('user/refresh-tokens', {
+      refreshToken: getRefreshToken(),
+    });
+
+    setTokensData(response.data)
+    console.log('refresh', response.data)
+
+    return true;
+  } catch (error: APIError | any) {
+    console.error(error.message);
+    return false;
+  }
+}

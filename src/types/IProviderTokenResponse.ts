@@ -3,6 +3,6 @@ export default interface IProviderTokenResponse {
   emailVerified: boolean,
   firstName: string,
   lastName: string,
-  photoUrl: string,
+  photoUrl: string | null,
   localId: string
 }

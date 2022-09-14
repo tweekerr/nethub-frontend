@@ -5,6 +5,8 @@ import IRefreshRequest from "../types/api/Refresh/IRefreshRequest";
 import ISsoRequest from "../types/api/Sso/ISsoRequest";
 import ICheckEmailResponse from "../types/api/CheckEmail/ICheckEmailRequest";
 import {ProviderType} from "../types/ProviderType";
+import ICheckUsernameResponse from "../types/api/CheckUsername/ICheckUsernameResponse";
+import {setTokensData} from "../utils/localStorageProvider";
 
 export const _api = axios.create({
   //TODO: must be general link
@@ -80,15 +82,19 @@ export const api = {
     },
     authenticate: async (request: ISsoRequest): Promise<IReduxUser> => {
       const response: AxiosResponse<IAuthResult> = await _api.post('/user/sso', request);
-      const {token, refreshToken, profilePhotoLink, username} = response.data;
-      localStorage.setItem('token', token);
-      localStorage.setItem('refreshToken', refreshToken);
+      const {profilePhotoLink, username} = response.data;
+      setTokensData(response.data);
+
       console.log('response', response.data)
-      return {username, profilePhoto: profilePhotoLink}
+      return {username, profilePhotoLink: profilePhotoLink}
     },
     checkIfExists: async (key: string, provider: ProviderType): Promise<ICheckEmailResponse> => {
       const response: AxiosResponse<ICheckEmailResponse> = await _api.post('/user/check-user-exists', {key, provider})
       return response.data;
     },
+    checkUsername: async (username: string): Promise<boolean> => {
+      const response: AxiosResponse<ICheckUsernameResponse> = await _api.post('/user/check-username', {username})
+      return response.data.isAvailable;
+    }
   }
 ;

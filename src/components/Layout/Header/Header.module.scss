@@ -45,6 +45,10 @@
   width: 100%;
 }
 
+.logo{
+  cursor: pointer;
+}
+
 .loggedBar {
   display: flex;
   flex-direction: row;
@@ -64,6 +68,7 @@
 
 .logOut{
   display: block;
+  cursor: pointer;
 }
 
 .avatarBlock {

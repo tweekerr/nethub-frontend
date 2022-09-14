@@ -12,7 +12,7 @@ const useCustomSnackbar = (variant?: 'error') => {
     enqueueSnackbar(data, {variant})
   }
 
-  return {enqueueError}
+  return {enqueueError, enqueueSnackBar}
 }
 
 export default useCustomSnackbar;

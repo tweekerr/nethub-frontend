@@ -3,6 +3,6 @@ export default interface IAuthResult {
   refreshToken: string,
   username: string,
   profilePhotoLink: string | null
-  tokenExpires: Date,
-  refreshTokenExpires: Date
+  tokenExpires: string,
+  refreshTokenExpires: string
 }

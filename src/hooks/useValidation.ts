@@ -1,6 +1,15 @@
+import {useState} from "react";
+
 export type IValidator = (data: any) => boolean;
 
+interface IItem {
+  value: any,
+  validators: IValidator[]
+}
+
 function useValidation() {
+  const [items, setItems] = useState(Array<IItem>());
+
 
   function validate(data: any, validators: IValidator[], callbackOnInvalid?: () => void) {
     let isValid = true;
@@ -12,6 +21,10 @@ function useValidation() {
   }
 
   return {validate}
+}
+
+class Validator{
+
 }
 
 export default useValidation;

@@ -6,6 +6,7 @@ export default interface ISsoRequest {
   firstName: string | null,
   lastName: string | null,
   middleName: string | null,
+  profilePhotoLink: string | null,
   providerMetadata: object,
   provider: ProviderType,
   providerKey: string,
