@@ -2,7 +2,7 @@ import 'moment/locale/uk';
 import 'moment/locale/en-gb';
 
 import {createTheme, ThemeProvider} from '@mui/material';
-import {useAppSelector} from './store';
+import {useActions, useAppSelector} from './store/storeConfiguration';
 import React, {useEffect, useMemo} from 'react';
 import {darkTheme, lightTheme} from './constants/themes';
 import {switchLocal} from "./utils/localization";
@@ -11,9 +11,8 @@ import './App.module.css';
 import './i18n'
 import {SnackbarProvider} from 'notistack';
 import jwtDecode from "jwt-decode";
-import {getAccessToken, getAccessTokenExpires} from "./utils/localStorageProvider";
 import IJwtPayload from "./types/IJwtPayload";
-import {useActions} from "./utils";
+import {JWTStorage} from "./utils/localStorageProvider";
 
 function App() {
   const {theme, language} = useAppSelector((state) => state.generalReducer);
@@ -25,13 +24,13 @@ function App() {
   );
 
   function isAuthorized() {
-    return getAccessToken() && new Date(getAccessTokenExpires()!) > new Date();
+    return JWTStorage.getAccessToken() && new Date(JWTStorage.getAccessTokenExpires()!) > new Date();
   }
 
   useEffect(() => {
     switchLocal(language);
     if (isAuthorized()) {
-      const data = jwtDecode<IJwtPayload>(getAccessToken()!);
+      const data = jwtDecode<IJwtPayload>(JWTStorage.getAccessToken()!);
       login({username: data.username, profilePhotoLink: data.image})
     }
   }, []);

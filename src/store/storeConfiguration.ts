@@ -1,10 +1,8 @@
-import {combineReducers, configureStore} from '@reduxjs/toolkit';
+import {bindActionCreators, combineReducers, configureStore} from '@reduxjs/toolkit';
 import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
-import createArticleSlice from './createArticleSlice';
-import generalSlice from './generalSlice';
+import generalSlice, {generalActions} from './generalSlice';
 
 const rootReducer = combineReducers({
-  articleReducer: createArticleSlice,
   generalReducer: generalSlice,
 });
 
@@ -20,3 +18,12 @@ export type AppDispatch = typeof store.dispatch;
 export const useAppDispatch = (): typeof store.dispatch =>
   useDispatch<AppDispatch>();
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
+
+const allActions = {
+  ...generalActions,
+};
+
+export const useActions = () => {
+  const dispatch = useDispatch();
+  return bindActionCreators(allActions, dispatch);
+};

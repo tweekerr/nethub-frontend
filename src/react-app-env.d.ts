@@ -17,7 +17,9 @@ export type APIError = {
   message: string;
   status: number;
   type: string;
-}
+};
+
+export type Action = () => void;
 
 export interface TinyConfig {
   plugins: string[];

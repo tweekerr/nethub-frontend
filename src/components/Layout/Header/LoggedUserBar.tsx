@@ -2,8 +2,7 @@ import React, {FC} from 'react';
 import Avatar from '@mui/material/Avatar';
 import classes from './Header.module.scss';
 import {Typography} from '@mui/material';
-import {useActions} from "../../../utils";
-import {useAppSelector} from "../../../store";
+import {useActions, useAppSelector} from "../../../store/storeConfiguration";
 import {createImageFromInitials} from "../../../utils/logoGenerator";
 import {useNavigate} from "react-router-dom";
 

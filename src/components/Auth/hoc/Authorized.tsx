@@ -1,18 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {Navigate, useLocation} from "react-router-dom";
-import {useAppDispatch, useAppSelector} from "../../../store";
-import {useActions} from "../../../utils";
-import {checkAuth2} from "../../../store/thunks/authThunk";
 import jwtDecode from "jwt-decode";
 import IJwtPayload from "../../../types/IJwtPayload";
-import {
-  getAccessToken,
-  getAccessTokenExpires,
-  getRefreshToken,
-  getRefreshTokenExpires
-} from "../../../utils/localStorageProvider";
-import {Loader} from "../../UI/loader/Loader";
 import Layout from "../../Layout/Layout";
+import {isAccessTokenExpired, isAuthorized, isRefreshTokenExpired} from '../../../utils/JwtHelper';
+import {api} from "../../../api/api";
+import {useActions} from "../../../store/storeConfiguration";
+import {JWTStorage} from "../../../utils/localStorageProvider";
 
 interface IAuthorizedProps {
   children: JSX.Element,
@@ -31,26 +25,14 @@ const Authorized = ({children, redirectTo = '/login'}: IAuthorizedProps) => {
     })();
   }, [])
 
-  function isAuthorized() {
-    return getAccessToken() && new Date(getAccessTokenExpires()!) > new Date();
-  }
-
-  function isAccessTokenExpired() {
-    return getAccessToken() && new Date(getAccessTokenExpires()!) < new Date();
-  }
-
-  function isRefreshTokenExpired() {
-    return getRefreshToken() && new Date(getRefreshTokenExpires()!) < new Date();
-  }
-
   async function check() {
     if (isAuthorized()) {
-      const data = jwtDecode<IJwtPayload>(getAccessToken()!);
+      const data = jwtDecode<IJwtPayload>(JWTStorage.getAccessToken()!);
       login({username: data.username, profilePhotoLink: data.image})
       setIsLogin(true)
     } else if (isAccessTokenExpired()) {
       if (!isRefreshTokenExpired())
-        setIsLogin(await checkAuth2());
+        setIsLogin(await api.checkAuth());
     } else {
       setIsLogin(false);
     }
@@ -60,8 +42,6 @@ const Authorized = ({children, redirectTo = '/login'}: IAuthorizedProps) => {
     return (
       <Layout showSidebar={false}>
       </Layout>)
-
-  console.log('isLogin', isLogin)
 
   return isLogin
     ? children

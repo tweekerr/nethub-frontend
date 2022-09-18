@@ -12,7 +12,6 @@ import GoogleAuthButton from "./Buttons/GoogleAuthButton";
 import TelegramAuthButton from "./Buttons/TelegramAuthButton";
 import TitleInput from "../basisComps/titleInput/TitleInput";
 import ISsoRequest from "../../types/api/Sso/ISsoRequest";
-import {useActions} from "../../utils";
 import UiButton from "../UI/button/UiButton";
 import {api} from "../../api/api";
 import {useLocation} from "react-router-dom";
@@ -24,6 +23,7 @@ import {isNotNullOrWhiteSpace} from "../../utils/validators";
 import {useDebounce} from "../../hooks/useDebounce";
 import useValidator from "../../hooks/useValidator";
 import useCustomSnackbar from "../../hooks/useCustomSnackbar";
+import {useActions} from "../../store/storeConfiguration";
 
 interface ISecondStep {
   isActive: boolean,
@@ -49,7 +49,7 @@ const Login = () => {
   const {login} = useActions();
   const {enqueueError} = useCustomSnackbar();
   const location = useLocation()
-  const {addValidator, validateAll, errors, setErrors} = useValidator<ILoginErrors>();
+  const {subscribeValidator, validateAll, errors, setErrors} = useValidator<ILoginErrors>();
 
   const debounceValidator = async (username: string | null) => {
     if (username === null || username === '') {
@@ -72,26 +72,23 @@ const Login = () => {
   const debounce = useDebounce(debounceValidator, 1000);
 
   const validate = async () => {
-    addValidator({value: request.username, field: 'username', validators: [isNotNullOrWhiteSpace, debounceValidator]})
-    addValidator({
+    subscribeValidator({value: request.username, field: 'username', validators: [isNotNullOrWhiteSpace, debounceValidator]})
+    subscribeValidator({
       value: request.firstName,
       field: 'firstName',
       validators: [isNotNullOrWhiteSpace],
       message: "Невірно введене ім'я"
     })
-    addValidator({
+    subscribeValidator({
       value: request.lastName,
       field: 'lastName',
       validators: [isNotNullOrWhiteSpace],
       message: "Невірно введене прізвище"
     })
-    addValidator({value: request.email, field: 'email', validators: [isNotNullOrWhiteSpace]})
+    subscribeValidator({value: request.email, field: 'email', validators: [isNotNullOrWhiteSpace]})
 
-    const {isSuccess, errors: tempErrors} = await validateAll();
-
-    if (!isSuccess) {
-      tempErrors.forEach(enqueueError)
-    }
+    const {isSuccess, errors} = await validateAll();
+    if (!isSuccess) errors.forEach(enqueueError)
 
     return isSuccess;
   }
@@ -180,12 +177,12 @@ const Login = () => {
                             debounce(username)
                         }}
                         width={'100%'}/>
-            <TitleInput title={'Email*'}  placeholder={'Електронна пошта'} value={request.email}
+            <TitleInput title={'Email*'} placeholder={'Електронна пошта'} value={request.email}
                         error={errors.email}
                         setValue={(email: string) => updateRequest('email', email)}
                         width={'100%'}
                         disabled={!registrationStep.enableEmail}
-                        />
+            />
             <TitleInput title={'Firstname*'} placeholder={'Iм\'я'} value={request.firstName}
                         error={errors.firstName}
                         setValue={(firstname: string) => updateRequest('firstName', firstname)}

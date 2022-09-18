@@ -1,6 +1,6 @@
 import MainSpace from '../components/mainSpace/MainSpace';
 import {AuthSpace} from "../components/Auth/AuthSpace";
-import ArticleCreatingSpace from "../components/articleCreating/ArticleCreatingSpace";
+import ArticleCreatingSpace from "../components/Article/Create/ArticleCreatingSpace";
 
 interface IPath {
   path: string,
@@ -23,5 +23,10 @@ export const paths = [
     path: '/articles',
     Component: ArticleCreatingSpace,
     authorized: true,
-  }
+  },
+  {
+    path: '/articles/:id/add-localization',
+    Component: ArticleCreatingSpace,
+    authorized: true
+  },
 ]

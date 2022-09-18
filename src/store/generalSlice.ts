@@ -1,8 +1,7 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {checkAuth} from './thunks/authThunk';
 import {ILanguage} from "../react-app-env";
 import Localizations from "../constants/localizations";
-import {clearTokensData} from "../utils/localStorageProvider";
+import {JWTStorage} from "../utils/localStorageProvider";
 
 export interface IReduxUser {
   username: string,
@@ -35,28 +34,14 @@ const generalSlice = createSlice({
       state.user = action.payload;
     },
     logout: (state) => {
-      clearTokensData()
+      JWTStorage.clearTokensData()
       state.isLogin = false;
       state.user = {} as IReduxUser;
     },
     setLanguage: (state, action: PayloadAction<ILanguage>) => {
       state.language = action.payload
-    },
-    setIsLogin: (state, action: PayloadAction<boolean>) => {
-      state.isLogin = false
     }
-  },
-  extraReducers: {
-    [checkAuth.fulfilled.type]: (state, action: PayloadAction<IReduxUser>) => {
-      state.isLogin = true;
-      console.log(action.payload.profilePhotoLink);
-      state.user = action.payload;
-    },
-    [checkAuth.rejected.type]: (state, action: PayloadAction<string>) => {
-      state.user = {} as IReduxUser;
-      state.isLogin = false;
-    },
-  },
+  }
 });
 
 export default generalSlice.reducer;

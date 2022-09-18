@@ -7,20 +7,13 @@ import LoggedUserBar from './LoggedUserBar';
 import BasicLinker from '../../basisComps/BasicLinker';
 import {Switch} from '@mui/material';
 import UnloggedUserBar from './UnloggedUserBar';
-import {useActions} from "../../../utils";
-import {useAppSelector} from "../../../store";
+import {useActions, useAppSelector} from "../../../store/storeConfiguration";
 import {useNavigate} from "react-router-dom";
 
 const Header: React.FC = () => {
   const {switchTheme} = useActions();
   const {isLogin} = useAppSelector((state) => state.generalReducer);
   const navigate = useNavigate();
-
-  // const createArticlePlug = () => {
-  //   api.createArticles().then((res) => {
-  //     updateArticleId(res.id);
-  //   });
-  // };
 
   return (
     <header className={classes.header}>

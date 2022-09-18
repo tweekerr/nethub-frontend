@@ -1,26 +1,38 @@
 import React, {FC} from 'react';
 import classes from './ArticleCreating.module.sass';
-import UiButton from '../UI/button/UiButton';
+import UiButton from '../../UI/button/UiButton';
 import ArticleTagsSettings from "./ArticleTagsSettings";
-import TitleInput from "../basisComps/titleInput/TitleInput";
-import IArticle, {IArticleFormErrors} from "../../types/IArticle";
-import {StyledDiv} from '../UI/styled';
+import TitleInput from "../../basisComps/titleInput/TitleInput";
+import IArticle, {IArticleFormErrors} from "../../../types/IArticle";
+import {StyledDiv} from '../../UI/styled';
 import ArticleImagesSettings from "./ArticleImagesSettings";
+import {ArticleStorage} from "../../../utils/localStorageProvider";
 
 interface IArticleSettingsProps {
   article: IArticle,
   setArticle: (article: IArticle) => void,
-  createArticle: (e: React.MouseEvent) => void
+  createArticle: () => void
   errors: IArticleFormErrors,
-  setErrors: (key: keyof IArticleFormErrors, flag: boolean) => void
+  setError: (flag: boolean) => void;
+  images: string[]
 }
 
-const ArticleSettings: FC<IArticleSettingsProps> = ({article, setArticle, createArticle, errors, setErrors}) => {
+const ArticleSettings: FC<IArticleSettingsProps> = ({article, setArticle, createArticle, errors, setError, images}) => {
 
-  const handleSetLink = (link: string) => setArticle({...article, originalLink: link});
-  const handleSetTags = (tag: string) => setArticle({...article, tags: [...article.tags, tag]});
-  const handleDeleteTag = (tag: string) => setArticle({...article, tags: article.tags.filter(t => t !== tag)});
-
+  const handleSetLink = (link: string) => {
+    setArticle({...article, originalLink: link});
+    ArticleStorage.setLink(link);
+  }
+  const handleSetTags = (tag: string) => {
+    const allTags = [...article.tags, tag];
+    setArticle({...article, tags: allTags});
+    ArticleStorage.setTags(JSON.stringify(allTags));
+  }
+  const handleDeleteTag = (tag: string) => {
+    const filteredTags = article.tags.filter(t => t !== tag);
+    setArticle({...article, tags: filteredTags});
+    ArticleStorage.setTags(JSON.stringify(filteredTags));
+  }
 
   return (
     <div className={classes.articleSettings}>
@@ -31,8 +43,8 @@ const ArticleSettings: FC<IArticleSettingsProps> = ({article, setArticle, create
           tags={article.tags}
           addToAllTags={handleSetTags}
           deleteTag={handleDeleteTag}
-          errors={errors}
-          setErrors={setErrors}
+          error={errors.tags}
+          setError={setError}
         />
         <p className={classes.specification}>*натисність на тег, для його видалення</p>
       </StyledDiv>
@@ -47,11 +59,13 @@ const ArticleSettings: FC<IArticleSettingsProps> = ({article, setArticle, create
         <p style={{marginTop: '-10px'}} className={classes.specification}>*якщо стаття переведена, вкажіть посилання на
           оригінал</p>
       </StyledDiv>
-      <StyledDiv className={classes.settingsItem}>
-        <p className={classes.title}>Пропоновані зображення</p>
-        <ArticleImagesSettings/>
-        <p className={classes.specification}>*натисність, щоб скопіювати посилання на фото</p>
-      </StyledDiv>
+      {images.length > 0 &&
+        <StyledDiv className={classes.settingsItem}>
+          <p className={classes.title}>Пропоновані зображення</p>
+          <ArticleImagesSettings images={images}/>
+          <p className={classes.specification}>*натисність, щоб скопіювати посилання на фото</p>
+        </StyledDiv>
+      }
       <UiButton onClick={createArticle}>Створити статтю</UiButton>
     </div>
   );
