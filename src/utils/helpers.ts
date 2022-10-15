@@ -1,4 +1,4 @@
-import {api} from "../api/api";
+import {articlesApi} from "../api/userApi";
 
 export const saveImages = async (blobInfo: any) => {
   const id = sessionStorage.getItem('articleId');
@@ -6,7 +6,7 @@ export const saveImages = async (blobInfo: any) => {
   if (!id) return;
   const fd = new FormData();
   fd.append('file', blobInfo.blob());
-  const { location } = await api.addImagesToArticle(id, fd);
+  const { location } = await articlesApi.addImagesToArticle(id, fd);
   console.log({ location });
   sessionStorage.removeItem('articleId');
   return location;

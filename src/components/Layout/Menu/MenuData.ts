@@ -1,47 +1,53 @@
-export const menuItemsKeys = [
-    {
-        svgid: 'TerrainIcon',
-        pId: 'Onhovered item',
-        link: '/articles',
-    },
-    {
-        svgid: 'TerrainIcon',
-        pId: 'PhotosIcon',
-        link: '/',
-    },
-    {
-        svgid: 'TerrainIcon',
-        pId: 'Good item',
-        link: '/2',
-    },
-    {
-        svgid: 'TerrainIcon',
-        pId: 'Onhovered item',
-        link: '/3',
-    },
-    {
-        svgid: 'TerrainIcon',
-        pId: 'PhotosIcon',
-        link: '/4',
-    },
-    {
-        svgid: 'TerrainIcon',
-        pId: 'Good item',
-        link: '/5',
-    },
-    {
-        svgid: 'TerrainIcon',
-        pId: 'Onhovered item',
-        link: '/6',
-    },
-    {
-        svgid: 'TerrainIcon',
-        pId: 'PhotosIcon',
-        link: '/7',
-    },
-    {
-        svgid: 'TerrainIcon',
-        pId: 'Good item',
-        link: '/8',
-    }
+export interface IMenuItem {
+  svgId: string,
+  itemName: string,
+  link: string,
+  isActive: boolean
+}
+
+export const firstGroup: IMenuItem[] = [
+  {
+    svgId: 'Globe',
+    itemName: 'Стрічка',
+    link: '/',
+    isActive: true
+  },
+  {
+    svgId: 'StarCircle',
+    itemName: 'Рекомендації',
+    link: '/for-you',
+    isActive: false
+  }
+]
+
+export const secondGroup: IMenuItem[] = [
+  {
+    svgId: 'MenuSaved',
+    itemName: 'Збережено',
+    link: '/saved',
+    isActive: true
+  },
+  {
+    svgId: 'Draw',
+    itemName: 'Створено вами',
+    link: '/by-you',
+    isActive: true
+  },
+  {
+    svgId: 'Send',
+    itemName: 'Підписки',
+    link: '/subscriptions',
+    isActive: false
+
+  }];
+
+export const thirdGroup: IMenuItem[] = [
+
+  {
+    svgId: 'Profile',
+    itemName: 'Профіль',
+    link: '/profile',
+    isActive: true
+
+  }
 ];

@@ -3,7 +3,7 @@ import classes from "./ArticleCreating.module.sass"
 import React, {FC, useState} from "react";
 import UiInput from "../../UI/input/UiInput";
 import ThemeTag from "../../basisComps/ThemeTag";
-import {IArticleFormErrors} from "../../../types/IArticle";
+import {IArticleFormErrors} from "../../../types/ILocalization";
 import useValidation from "../../../hooks/useValidation";
 import {regexTest} from "../../../utils/validators";
 import {tagRegex} from "../../../utils/regex";

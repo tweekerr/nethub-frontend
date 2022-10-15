@@ -38,6 +38,9 @@ const generalSlice = createSlice({
       state.isLogin = false;
       state.user = {} as IReduxUser;
     },
+    updateProfileImage: (state, action: PayloadAction<string>) => {
+      state.user.profilePhotoLink = action.payload;
+    },
     setLanguage: (state, action: PayloadAction<ILanguage>) => {
       state.language = action.payload
     }

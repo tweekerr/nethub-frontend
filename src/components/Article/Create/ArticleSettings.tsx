@@ -3,14 +3,14 @@ import classes from './ArticleCreating.module.sass';
 import UiButton from '../../UI/button/UiButton';
 import ArticleTagsSettings from "./ArticleTagsSettings";
 import TitleInput from "../../basisComps/titleInput/TitleInput";
-import IArticle, {IArticleFormErrors} from "../../../types/IArticle";
-import {StyledDiv} from '../../UI/styled';
+import ILocalization, {IArticleFormErrors} from "../../../types/ILocalization";
 import ArticleImagesSettings from "./ArticleImagesSettings";
 import {ArticleStorage} from "../../../utils/localStorageProvider";
+import { FilledDiv } from '../../basisComps/Basic.styled';
 
 interface IArticleSettingsProps {
-  article: IArticle,
-  setArticle: (article: IArticle) => void,
+  article: ILocalization,
+  setArticle: (article: ILocalization) => void,
   createArticle: () => void
   errors: IArticleFormErrors,
   setError: (flag: boolean) => void;
@@ -36,8 +36,7 @@ const ArticleSettings: FC<IArticleSettingsProps> = ({article, setArticle, create
 
   return (
     <div className={classes.articleSettings}>
-      <p className={'nonCopyrable'}>Налаштування</p>
-      <StyledDiv className={classes.settingsItem}>
+      <FilledDiv>
         <p className={classes.title}>Теги по темам</p>
         <ArticleTagsSettings
           tags={article.tags}
@@ -47,8 +46,8 @@ const ArticleSettings: FC<IArticleSettingsProps> = ({article, setArticle, create
           setError={setError}
         />
         <p className={classes.specification}>*натисність на тег, для його видалення</p>
-      </StyledDiv>
-      <StyledDiv className={classes.settingsItem}>
+      </FilledDiv>
+      <FilledDiv className={classes.settingsItem}>
         <TitleInput
           error={errors.originalLink}
           value={article.originalLink}
@@ -58,13 +57,13 @@ const ArticleSettings: FC<IArticleSettingsProps> = ({article, setArticle, create
           width={"100%"}/>
         <p style={{marginTop: '-10px'}} className={classes.specification}>*якщо стаття переведена, вкажіть посилання на
           оригінал</p>
-      </StyledDiv>
+      </FilledDiv>
       {images.length > 0 &&
-        <StyledDiv className={classes.settingsItem}>
+        <FilledDiv className={classes.settingsItem}>
           <p className={classes.title}>Пропоновані зображення</p>
           <ArticleImagesSettings images={images}/>
           <p className={classes.specification}>*натисність, щоб скопіювати посилання на фото</p>
-        </StyledDiv>
+        </FilledDiv>
       }
       <UiButton onClick={createArticle}>Створити статтю</UiButton>
     </div>

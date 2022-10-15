@@ -1,6 +1,9 @@
-import MainSpace from '../components/mainSpace/MainSpace';
+import ArticlesThreadSpace from '../pages/Articles/Thread/ArticlesThreadSpace';
 import {AuthSpace} from "../components/Auth/AuthSpace";
 import ArticleCreatingSpace from "../components/Article/Create/ArticleCreatingSpace";
+import ArticleSpace from "../components/Article/One/ArticleSpace";
+import SavedSpace from "../pages/Saved/SavedSpace";
+import ProfileSpace from "../pages/Profile/ProfileSpace";
 
 interface IPath {
   path: string,
@@ -11,7 +14,7 @@ interface IPath {
 export const paths = [
   {
     path: '/',
-    Component: MainSpace,
+    Component: ArticlesThreadSpace,
     authorized: false
   },
   {
@@ -29,4 +32,19 @@ export const paths = [
     Component: ArticleCreatingSpace,
     authorized: true
   },
+  {
+    path: '/article/:id/:code',
+    Component: ArticleSpace,
+    authorized: false
+  },
+  {
+    path: '/saved',
+    Component: SavedSpace,
+    authorized: true
+  },
+  {
+    path: '/profile',
+    Component: ProfileSpace,
+    authorized: true
+  }
 ]

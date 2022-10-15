@@ -1,18 +1,21 @@
 import React, {FC} from 'react';
-import classes from "./ВasicComps.module.scss"
+import classes from "./ВasicComps.module.sass"
 
 interface IThemeTagProps {
   value: string
-  onClick: (value: string) => void
+  onClick?: (value: string) => void
 }
 
 const ThemeTag: FC<IThemeTagProps> = ({value, onClick}) => {
-    const handleOnClick = () => onClick(value);
 
     return (
-      <p onClick={handleOnClick} className={classes.themeTag}>
-        #{value}
-      </p>
+      onClick ?
+        <p onClick={() => onClick(value)} className={classes.themeTag}>
+          #{value}
+        </p>
+        : <p className={classes.themeTag}>
+          #{value}
+        </p>
     );
   }
 ;

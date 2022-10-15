@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import PublicBasis from "../../basisComps/PublicBasis/PublicBasis";
+import ShortItem from "../../basisComps/PublicBasis/ShortItem";
 import classes from "./NewsSpace.module.scss"
 
 interface INewsItemProps {
@@ -10,7 +10,7 @@ interface INewsItemProps {
 const NewsItem: FC<INewsItemProps> = ({title, description}) => {
   return (
     <div className={classes.newsItem}>
-      <PublicBasis title={title} description={description}/>
+      <ShortItem title={title} description={description}/>
       <div className={classes.tagsSpace}>
       </div>
     </div>

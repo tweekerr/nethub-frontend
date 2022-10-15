@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import Avatar from '@mui/material/Avatar';
-import classes from './Header.module.scss';
+import classes from './Header.module.sass';
 import {Typography} from '@mui/material';
 import {useActions, useAppSelector} from "../../../store/storeConfiguration";
 import {createImageFromInitials} from "../../../utils/logoGenerator";
@@ -25,7 +25,6 @@ const LoggedUserBar: FC = () => {
               : user.profilePhotoLink}/>
           <Typography variant="subtitle1" color={'primary'}>
             {user.username}
-            {/*tweeker*/}
           </Typography>
         </div>
 

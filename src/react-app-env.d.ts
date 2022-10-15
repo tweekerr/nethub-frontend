@@ -1,5 +1,4 @@
 /// <reference types="react-scripts" />
-import { UserCredential } from 'firebase/auth';
 
 declare module '*.scss' {
   const content: Record<string, string>;
@@ -18,8 +17,6 @@ export type APIError = {
   status: number;
   type: string;
 };
-
-export type Action = () => void;
 
 export interface TinyConfig {
   plugins: string[];

@@ -1,11 +1,11 @@
 import React from 'react';
 import SvgSelector from '../../basisComps/SvgSelector/SvgSelector';
 import UiInput from '../../UI/input/UiInput';
-import classes from './Header.module.scss'
+import classes from './Header.module.sass'
 import layoutClasses from '../Layout.module.sass'
 import LoggedUserBar from './LoggedUserBar';
-import BasicLinker from '../../basisComps/BasicLinker';
-import {Switch} from '@mui/material';
+import TextLinker from '../../basisComps/TextLinker';
+import {Box, Switch} from '@mui/material';
 import UnloggedUserBar from './UnloggedUserBar';
 import {useActions, useAppSelector} from "../../../store/storeConfiguration";
 import {useNavigate} from "react-router-dom";
@@ -16,25 +16,26 @@ const Header: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <header className={classes.header}>
+    <Box bgcolor={'header.main'}  className={classes.header}>
       <div className={layoutClasses.left}>
         <a onClick={() => navigate('/')}>
           <SvgSelector className={classes.logo} id="navbarLogo"/>
         </a>
       </div>
-      <div className={layoutClasses.center}>
+      <div className={layoutClasses.center} style={{justifyContent: 'center'}}>
         <div className={classes.headerCenter}>
           <UiInput
             placeholder={'Пошук'}
             value={''}
             setValue={() => console.log(' ')}
-            width={"600px"}
+            width={"70%"}
           />
-          <BasicLinker
+          <TextLinker
             onClick={() => {
             }}
-            linktxt={'Створити статтю'}
-            svgid={'DriveFileRenameOutlineIcon'}
+            placeholder={'Створити'}
+            link={'/article/20037/ua'}
+            svgId={'DriveFileRenameOutlineIcon'}
           />
           <Switch onClick={() => switchTheme()}/>
         </div>
@@ -44,7 +45,7 @@ const Header: React.FC = () => {
           {isLogin ? <LoggedUserBar/> : <UnloggedUserBar/>}
         </div>
       </div>
-    </header>
+    </Box>
   );
 };
 export default Header;

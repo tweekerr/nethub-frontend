@@ -1,4 +1,4 @@
-import { ThemeOptions } from '@mui/material';
+import {ThemeOptions} from '@mui/material';
 
 export const lightTheme: ThemeOptions = {
   palette: {
@@ -30,3 +30,28 @@ export const darkTheme: ThemeOptions = {
     },
   },
 };
+
+export const lightThemeTest = {
+  palette: {
+    mode: 'light',
+    primary: {
+      main: '#FFFFFF',
+      text: '#242D35'
+    },
+    secondary: {
+      main: '#414141',
+      text: '#414141'
+    },
+    third: {
+      text: ''
+    },
+    menu: {
+      text: '#414141',
+      textOnHover: '#FFFFFF'
+    },
+    header: {
+      main: '#FFFFFF',
+      search: '#FFFFFF'
+    }
+  }
+}

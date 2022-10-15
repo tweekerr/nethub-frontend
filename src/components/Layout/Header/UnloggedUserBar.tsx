@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import {Link} from 'react-router-dom';
 import SvgSelector from '../../basisComps/SvgSelector/SvgSelector';
-import classes from './Header.module.scss';
+import classes from './Header.module.sass';
 
 const UnloggedUserBar: FC = () => {
   return (

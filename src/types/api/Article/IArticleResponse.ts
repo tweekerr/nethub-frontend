@@ -6,7 +6,8 @@ export default interface IArticleResponse {
   authorId: number,
   created: string,
   updated?: string
-  originalArticleLink?: string
+  originalArticleLink?: string,
+  rate: number,
   localizations?: IArticleLocalizationResponse[],
   imagesLinks?: string[],
   tags: string[]

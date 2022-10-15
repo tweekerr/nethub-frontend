@@ -1,6 +1,21 @@
 $defaultMargin: 15px
 $enableDevNet: false
 
+//.bodyWrapper.first
+//  height: 0
+//  @keyframes slideDown
+//    0%
+//      height: 0
+//      opacity: 0
+//
+//    50%
+//      height: 5vh
+//
+//    100%
+//      height: fit-content
+//      opacity: 1
+//  -webkit-animation: slideDown 3s
+
 .bodyWrapper
   display: flex
   justify-content: center
@@ -28,7 +43,16 @@ $enableDevNet: false
   @if $enableDevNet
     background: orange
   display: flex
-  justify-content: center
+  flex-direction: column
+
+.left, .center, .right
+  > h2
+    font-weight: 700
+    font-size: 32px
+    color: #838383
+    line-height: 150%
+    //margin-bottom: 10px
+
 
 .flag
   display: flex
@@ -40,6 +64,7 @@ $enableDevNet: false
   div
     width: 100%
     height: 50vh
+
   .flagYellow
     background: #FFD500
 

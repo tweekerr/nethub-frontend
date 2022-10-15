@@ -1,0 +1,180 @@
+.layoutBody
+  width: 100%
+  display: flex
+  flex-direction: column
+
+.articleWrapper
+  width: 100%
+  height: fit-content
+
+.articleTitle
+  margin-bottom: 15px
+
+  .title
+    font-size: 18px
+    font-weight: bold
+
+.articleDescription
+  font-size: 12px
+
+.line
+  border: 1px solid white
+  margin: 10px 0
+
+.articleBody
+  font-size: 12px
+  line-height: 150%
+  margin-bottom: 20px
+  img
+    max-width: 100%
+    height: auto
+
+.articleTags
+  display: flex
+  margin-bottom: 15px
+  flex-wrap: wrap
+  gap: 14px
+
+  .tag
+    font-weight: 700
+    font-size: 12px
+    line-height: 15px
+    cursor: pointer
+
+  .tag:hover
+    background-color: #8267be
+    transition: 0.2s
+
+.actions
+  display: flex
+  justify-content: space-between
+  margin-bottom: 27px
+
+  .actionsLeft
+    display: flex
+
+    .views
+      display: flex
+      align-items: center
+
+      .viewsCount
+        margin-right: 5px
+
+.creationInfo
+  display: flex
+  justify-content: space-between
+
+  .author
+    font-weight: 600
+    font-size: 14px
+
+    a
+      margin-left: 10px
+      cursor: pointer
+
+  .dates
+    color: #757575
+    font-size: 14px
+    display: flex
+
+    .updated
+      margin-left: 25px
+
+
+.infoBlock
+  display: flex
+  flex-direction: column
+  margin-bottom: 10px
+
+.infoBlockTitle
+  font-size: 16px
+  font-weight: 500
+  margin-bottom: 10px
+
+
+.articleInfo
+  width: 100%
+  display: flex
+  flex-direction: column
+
+  .translates
+    display: flex
+    align-items: center
+    flex-wrap: wrap
+    gap: 10px
+
+    div
+      cursor: pointer
+      color: white
+
+      svg
+        margin-left: 10px
+
+    div:hover
+      background-color: #8267be
+      transition: 0.2s
+
+
+.contributors
+  display: flex
+  flex-wrap: wrap
+  gap: 10px
+
+  .contributor
+    display: flex
+    width: fit-content
+    cursor: pointer
+    align-items: center
+
+
+    img
+      border-radius: 22px
+      width: 25px
+      height: 25px
+      object-fit: cover
+      margin-left: 15px
+
+    div
+      width: 20%
+
+      p:first-child
+        font-size: 12px
+        margin-bottom: 3px
+
+      p:last-child
+        font-size: 14px
+        font-weight: 700
+
+      p
+        color: white
+        display: block
+
+    .role
+      width: 80%
+      display: flex
+      flex-direction: column
+
+  .contributor:hover
+    background-color: #8267be
+    transition: 0.2s
+
+.originalLink
+  width: fit-content
+
+  a
+    color: white
+    font-weight: 700
+    cursor: pointer
+
+.originalLink:hover
+  background-color: #8267be
+  transition: 0.2s
+
+
+//=================Skeletons=================
+
+.articleBodySkeleton
+  width: 100%
+
+  span:first-child
+    margin-bottom: 10px

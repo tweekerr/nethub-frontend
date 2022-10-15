@@ -69,7 +69,7 @@ class Validator<TErrorType> {
 
     for (const item of this._items) {
       for (const validator of item.validators) {
-        localErrors = {...localErrors, [item.field]: false}
+        // localErrors = {...localErrors, [item.field]: false}
 
         const promise = validator(item.value);
         let isSuccess;
@@ -92,7 +92,6 @@ class Validator<TErrorType> {
     }
 
     this._setErrors(localErrors);
-
     return {isSuccess: Object.values(localErrors).every(e => e === false), errors: localErrorMessages};
   }
 }

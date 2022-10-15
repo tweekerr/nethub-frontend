@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import UiInput, {IUiInputProps} from '../../UI/input/UiInput';
-import classes from '../ВasicComps.module.scss';
+import classes from '../ВasicComps.module.sass';
 
 interface ITitleInputProps extends IUiInputProps {
   title: string

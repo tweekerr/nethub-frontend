@@ -1,8 +1,8 @@
-import React, {FC, useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import ArticleSettings from './ArticleSettings';
 import Layout from "../../Layout/Layout";
 import CreateArticleForm from "./CreateArticleForm";
-import IArticle, {IArticleFormErrors} from "../../../types/IArticle";
+import ILocalization, {IArticleFormErrors} from "../../../types/ILocalization";
 import {arrayMinLength, isNotNullOrWhiteSpace, minLength, regexTest} from "../../../utils/validators";
 import {urlRegex} from "../../../utils/regex";
 import {useTranslation} from "react-i18next";
@@ -10,25 +10,35 @@ import useValidator from "../../../hooks/useValidator";
 import useCustomSnackbar from "../../../hooks/useCustomSnackbar";
 import {ArticleStorage} from "../../../utils/localStorageProvider";
 import {useParams} from "react-router-dom";
-import {api} from "../../../api/api";
+import {articlesApi} from "../../../api/userApi";
+import useLoading from "../../../hooks/useLoading";
 
 type CreateArticleFormRef = React.ElementRef<typeof CreateArticleForm>
 
 const ArticleCreatingSpace = () => {
+  const {t} = useTranslation();
+
+  const titles = {
+    center: <h2>{t('article.create.mainSettings')}</h2>,
+    right: <h2>Налаштування</h2>
+  }
+
   const defaultState = {
     title: ArticleStorage.getTitle() ?? '',
-    subTitle: ArticleStorage.getSubTitle() ?? '',
-    body: ArticleStorage.getBody() ?? '',
+    description: ArticleStorage.getDescription() ?? '',
+    html: ArticleStorage.getHtml() ?? '',
     tags: ArticleStorage.getTags() ? JSON.parse(ArticleStorage.getTags()!) : [] as string[],
-  } as IArticle;
+  } as ILocalization;
+
+  const {error, setError, startLoading, finishLoading} = useLoading();
 
   const [images, setImages] = useState<string[]>([]);
   const {id} = useParams();
 
   useEffect(() => {
-    if (id){
+    if (id) {
       const loadImages = async () => {
-        return await api.getArticleImages()
+        return await articlesApi.getArticleImages()
       };
 
       loadImages().then(response => {
@@ -37,10 +47,9 @@ const ArticleCreatingSpace = () => {
     }
   }, [])
 
-  const [article, setArticle] = useState<IArticle>(defaultState)
+  const [article, setArticle] = useState<ILocalization>(defaultState)
 
   const {subscribeValidator, unsubscribeValidator, validateAll, errors, setErrors} = useValidator<IArticleFormErrors>();
-  const {t} = useTranslation();
   const {enqueueError} = useCustomSnackbar();
   const createArticleFormRef = useRef<CreateArticleFormRef>(null);
 
@@ -50,7 +59,7 @@ const ArticleCreatingSpace = () => {
     })
   }
 
-  const updateArticle = (article: IArticle) => setArticle(article);
+  const updateArticle = (article: ILocalization) => setArticle(article);
 
   async function validateArticleForm() {
     subscribeValidator({
@@ -59,8 +68,8 @@ const ArticleCreatingSpace = () => {
       validators: [isNotNullOrWhiteSpace, minLength(10)],
       message: 'Мінімальна довжина заголовку - 10 символів'
     })
-    subscribeValidator({value: article.subTitle, field: 'subTitle', validators: [isNotNullOrWhiteSpace]})
-    subscribeValidator({value: article.body, field: 'body', validators: [isNotNullOrWhiteSpace, minLength(1)]})
+    subscribeValidator({value: article.description, field: 'description', validators: [isNotNullOrWhiteSpace]})
+    subscribeValidator({value: article.html, field: 'html', validators: [isNotNullOrWhiteSpace, minLength(1)]})
     subscribeValidator({
       value: article.tags,
       field: 'tags',
@@ -92,24 +101,36 @@ const ArticleCreatingSpace = () => {
 
   const createArticle = async () => {
 
-    if (!await validateArticleForm()) {
-      return;
-    }
+    if (!await validateArticleForm()) return;
 
-    await createArticleFormRef
-      .current?.getTinyRef()
-      .current?.saveImages(null);
+    startLoading();
+    (async () => {
+      const articleId = await createArticleFormRef
+        .current?.getTinyRef()
+        .current?.saveImages(null);
 
-    console.log(article)
-    //TODO: axios request to BACK
-
-    ArticleStorage.clearArticleData()
-    setArticle(defaultState);
+      await articlesApi.createLocalization(articleId!, 'ua', article)
+    })().then(() => {
+    })
+      .catch((e) => {
+        setError(true);
+        enqueueError(e.message)
+      })
+      .finally(() => {
+        finishLoading()
+        if (!error.isError) {
+          ArticleStorage.clearArticleData()
+          setArticle(defaultState);
+        }
+        // console.log(article)
+      })
   };
 
 
   return (
-    <Layout rightBar={
+    <Layout
+      titles={titles}
+      rightBar={
       <ArticleSettings
         article={article}
         setArticle={updateArticle}
@@ -120,7 +141,6 @@ const ArticleCreatingSpace = () => {
       />
     }>
       <CreateArticleForm
-        titleParams={t('article.create.mainSettings')}
         article={article}
         setArticleValue={setArticleValue}
         errors={errors}

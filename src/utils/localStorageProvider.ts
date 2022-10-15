@@ -36,12 +36,12 @@ export class ArticleStorage {
     localStorage.setItem('title', value)
   }
 
-  static setSubTitle(value: string) {
-    localStorage.setItem('subTitle', value)
+  static setDescription(value: string) {
+    localStorage.setItem('description', value)
   }
 
-  static setBody(value: string) {
-    localStorage.setItem('body', value)
+  static setHtml(value: string) {
+    localStorage.setItem('html', value)
   }
 
   static setTags(value: string) {
@@ -56,12 +56,12 @@ export class ArticleStorage {
     return localStorage.getItem('title')
   }
 
-  static getSubTitle() {
-    return localStorage.getItem('subTitle')
+  static getDescription() {
+    return localStorage.getItem('description')
   }
 
-  static getBody() {
-    return localStorage.getItem('body')
+  static getHtml() {
+    return localStorage.getItem('html')
   }
 
   static getTags() {
@@ -74,8 +74,8 @@ export class ArticleStorage {
 
   static clearArticleData() {
     localStorage.removeItem('title');
-    localStorage.removeItem('subTitle');
-    localStorage.removeItem('body');
+    localStorage.removeItem('description');
+    localStorage.removeItem('html');
     localStorage.removeItem('tags');
     localStorage.removeItem('link');
   }

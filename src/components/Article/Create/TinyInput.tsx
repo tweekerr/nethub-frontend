@@ -2,10 +2,8 @@ import React, {forwardRef, ForwardRefRenderFunction, useCallback, useImperativeH
 import {Editor} from '@tinymce/tinymce-react';
 import {Editor as TinyEditor} from 'tinymce';
 import classes from './ArticleCreating.module.sass';
-import {api} from "../../../api/api";
+import {articlesApi} from "../../../api/userApi";
 import {tinyConfig} from "../../../utils/constants";
-import {Action} from "../../../react-app-env";
-import CreateArticleForm from "./CreateArticleForm";
 
 interface ITinyInputProps {
   data: string;
@@ -15,7 +13,7 @@ interface ITinyInputProps {
 }
 
 interface ITinyInputHandle {
-  saveImages: (id: string | null) => Promise<void>;
+  saveImages: (id: string | null) => Promise<string>;
 }
 
 const TinyInput: ForwardRefRenderFunction<ITinyInputHandle, ITinyInputProps> =
@@ -23,17 +21,19 @@ const TinyInput: ForwardRefRenderFunction<ITinyInputHandle, ITinyInputProps> =
     const editorRef = useRef<TinyEditor | null>(null);
 
     const saveImageCallback = useCallback(async (id: string | null) => {
-      if (editorRef.current) {
-        if (!id) id = (await api.createArticles()).id.toString();
-        sessionStorage.setItem('articleId', id!);
-        await editorRef.current.uploadImages();
-        setData(editorRef.current?.getContent());
-      }
+      if (!id) id = (await articlesApi.createArticle()).id.toString();
+      sessionStorage.setItem('articleId', id!);
+      await editorRef.current!.uploadImages();
+
+      const newData = editorRef.current!.getContent();
+      setData(newData);
+
+      return id;
     }, []);
 
     useImperativeHandle(ref, () => ({
       async saveImages(id: string | null) {
-        await saveImageCallback(id)
+        return await saveImageCallback(id)
       }
     }), [saveImageCallback]);
 
@@ -43,7 +43,7 @@ const TinyInput: ForwardRefRenderFunction<ITinyInputHandle, ITinyInputProps> =
       if (!id) return;
       const fd = new FormData();
       fd.append('file', blobInfo.blob());
-      const {location} = await api.addImagesToArticle(id, fd);
+      const {location} = await articlesApi.addImagesToArticle(id, fd);
       sessionStorage.removeItem('articleId');
 
       return location;

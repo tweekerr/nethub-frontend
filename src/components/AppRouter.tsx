@@ -1,16 +1,16 @@
 import React, {FC} from 'react';
 import {Route, Routes} from 'react-router-dom';
 import {paths} from "../routes/paths";
-import Authorized from "./Auth/hoc/Authorized";
+import AuthorizedHoc from "./Auth/hoc/AuthorizedHoc";
 
 const AppRouter: FC = () => {
   return (
     <Routes>
       {paths.map(({path, Component, authorized}) =>
         <Route key={path} path={path} element={
-          authorized ? <Authorized>
+          authorized ? <AuthorizedHoc>
               <Component/>
-            </Authorized>
+            </AuthorizedHoc>
             : <Component/>}
         />
       )}

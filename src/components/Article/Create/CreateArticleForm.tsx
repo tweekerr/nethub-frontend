@@ -2,13 +2,12 @@ import React, {FC, forwardRef, ForwardRefRenderFunction, useImperativeHandle, us
 import classes from './ArticleCreating.module.sass';
 import TitleInput from '../../basisComps/titleInput/TitleInput';
 import TinyInput from "./TinyInput";
-import IArticle, {IArticleFormErrors} from "../../../types/IArticle";
-import {StyledDiv} from '../../UI/styled';
+import ILocalization, {IArticleFormErrors} from "../../../types/ILocalization";
 import {ArticleStorage} from "../../../utils/localStorageProvider";
+import { FilledDiv } from '../../basisComps/Basic.styled';
 
 interface IMainArticleProps {
-  titleParams: string,
-  article: IArticle,
+  article: ILocalization,
   setArticleValue: (key: string) => (value: any) => void,
   errors: IArticleFormErrors,
 }
@@ -21,7 +20,7 @@ type TinyRef = React.ElementRef<typeof TinyInput>;
 
 
 const CreateArticleForm: ForwardRefRenderFunction<IMainArticleHandle, IMainArticleProps> =
-  ({titleParams, article, setArticleValue, errors}, ref) => {
+  ({article, setArticleValue, errors}, ref) => {
 
     const tinyRef = useRef<TinyRef>(null)
 
@@ -30,13 +29,13 @@ const CreateArticleForm: ForwardRefRenderFunction<IMainArticleHandle, IMainArtic
       ArticleStorage.setTitle(value)
     }
 
-    const handleUpdateSubTitle = (value: string) => {
-      setArticleValue('subTitle')(value);
-      ArticleStorage.setSubTitle(value)
+    const handleUpdateDescription = (value: string) => {
+      setArticleValue('description')(value);
+      ArticleStorage.setDescription(value)
     }
-    const handleUpdateBody = (value: string) => {
-      setArticleValue('body')(value);
-      ArticleStorage.setBody(value)
+    const handleUpdateHtml = (value: string) => {
+      setArticleValue('html')(value);
+      ArticleStorage.setHtml(value)
     }
 
     useImperativeHandle(ref, () => ({
@@ -47,10 +46,7 @@ const CreateArticleForm: ForwardRefRenderFunction<IMainArticleHandle, IMainArtic
 
     return (
       <div className={classes.createArticle}>
-        <h2 className={'nonCopyrable'}>Створення статті</h2>
-
-        <StyledDiv className={classes.mainArticleParams}>
-          <p>{titleParams}</p>
+        <FilledDiv className={classes.mainArticleParams}>
           <TitleInput
             error={errors.title}
             value={article.title}
@@ -60,21 +56,21 @@ const CreateArticleForm: ForwardRefRenderFunction<IMainArticleHandle, IMainArtic
             width={'100%'}
           />
           <TitleInput
-            error={errors.subTitle}
-            value={article.subTitle}
-            setValue={handleUpdateSubTitle}
+            error={errors.description}
+            value={article.description}
+            setValue={handleUpdateDescription}
             title={'Заголовок статті'}
             placeholder={'Заголовок вашої статті'}
             width={'100%'}
           />
           <TinyInput
-            error={errors.body}
-            data={article.body}
-            setData={handleUpdateBody}
+            error={errors.html}
+            data={article.html}
+            setData={handleUpdateHtml}
             editorTitle={'Текст статті'}
             ref={tinyRef}
           />
-        </StyledDiv>
+        </FilledDiv>
       </div>
     );
   };

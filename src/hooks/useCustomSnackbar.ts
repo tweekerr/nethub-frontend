@@ -1,7 +1,7 @@
-import {useSnackbar} from "notistack";
+import {useSnackbar, VariantType} from "notistack";
 
 
-const useCustomSnackbar = (variant?: 'error') => {
+const useCustomSnackbar = (variant?: VariantType) => {
   const {enqueueSnackbar} = useSnackbar();
 
   function enqueueError(data: any) {

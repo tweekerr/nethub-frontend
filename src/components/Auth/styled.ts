@@ -60,7 +60,8 @@ export const StyledAccordionSummary = styled(AccordionSummary)({
   margin: 0,
   border: 'none',
   outline: 'none',
-  height: "min-content"
+  height: "min-content",
+  width: '100%'
 });
 
 export const StyledAccordionDetails = styled(AccordionDetails)({

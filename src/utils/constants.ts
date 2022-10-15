@@ -33,3 +33,5 @@ export const tinyConfig: TinyConfig = {
     'alignright alignjustify | bullist numlist outdent indent | ' +
     'removeformat | help',
 };
+
+export const UkrainianLanguage = 'ua';

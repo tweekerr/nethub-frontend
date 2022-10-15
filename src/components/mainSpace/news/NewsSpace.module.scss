@@ -1,23 +1,15 @@
-.newsItem{
+.newsItem {
   width: 100%;
   border: 1px solid #EAECEE;
   border-radius: 12px;
   padding: 20px;
   background-color: #ffffff;
-  box-sizing: border-box;
-  margin-top: 20px;
 }
-.newsSpace>h2{
-  font-weight: 700;
-  font-size: 32px;
-  line-height: 150%;
-  color: #838383;
-  margin-bottom: -10px;
-}
-.tagsSpace{
+
+.tagsSpace {
   display: flex;
   flex-direction: row;
   margin-top: 2%;
-  flex-wrap:wrap;
+  flex-wrap: wrap;
 
 }

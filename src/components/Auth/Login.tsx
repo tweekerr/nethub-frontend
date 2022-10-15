@@ -13,8 +13,8 @@ import TelegramAuthButton from "./Buttons/TelegramAuthButton";
 import TitleInput from "../basisComps/titleInput/TitleInput";
 import ISsoRequest from "../../types/api/Sso/ISsoRequest";
 import UiButton from "../UI/button/UiButton";
-import {api} from "../../api/api";
-import {useLocation} from "react-router-dom";
+import {userApi} from "../../api/userApi";
+import {useNavigate} from "react-router-dom";
 import classes from './Login.module.sass'
 import FacebookAuthButton from "./Buttons/FacebookAuthButton";
 import LoginService from "../../utils/LoginService";
@@ -48,8 +48,8 @@ const Login = () => {
   } as ISsoRequest);
   const {login} = useActions();
   const {enqueueError} = useCustomSnackbar();
-  const location = useLocation()
   const {subscribeValidator, validateAll, errors, setErrors} = useValidator<ILoginErrors>();
+  const navigate = useNavigate();
 
   const debounceValidator = async (username: string | null) => {
     if (username === null || username === '') {
@@ -58,7 +58,7 @@ const Login = () => {
       return false;
     }
 
-    const isAvailable = await api.checkUsername(username);
+    const isAvailable = await userApi.checkUsername(username);
 
     if (!isAvailable) {
       enqueueError('Ім\'я користувача вже використовується');
@@ -72,7 +72,11 @@ const Login = () => {
   const debounce = useDebounce(debounceValidator, 1000);
 
   const validate = async () => {
-    subscribeValidator({value: request.username, field: 'username', validators: [isNotNullOrWhiteSpace, debounceValidator]})
+    subscribeValidator({
+      value: request.username,
+      field: 'username',
+      validators: [isNotNullOrWhiteSpace, debounceValidator]
+    })
     subscribeValidator({
       value: request.firstName,
       field: 'firstName',
@@ -104,20 +108,21 @@ const Login = () => {
     const providerRequest = await LoginService.ProviderHandle(provider);
     setRequest(providerRequest);
 
-    const {isProviderRegistered} = await api.checkIfExists(providerRequest.providerKey, provider);
+    const {isProviderRegistered} = await userApi.checkIfExists(providerRequest.providerKey, provider);
     if (!isProviderRegistered) {
       setRegistrationStep({isActive: true, enableEmail: !providerRequest.email});
       return;
     }
-    const user = await api.authenticate({...providerRequest, type: "login"});
+    const user = await userApi.authenticate({...providerRequest, type: "login"});
     login(user);
+    navigate(-1);
   }
 
   const secondStep = async () => {
     if (!await validate())
       return;
     try {
-      const user = await api.authenticate({...request, type: "register"});
+      const user = await userApi.authenticate({...request, type: "register"});
       login(user);
     } catch (e: any) {
       if (e.response.data.message.includes('already taken')) {
@@ -129,24 +134,6 @@ const Login = () => {
 
   return (
     <StyledRoot>
-      <Typography
-        mb={2}
-        display={'initial'}
-        color={'secondary.contrastText'}
-        fontWeight={700}
-        variant="h4"
-      >
-        Вітаємо на{' '}
-      </Typography>
-      <Typography
-        display={'initial'}
-        variant="h4"
-        fontWeight={700}
-        color={'primary.contrastText'}
-      >
-        NetHub!
-      </Typography>
-
       <StyledFirstStep>
         <Typography color={'secondary'} fontWeight={700}>
           Оберіть спосіб авторизації
