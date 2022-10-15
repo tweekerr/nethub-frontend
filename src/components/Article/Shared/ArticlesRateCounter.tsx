@@ -37,6 +37,11 @@ const ArticlesRateCounter: FC<IRateCounterProps> = ({
     e.stopPropagation()
     checkAuth()
 
+    if (counterState === 'up')
+      setCounterState('none');
+    else
+      setCounterState('up');
+
     if (counterState === 'none') {
       await articlesApi.setRate(articleId, 'up');
       setCurrent(current + 1);
@@ -51,16 +56,16 @@ const ArticlesRateCounter: FC<IRateCounterProps> = ({
       await articlesApi.setRate(articleId, 'none');
       setCurrent(current - 1);
     }
-
-    if (counterState === 'up')
-      setCounterState('none');
-    else
-      setCounterState('up');
   }
 
   async function handleDownVote(e: React.MouseEvent) {
     e.stopPropagation()
     checkAuth()
+
+    if (counterState === 'down')
+      setCounterState('none');
+    else
+      setCounterState('down');
 
     if (counterState === 'none') {
       await articlesApi.setRate(articleId, 'down');
@@ -76,11 +81,6 @@ const ArticlesRateCounter: FC<IRateCounterProps> = ({
       await articlesApi.setRate(articleId, 'down');
       setCurrent(current - 2);
     }
-
-    if (counterState === 'down')
-      setCounterState('none');
-    else
-      setCounterState('down')
   }
 
 

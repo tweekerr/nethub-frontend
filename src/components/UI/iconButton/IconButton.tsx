@@ -26,10 +26,10 @@ const IconButton: FC<IIconButtonProps> = ({iconId, onClick, filledIconId, defaul
 
   async function onClickHandle(e: React.MouseEvent) {
     checkAuth && authorizeCheck();
-
-    await onClick(e)
     if (filledIconId)
       setIsActive(prev => !prev);
+
+    await onClick(e)
   }
 
   return (

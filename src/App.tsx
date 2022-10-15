@@ -23,6 +23,7 @@ function App() {
 
 
   useEffect(() => {
+
     switchLocal(language);
     (async () => await check())().then((data) => {
       if (data) {
