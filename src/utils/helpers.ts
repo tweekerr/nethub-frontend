@@ -3,7 +3,6 @@ import {articlesApi} from "../api/userApi";
 export const saveImages = async (blobInfo: any) => {
   const id = sessionStorage.getItem('articleId');
   //TODO: check if no id
-  //TODO: Test Mirroring 2
   if (!id) return;
   const fd = new FormData();
   fd.append('file', blobInfo.blob());
