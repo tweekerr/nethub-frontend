@@ -23,6 +23,8 @@ function App() {
 
 
   useEffect(() => {
+    console.log('environment', process.env.REACT_APP_IS_DEVELOPMENT);
+
     switchLocal(language);
     (async () => await check())().then((data) => {
       if (data) {
