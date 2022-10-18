@@ -43,18 +43,18 @@ const ArticlesRateCounter: FC<IRateCounterProps> = ({
       setCounterState('up');
 
     if (counterState === 'none') {
-      await articlesApi.setRate(articleId, 'up');
       setCurrent(current + 1);
+      await articlesApi.setRate(articleId, 'up');
     }
 
     if (counterState === 'down') {
-      await articlesApi.setRate(articleId, 'up');
       setCurrent(current + 2);
+      await articlesApi.setRate(articleId, 'up');
     }
 
     if (counterState === 'up') {
-      await articlesApi.setRate(articleId, 'none');
       setCurrent(current - 1);
+      await articlesApi.setRate(articleId, 'none');
     }
   }
 
@@ -68,18 +68,18 @@ const ArticlesRateCounter: FC<IRateCounterProps> = ({
       setCounterState('down');
 
     if (counterState === 'none') {
-      await articlesApi.setRate(articleId, 'down');
       setCurrent(current - 1);
+      await articlesApi.setRate(articleId, 'down');
     }
 
     if (counterState === 'down') {
-      await articlesApi.setRate(articleId, 'none');
       setCurrent(current + 1);
+      await articlesApi.setRate(articleId, 'none');
     }
 
     if (counterState === 'up') {
-      await articlesApi.setRate(articleId, 'down');
       setCurrent(current - 2);
+      await articlesApi.setRate(articleId, 'down');
     }
   }
 
