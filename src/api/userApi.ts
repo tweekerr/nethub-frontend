@@ -1,7 +1,6 @@
-import axios, {Axios, AxiosResponse} from 'axios';
+import axios, {AxiosResponse} from 'axios';
 import {IReduxUser} from "../store/generalSlice";
 import IAuthResult from "../types/api/Refresh/IAuthResult";
-import IRefreshRequest from "../types/api/Refresh/IRefreshRequest";
 import ISsoRequest from "../types/api/Sso/ISsoRequest";
 import ICheckEmailResponse from "../types/api/CheckEmail/ICheckEmailRequest";
 import {ProviderType} from "../types/ProviderType";
@@ -9,7 +8,7 @@ import ICheckUsernameResponse from "../types/api/CheckUsername/ICheckUsernameRes
 import {APIError} from "../react-app-env";
 import {ArticleStorage, JWTStorage} from "../utils/localStorageProvider";
 import IArticleResponse from "../types/api/Article/IArticleResponse";
-import IArticleLocalizationResponse, {ISavedLocalization} from "../types/api/Article/IArticleLocalizationResponse";
+import IArticleLocalizationResponse from "../types/api/Article/IArticleLocalizationResponse";
 import IUserInfoResponse from "../types/api/User/IUserInfoResponse";
 import qs from 'qs';
 import {RateVariants} from "../components/Article/Shared/ArticlesRateCounter";
@@ -17,12 +16,9 @@ import IDashboardResponse from "../types/api/Dashboard/IDashboardResponse";
 import IExtendedArticle from "../types/IExtendedArticle";
 import INewsResponse from "../types/api/News/INewsResponse";
 
-const a = process.env.REACT_APP_IS_DEVELOPMENT ? process.env.REACT_APP_TEST_BACK_POINT : process.env.REACT_APP_GENERAL_BACK_POINT;
-console.log('apiUrl', a);
-
 export const _api = axios.create({
   //TODO: must be general link
-  baseURL: a,
+  baseURL: process.env.REACT_APP_IS_DEVELOPMENT === 'true' ? process.env.REACT_APP_TEST_BACK_POINT : process.env.REACT_APP_GENERAL_BACK_POINT,
   withCredentials: true
 });
 

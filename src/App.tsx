@@ -23,11 +23,6 @@ function App() {
 
 
   useEffect(() => {
-    console.log('environment', !!process.env.REACT_APP_IS_DEVELOPMENT + typeof (!!process.env.REACT_APP_IS_DEVELOPMENT));
-    console.log('test', process.env.REACT_APP_TEST_BACK_POINT);
-    console.log('general', process.env.REACT_APP_GENERAL_BACK_POINT);
-    console.log('check', (!!process.env.REACT_APP_IS_DEVELOPMENT) ? 'yes' : 'no');
-
 
     switchLocal(language);
     (async () => await check())().then((data) => {
