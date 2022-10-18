@@ -17,9 +17,11 @@ import IDashboardResponse from "../types/api/Dashboard/IDashboardResponse";
 import IExtendedArticle from "../types/IExtendedArticle";
 import INewsResponse from "../types/api/News/INewsResponse";
 
+const a = process.env.REACT_APP_IS_DEVELOPMENT ? process.env.REACT_APP_TEST_BACK_POINT : process.env.REACT_APP_GENERAL_BACK_POINT;
+
 export const _api = axios.create({
   //TODO: must be general link
-  baseURL: process.env.REACT_APP_IS_DEVELOPMENT ? process.env.REACT_APP_TEST_BACK_POINT : process.env.REACT_APP_GENERAL_BACK_POINT,
+  baseURL: a,
   withCredentials: true
 });
 
