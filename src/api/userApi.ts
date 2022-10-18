@@ -18,6 +18,7 @@ import IExtendedArticle from "../types/IExtendedArticle";
 import INewsResponse from "../types/api/News/INewsResponse";
 
 const a = process.env.REACT_APP_IS_DEVELOPMENT ? process.env.REACT_APP_TEST_BACK_POINT : process.env.REACT_APP_GENERAL_BACK_POINT;
+console.log('apiUrl', a);
 
 export const _api = axios.create({
   //TODO: must be general link
