@@ -8,33 +8,35 @@ export interface IUiInputProps {
   setValue: (value: string) => void
   helperText?: string
   error?: boolean
-  disabled?: boolean
+  disabled?: boolean,
+  type?: 'input' | 'textarea',
+  rows?: number,
 }
 
-const UiInput: FC<IUiInputProps> = ({
-                                      placeholder,
-                                      width,
-                                      value,
-                                      setValue,
-                                      helperText = '',
-                                      error = false,
-                                      disabled = false
-                                    }) => {
+const UiInput: FC<IUiInputProps> =
+  ({
+     placeholder, width,
+     value, setValue, helperText = '',
+     error = false, disabled = false,
+     type, rows
+   }) => {
 
-  return (
-    <TextField
-      disabled={disabled}
-      error={error}
-      helperText={helperText}
-      sx={{width: width, background: 'white'}}
-      value={value ?? ''}
-      size={'small'}
-      onChange={(e) => {
-        setValue(e.target.value)
-      }}
-      label={[placeholder]}
-    />
-  );
-}
+    return (
+      <TextField
+        disabled={disabled}
+        multiline={type === 'textarea'}
+        rows={type === 'textarea' ? rows : 1}
+        error={error}
+        helperText={helperText}
+        sx={{width: width, background: 'white'}}
+        value={value ?? ''}
+        size={'small'}
+        onChange={(e) => {
+          setValue(e.target.value)
+        }}
+        label={[placeholder]}
+      />
+    );
+  }
 
 export default UiInput;

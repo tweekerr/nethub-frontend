@@ -24,6 +24,7 @@ import {useDebounce} from "../../hooks/useDebounce";
 import useValidator from "../../hooks/useValidator";
 import useCustomSnackbar from "../../hooks/useCustomSnackbar";
 import {useActions} from "../../store/storeConfiguration";
+import {usernameDebounce} from '../../utils/debounceHelper';
 
 interface ISecondStep {
   isActive: boolean,
@@ -51,31 +52,14 @@ const Login = () => {
   const {subscribeValidator, validateAll, errors, setErrors} = useValidator<ILoginErrors>();
   const navigate = useNavigate();
 
-  const debounceValidator = async (username: string | null) => {
-    if (username === null || username === '') {
-      enqueueError('Невірно введене ім\'я користувача');
-      setErrors({...errors, username: true});
-      return false;
-    }
-
-    const isAvailable = await userApi.checkUsername(username);
-
-    if (!isAvailable) {
-      enqueueError('Ім\'я користувача вже використовується');
-      setErrors({...errors, username: true});
-      return false;
-    }
-
-    setErrors({...errors, username: false});
-    return true;
-  }
-  const debounce = useDebounce(debounceValidator, 1000);
+  const debounceLogic = async (username: string | null) => await usernameDebounce(username, setErrors, errors, enqueueError);
+  const debounce = useDebounce(debounceLogic, 1000);
 
   const validate = async () => {
     subscribeValidator({
       value: request.username,
       field: 'username',
-      validators: [isNotNullOrWhiteSpace, debounceValidator]
+      validators: [isNotNullOrWhiteSpace, debounceLogic]
     })
     subscribeValidator({
       value: request.firstName,
@@ -127,7 +111,6 @@ const Login = () => {
     } catch (e: any) {
       if (e.response.data.message.includes('already taken')) {
         enqueueError('Користувач з такою електронною адресою вже зареєстрований')
-        enqueueError('Ви можете добавити даний провайдер в себе в аккаунті')
       }
     }
   }
@@ -145,9 +128,11 @@ const Login = () => {
         </Grid>
       </StyledFirstStep>
       <Box margin={'10px'}></Box>
-      <StyledAccordion className={registrationStep.isActive ? classes.accordionActive : classes.accordionDisabled}
-                       disableGutters
-                       expanded={registrationStep.isActive} disabled={!registrationStep.isActive}>
+      <StyledAccordion
+        className={registrationStep.isActive ? classes.accordionActive : classes.accordionDisabled}
+        disableGutters
+        expanded={registrationStep.isActive} disabled={!registrationStep.isActive}
+      >
         <StyledAccordionSummary
           aria-controls="panel1a-content"
           id="panel1a-header"
@@ -156,32 +141,41 @@ const Login = () => {
         </StyledAccordionSummary>
         <StyledAccordionDetails>
           <StyledSecondStep>
-            <TitleInput title={'Username*'} placeholder={'Ім\'я користувача'} value={request.username}
-                        error={errors.username}
-                        setValue={(username: string) => {
-                          updateRequest('username', username);
-                          if (username !== null && username !== '')
-                            debounce(username)
-                        }}
-                        width={'100%'}/>
-            <TitleInput title={'Email*'} placeholder={'Електронна пошта'} value={request.email}
-                        error={errors.email}
-                        setValue={(email: string) => updateRequest('email', email)}
-                        width={'100%'}
-                        disabled={!registrationStep.enableEmail}
+            <TitleInput
+              title={'Username*'} placeholder={'Ім\'я користувача'} value={request.username}
+              error={errors.username}
+              setValue={(username: string) => {
+                updateRequest('username', username);
+                if (username !== null && username !== '')
+                  debounce(username)
+              }}
+              width={'100%'}
             />
-            <TitleInput title={'Firstname*'} placeholder={'Iм\'я'} value={request.firstName}
-                        error={errors.firstName}
-                        setValue={(firstname: string) => updateRequest('firstName', firstname)}
-                        width={'100%'}/>
-            <TitleInput title={'Lastname*'} placeholder={'Прізвище'} value={request.lastName}
-                        error={errors.lastName}
-                        setValue={(lastname: string) => updateRequest('lastName', lastname)}
-                        width={'100%'}/>
-            <TitleInput title={'Middlename'} placeholder={'По-батькові'} value={request.middleName}
-                        error={errors.middleName}
-                        setValue={(middlename: string) => updateRequest('middleName', middlename)}
-                        width={'100%'}/>
+            <TitleInput
+              title={'Email*'} placeholder={'Електронна пошта'} value={request.email}
+              error={errors.email}
+              setValue={(email: string) => updateRequest('email', email)}
+              width={'100%'}
+              disabled={!registrationStep.enableEmail}
+            />
+            <TitleInput
+              title={'Firstname*'} placeholder={'Iм\'я'} value={request.firstName}
+              error={errors.firstName}
+              setValue={(firstname: string) => updateRequest('firstName', firstname)}
+              width={'100%'}
+            />
+            <TitleInput
+              title={'Lastname*'} placeholder={'Прізвище'} value={request.lastName}
+              error={errors.lastName}
+              setValue={(lastname: string) => updateRequest('lastName', lastname)}
+              width={'100%'}
+            />
+            <TitleInput
+              title={'Middlename'} placeholder={'По-батькові'} value={request.middleName}
+              error={errors.middleName}
+              setValue={(middlename: string) => updateRequest('middleName', middlename)}
+              width={'100%'}
+            />
             <UiButton onClick={secondStep}>Зареєструватись</UiButton>
           </StyledSecondStep>
         </StyledAccordionDetails>

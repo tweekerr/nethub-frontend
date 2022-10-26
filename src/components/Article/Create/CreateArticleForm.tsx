@@ -1,10 +1,10 @@
-import React, {FC, forwardRef, ForwardRefRenderFunction, useImperativeHandle, useRef} from 'react';
+import React, {forwardRef, ForwardRefRenderFunction, useImperativeHandle, useRef} from 'react';
 import classes from './ArticleCreating.module.sass';
 import TitleInput from '../../basisComps/titleInput/TitleInput';
 import TinyInput from "./TinyInput";
 import ILocalization, {IArticleFormErrors} from "../../../types/ILocalization";
 import {ArticleStorage} from "../../../utils/localStorageProvider";
-import { FilledDiv } from '../../basisComps/Basic.styled';
+import {FilledDiv} from '../../basisComps/Basic.styled';
 
 interface IMainArticleProps {
   article: ILocalization,
@@ -17,7 +17,6 @@ interface IMainArticleHandle {
 }
 
 type TinyRef = React.ElementRef<typeof TinyInput>;
-
 
 const CreateArticleForm: ForwardRefRenderFunction<IMainArticleHandle, IMainArticleProps> =
   ({article, setArticleValue, errors}, ref) => {

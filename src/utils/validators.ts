@@ -15,5 +15,5 @@ export const arrayMinLength = (length: number) => (data: any[]) => {
 }
 
 export const regexTest = (regex: RegExp) => (text: string) => {
-  return regex.test(text);
+  return regex.test(text)
 }

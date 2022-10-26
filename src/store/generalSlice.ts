@@ -5,7 +5,8 @@ import {JWTStorage} from "../utils/localStorageProvider";
 
 export interface IReduxUser {
   username: string,
-  profilePhotoLink: string | null
+  profilePhotoLink: string | null,
+  firstName: string
 }
 
 interface IGeneralInitialState {
@@ -18,7 +19,7 @@ interface IGeneralInitialState {
 const initialState: IGeneralInitialState = {
   theme: 'light',
   isLogin: null,
-  user: {username: '', profilePhotoLink: null},
+  user: {username: '', profilePhotoLink: null, firstName: ''},
   language: Localizations.Ukrainian
 };
 
@@ -38,8 +39,8 @@ const generalSlice = createSlice({
       state.isLogin = false;
       state.user = {} as IReduxUser;
     },
-    updateProfileImage: (state, action: PayloadAction<string>) => {
-      state.user.profilePhotoLink = action.payload;
+    updateProfile: (state, action: PayloadAction<IReduxUser>) => {
+      state.user = action.payload;
     },
     setLanguage: (state, action: PayloadAction<ILanguage>) => {
       state.language = action.payload
