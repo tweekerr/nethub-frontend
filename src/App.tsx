@@ -28,15 +28,16 @@ function App() {
     (async () => await check())().then((data) => {
       if (data) {
         console.log('data', data)
-        login({username: data.username, profilePhotoLink: data.image})
+        login({username: data.username, profilePhotoLink: data.image, firstName: data.firstname})
       }
     })
 
   }, []);
 
   return (
-    <SnackbarProvider maxSnack={3} autoHideDuration={3000} preventDuplicate
-                      anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+    <SnackbarProvider
+      maxSnack={3} autoHideDuration={3000} preventDuplicate
+      anchorOrigin={{horizontal: 'right', vertical: 'top'}}
     >
       <ThemeProvider theme={themeOptions}>
         <AppRouter/>

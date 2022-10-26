@@ -8,11 +8,15 @@ const useCustomSnackbar = (variant?: VariantType) => {
     enqueueSnackbar(data, {variant: 'error'})
   }
 
+  function enqueueSuccess(data: any) {
+    enqueueSnackbar(data, {variant: 'success'})
+  }
+
   function enqueueSnackBar(data: any) {
     enqueueSnackbar(data, {variant})
   }
 
-  return {enqueueError, enqueueSnackBar}
+  return {enqueueError, enqueueSuccess, enqueueSnackBar}
 }
 
 export default useCustomSnackbar;

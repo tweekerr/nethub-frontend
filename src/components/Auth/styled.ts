@@ -52,7 +52,7 @@ export const StyledAccordion = styled(Accordion)({
 });
 
 export const StyledAccordionSummary = styled(AccordionSummary)({
-  padding: '0px 0px',
+  padding: 0,
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'flex-start',
@@ -61,7 +61,10 @@ export const StyledAccordionSummary = styled(AccordionSummary)({
   border: 'none',
   outline: 'none',
   height: "min-content",
-  width: '100%'
+  width: '100%',
+  '& .MuiAccordionSummary-content': {
+    margin: 0
+  }
 });
 
 export const StyledAccordionDetails = styled(AccordionDetails)({

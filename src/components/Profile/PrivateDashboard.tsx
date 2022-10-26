@@ -8,88 +8,105 @@ import IDashboardResponse from "../../types/api/Dashboard/IDashboardResponse";
 import millify from "millify";
 import UiButton from "../UI/button/UiButton";
 import SetImageModal from "./SetImageModal";
-import {useActions} from "../../store/storeConfiguration";
+import {ExtendedRequest, ProfileChangesType} from "./Profile";
+import {allowedImagesTypes} from "../../constants/dnd";
+import useCustomSnackbar from "../../hooks/useCustomSnackbar";
+import DashboardImage from "./DashboardImage";
+import {getTimeFrom} from "../../utils/timeHelper";
 
 
 interface IPrivateDashboardProps {
   user: IUserInfoResponse,
-  dashboard: IDashboardResponse
+  dashboard: IDashboardResponse,
+  addChanges: (change: ProfileChangesType) => void,
+  request: ExtendedRequest,
+  setRequest: (request: ExtendedRequest) => void,
 }
 
-const PrivateDashboard: FC<IPrivateDashboardProps> = ({user, dashboard}) => {
+const PrivateDashboard: FC<IPrivateDashboardProps> = ({user, dashboard, request, setRequest, addChanges}) => {
   const [isModalOpened, setIsModalOpened] = useState(false);
-  const [imageLink, setImageLink] = useState<{ value: string, needsToUpdate: boolean }>({
-    value: '',
-    needsToUpdate: false
-  })
-  const {updateProfileImage} = useActions();
-
+  const [imageLink, setImageLink] = useState<string>('')
+  const {enqueueError} = useCustomSnackbar();
 
   //handlerFunctions
-  const handleSetImageLink = (value: string) => setImageLink(prev => {
-    return {...prev, value}
-  });
+  const handleSetImageLink = (value: string) => setImageLink(value);
   const handleOpenModal = () => setIsModalOpened(true);
   const handleCloseModal = () => setIsModalOpened(false);
   const articlesCount = () => millify(dashboard!.articlesCount);
   const articlesViews = () => millify(dashboard!.articlesViews);
   const handleModalButton = () => {
-    setImageLink(prev => {
-      return {...prev, needsToUpdate: true}
-    })
-    // const link = await userApi.setUserImage(imageLink.value);
-    // updateProfileImage(link!)
+    user.profilePhotoLink !== imageLink && addChanges('photo');
+    setRequest({...request, image: imageLink});
+    setImageLink('');
+  }
+  const handleDrop = async (e: React.DragEvent<HTMLSpanElement>) => {
+    e.preventDefault();
+    const photo = e.dataTransfer.files[0];
+    if (!allowedImagesTypes.includes(photo.type)) {
+      enqueueError('Дозволені лише формати: jpg, jpeg, png');
+      return;
+    }
+    setIsModalOpened(false);
+    addChanges('photo');
+    setRequest({...request, image: photo});
   }
 
   return (
     <FilledDiv
       className={cl.dashboardWrapper}
-      sx={{justifyContent: dashboard!.articlesCount === 0 ? '' : 'space-between'}}>
-      <div className={cl.dashboardMainImage} onClick={handleOpenModal}>
-        <img src={user?.profilePhotoLink} alt={'damaged'}></img>
-        <SvgSelector id={'DriveFileRenameOutlineIcon'}/>
-      </div>
-      <SetImageModal isModalOpened={isModalOpened} closeModal={handleCloseModal} imageLink={imageLink.value}
-                     setImageLink={handleSetImageLink} onClick={handleModalButton}/>
-      {dashboard!.articlesCount === 0 ?
-        <div className={cl.dashboardEmpty}>
-          <Typography variant={'inherit'}>
-            Ви ще не опублікували жодної статті.
-          </Typography>
-          <div>
-            <UiButton backgroundColor={'white'} color={'#323232'} boldSize={500}
-              // padding={'11px 21px'}
-                      onClick={() => {
-                      }}>
-              Створити статтю
-              <SvgSelector id={'DriveFileRenameOutlineIcon'}/>
-            </UiButton>
-            <span>Як правильно писати статтю?</span>
-          </div>
+      sx={{justifyContent: dashboard!.articlesCount === 0 ? '' : 'space-between'}}
+    >
+      <DashboardImage openModal={handleOpenModal} handleDrop={handleDrop}/>
+      <SetImageModal
+        isModalOpened={isModalOpened} closeModal={handleCloseModal} imageLink={imageLink}
+        setImageLink={handleSetImageLink} onClick={handleModalButton} handleDrop={handleDrop}
+      />
+      <div className={cl.dashboardInfoWrapper}>
+        <div className={cl.dateBlock}>
+          <span>{getTimeFrom(user.registered)}</span> разом з NetHub
         </div>
-        :
-        <div className={cl.dashboardInfoWrapper}>
-          <div style={{width: articlesViews().length > 4 ? '50%' : '40%'}} className={cl.dashboardInfo}>
+        {dashboard!.articlesCount === 0 ?
+          <div className={cl.dashboardEmpty}>
             <Typography variant={'inherit'}>
-              Опубліковано:
+              Ви ще не опублікували жодної статті.
             </Typography>
             <div>
-              <Typography variant={'inherit'}>{articlesCount()}</Typography>
-              <Typography variant={'inherit'}>статтей</Typography>
+              <UiButton
+                backgroundColor={'white'} color={'#323232'} boldSize={500}
+                // padding={'11px 21px'}
+                onClick={() => {
+                }}
+              >
+                Створити статтю
+                <SvgSelector id={'DriveFileRenameOutlineIcon'}/>
+              </UiButton>
+              <span>Як правильно писати статтю?</span>
             </div>
           </div>
+          :
+          <div className={cl.filledDashboard}>
+            <div style={{width: articlesViews().length > 4 ? '50%' : '40%'}} className={cl.dashboardInfoBlock}>
+              <Typography variant={'inherit'}>
+                Опубліковано:
+              </Typography>
+              <div>
+                <Typography variant={'inherit'}>{articlesCount()}</Typography>
+                <Typography variant={'inherit'}>статтей</Typography>
+              </div>
+            </div>
 
-          <div style={{width: articlesViews().length > 5 ? '50%' : '40%'}} className={cl.dashboardInfo}>
-            <Typography variant={'inherit'}>
-              Статті зібрали:
-            </Typography>
-            <div>
-              <Typography variant={'inherit'}>{articlesViews()}</Typography>
-              <Typography variant={'inherit'}>переглядів</Typography>
+            <div style={{width: articlesViews().length > 5 ? '50%' : '40%'}} className={cl.dashboardInfoBlock}>
+              <Typography variant={'inherit'}>
+                Статті зібрали:
+              </Typography>
+              <div>
+                <Typography variant={'inherit'}>{articlesViews()}</Typography>
+                <Typography variant={'inherit'}>переглядів</Typography>
+              </div>
             </div>
           </div>
-        </div>
-      }
+        }
+      </div>
     </FilledDiv>
   );
 };

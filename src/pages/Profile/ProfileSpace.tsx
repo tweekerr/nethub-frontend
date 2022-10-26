@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Profile from "../../components/Profile/Profile";
 import Layout from "../../components/Layout/Layout";
 import {getPrivateDashboardInfo} from "../../components/Profile/Dashboard.functions";
@@ -6,15 +6,16 @@ import IUserInfoResponse from "../../types/api/User/IUserInfoResponse";
 import IDashboardResponse from "../../types/api/Dashboard/IDashboardResponse";
 import useLoading from "../../hooks/useLoading";
 import {Skeleton} from "@mui/material";
+import {useAppSelector} from "../../store/storeConfiguration";
 
 const ProfileSpace = () => {
   const [user, setUser] = useState<IUserInfoResponse>();
   const [dashboard, setDashboard] = useState<IDashboardResponse>();
   const {isLoading, startLoading, finishLoading, error, setError} = useLoading();
+  const {user: reduxUser} = useAppSelector(state => state.generalReducer);
 
   const titles = {
-    center: <h2 style={{display: 'flex'}}>Вітаю, {user ? user.firstName :
-      <Skeleton width={200} height={50} variant={'rounded'}/>}</h2>
+    center: <h2 style={{display: 'flex'}}>Вітаю, {reduxUser!.firstName}</h2>
   }
 
   useEffect(() => {
@@ -34,9 +35,7 @@ const ProfileSpace = () => {
       {
         error.isError ? <div>{error.message}</div> :
           isLoading ? <Skeleton variant={'rounded'} height={200}/> :
-            <>
-              <Profile user={user!} dashboard={dashboard!}/>
-            </>
+            <Profile user={user!} dashboard={dashboard!}/>
       }
     </Layout>
   );

@@ -15,6 +15,7 @@ import {RateVariants} from "../components/Article/Shared/ArticlesRateCounter";
 import IDashboardResponse from "../types/api/Dashboard/IDashboardResponse";
 import IExtendedArticle from "../types/IExtendedArticle";
 import INewsResponse from "../types/api/News/INewsResponse";
+import IUpdateProfileRequest from "../types/api/Profile/IUpdateProfileRequest";
 
 export const _api = axios.create({
   //TODO: must be general link
@@ -141,11 +142,11 @@ export const userApi = {
   },
   authenticate: async (request: ISsoRequest): Promise<IReduxUser> => {
     const response: AxiosResponse<IAuthResult> = await _api.post('/user/sso', request);
-    const {profilePhotoLink, username} = response.data;
+    const {profilePhotoLink, username, firstName} = response.data;
     JWTStorage.setTokensData(response.data);
 
     console.log('response', response.data)
-    return {username, profilePhotoLink: profilePhotoLink}
+    return {username, profilePhotoLink, firstName}
   },
   checkIfExists: async (key: string, provider: ProviderType): Promise<ICheckEmailResponse> => {
     const response: AxiosResponse<ICheckEmailResponse> = await _api.post('/user/check-user-exists', {key, provider})
@@ -155,7 +156,7 @@ export const userApi = {
     const response: AxiosResponse<ICheckUsernameResponse> = await _api.post('/user/check-username', {username})
     return response.data.isAvailable;
   },
-  checkAuth: async (): Promise<boolean> => {
+  refresh: async (): Promise<boolean> => {
     try {
       const response: AxiosResponse<IAuthResult> = await _api.post('user/refresh-tokens', {refreshToken: JWTStorage.getRefreshToken()});
       JWTStorage.setTokensData(response.data)
@@ -172,12 +173,27 @@ export const userApi = {
     const result: AxiosResponse<IDashboardResponse> = await _api.get('user/me/dashboard')
     return result.data
   },
-  setUserImage: async (link?: string) => {
-    if (!link) return
-
-    let url = 'user/profile-photo'
-    if (link) url += `?link=${link}`
-    const response: AxiosResponse<{ link: string }> = await _api.post(url);
-    return response.data.link;
+  setUserImage: async (photo: string | File) => {
+    const url = 'user/profile-photo'
+    if (typeof (photo) === 'string') {
+      const response: AxiosResponse<{ link: string }> = await _api.post(url + '?link=' + photo);
+      return response.data.link;
+    } else {
+      const data = new FormData();
+      data.append('file', photo);
+      const response: AxiosResponse<{ link: string }> = await _api.post(
+        url,
+        data,
+        {
+          headers: {'Content-Type': 'multipart/form-data'}
+        });
+      return response.data.link;
+    }
+  },
+  updateUserProfile: async (request: IUpdateProfileRequest) => {
+    await _api.put('user/profile', request);
+  },
+  updateUserName: async (username: string) => {
+    await _api.put('user/username', {username});
   }
 };

@@ -10,7 +10,7 @@ export async function check() {
     // login({username: data.username, profilePhotoLink: data.image})
   } else if (isAccessTokenExpired()) {
     if (!isRefreshTokenExpired()) {
-      if (await userApi.checkAuth()) {
+      if (await userApi.refresh()) {
         return jwtDecode<IJwtPayload>(JWTStorage.getAccessToken()!);
         // login({username: data.username, profilePhotoLink: data.image})
       }
