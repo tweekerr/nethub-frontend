@@ -1,76 +1,74 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import Layout from '../../Layout/Layout';
 import ArticleBody from "./Body/ArticleBody";
 import CommentsWidget from "../../Shared/CommentsWidget";
 import cl from './ArticleSpace.module.sass'
 import ArticleInfo from "./ArticleInfo";
-import useLoading from "../../../hooks/useLoading";
 import {useParams} from "react-router-dom";
 import ArticleBodySkeleton from "./Body/ArticleBodySkeleton";
-import IArticleLocalizationResponse, {IContributor} from "../../../types/api/Article/IArticleLocalizationResponse";
-import IArticleResponse from "../../../types/api/Article/IArticleResponse";
-import {loadArticleInfo} from "./ArticleSpace.functions";
-import IUserInfoResponse from "../../../types/api/User/IUserInfoResponse";
+import IArticleLocalizationResponse from "../../../types/api/Article/IArticleLocalizationResponse";
 import {RateVariants} from "../Shared/ArticlesRateCounter";
-import {isAuthorized} from "../../../utils/JwtHelper";
+import {useQuery, useQueryClient} from "react-query";
+import {useAppSelector} from "../../../store/storeConfiguration";
+import {Skeleton} from '@mui/material';
+import {getArticle, getArticleActions, getLocalization,} from "./ArticleSpace.functions";
 
 
 const ArticleSpace = () => {
-  const {isLoading, startLoading, finishLoading, error, setError} = useLoading();
-  const {id, code} = useParams();
-  const [article, setArticle] = useState<IArticleResponse>({tags: [] as string[]} as IArticleResponse);
-  const [localization, setLocalization] = useState<IArticleLocalizationResponse>({
-    contributors: [] as IContributor[]
-  } as IArticleLocalizationResponse);
-  const [contributors, setContributors] = useState<IUserInfoResponse[]>([])
-  const [userActions, setUserActions] = useState<{ isSaved: boolean, rate: RateVariants }>({
-    isSaved: false,
-    rate: 'none'
-  })
-  const handleSetRate = (value: number) => setArticle({...article, rate: value});
-
-  useEffect(() => {
-      startLoading();
-      loadArticleInfo(id!, code!, !!isAuthorized())
-        .then(({article, localization, users, isSaved, rating}) => {
-          setArticle(article);
-          setLocalization(localization);
-          setContributors(users)
-          if (!!isAuthorized()) {
-            setUserActions({isSaved: isSaved!, rate: rating!});
+    const queryClient = useQueryClient();
+    const {id, code} = useParams();
+    const {isLogin} = useAppSelector(state => state.generalReducer);
+    const article = useQuery(['article', id], () => getArticle(id!), {staleTime: 50000});
+    const localization = useQuery<IArticleLocalizationResponse, any>(['articleLocalization', id, code], () => getLocalization(id!, code!),
+      {
+        staleTime: 50000,
+        onSuccess: async () => {
+          if (isLogin) {
+            setUserActions(await getArticleActions(id!, code!))
           }
-        })
-        .catch(e => {
-          setError(true, 'Дана стаття ще пишеться :)')
-        })
-        .finally(() =>
-          finishLoading()
-        )
-    }, [id, code]
-  )
-
-  return (
-    <Layout
-      rightBar={
-        <ArticleInfo error={error}
-                     article={article}
-                     localization={localization}
-                     contributors={contributors}
-                     isLoading={isLoading}
-        />}
-    >
-
-      <div className={cl.layoutBody}>
-        {
-          error.isError ? <div>{error.message}</div> :
-            isLoading ? <ArticleBodySkeleton/> :
-              <ArticleBody localization={localization} contributors={contributors} tags={article.tags}
-                           userActions={userActions} rate={{current: article.rate, setCurrent: handleSetRate}}/>
         }
-        {!error.isError && <CommentsWidget display={!isLoading} deps={[id, code]}/>}
-      </div>
-    </Layout>
-  );
-};
+      });
+
+    const [userActions, setUserActions] = useState<{ isSaved: boolean, rate: RateVariants }>({
+      isSaved: false,
+      rate: 'none'
+    })
+
+    const handleSetRate = (value: number) => queryClient.setQueryData(['article', id], {...article, rate: value});
+
+    if (localization.isError || article.isError) {
+      if (localization.error?.message === 'No such article localization') {
+        return <Layout><p>Дана стаття ще пишеться :)</p></Layout>
+      }
+      return <Layout><p>{localization.error?.message}</p></Layout>
+    }
+
+    return (
+      <Layout
+        rightBar={
+          (localization.isLoading || article.isLoading)
+            ? <Skeleton variant={'rounded'} width={'100%'} height={200}/>
+            : <ArticleInfo
+              isError={localization.isError}
+              article={article.data!}
+              localization={localization.data!}
+              isLoading={localization.isLoading}
+            />}
+      >
+
+        <div className={cl.layoutBody}>
+          {
+            localization.isLoading || article.isLoading ? <ArticleBodySkeleton/> :
+              <ArticleBody
+                localization={localization.data!} tags={article.data!.tags}
+                userActions={userActions} rate={{current: article.data!.rate, setCurrent: handleSetRate}}
+              />
+          }
+          {<CommentsWidget display={!(localization.isLoading || article.isLoading)} deps={[id, code]}/>}
+        </div>
+      </Layout>
+    );
+  }
+;
 
 export default ArticleSpace;

@@ -1,27 +1,29 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC} from 'react';
 import {FilledDiv} from '../../basisComps/Basic.styled';
 import SvgSelector from "../../basisComps/SvgSelector/SvgSelector";
 import cl from './ArticleSpace.module.sass'
 import {Skeleton} from "@mui/material";
 import IArticleLocalizationResponse from "../../../types/api/Article/IArticleLocalizationResponse";
 import IArticleResponse from "../../../types/api/Article/IArticleResponse";
-import IUserInfoResponse from "../../../types/api/User/IUserInfoResponse";
 import {createImageFromInitials} from "../../../utils/logoGenerator";
-import {getContributorRole} from "./ArticleSpace.functions";
+import {getArticleContributors, getContributorRole} from "./ArticleSpace.functions";
 import {useNavigate} from "react-router-dom";
-import useLoading, {IError} from "../../../hooks/useLoading";
+import {useQuery} from "react-query";
+import ContributorsSkeleton from "./ContributorsSkeleton";
 
 interface IArticleInfoProps {
   article: IArticleResponse,
   localization: IArticleLocalizationResponse,
-  error: IError,
+  isError: boolean,
   isLoading: boolean,
-  contributors: IUserInfoResponse[]
 }
 
-const ArticleInfo: FC<IArticleInfoProps> = ({article, localization, error, isLoading, contributors}) => {
+const ArticleInfo: FC<IArticleInfoProps> = ({article, localization, isError, isLoading}) => {
 
   const navigate = useNavigate();
+
+  const contributors = useQuery(['contributors', localization.articleId, localization.languageCode],
+    () => getArticleContributors(localization.contributors), {staleTime: 50000});
 
   const getDomain = (link: string) => {
     const url = new URL(link);
@@ -30,7 +32,7 @@ const ArticleInfo: FC<IArticleInfoProps> = ({article, localization, error, isLoa
   }
 
   return (
-    error.isError ? <></> :
+    isError ? <></> :
       <div className={cl.articleInfo}>
         {
           isLoading ? <Skeleton height={75} variant='rounded' className={cl.infoBlock}/> :
@@ -38,9 +40,11 @@ const ArticleInfo: FC<IArticleInfoProps> = ({article, localization, error, isLoa
               <p className={cl.infoBlockTitle}>Переклади</p>
               <div className={cl.translates}>
                 {article.localizations?.map(localization =>
-                  <FilledDiv onClick={() => navigate(`/article/${localization.articleId}/${localization.languageCode}`)}
-                             key={localization.languageCode} background={'#896DC8'} borderRadius={'10px'}
-                             padding={'5px 16px'}>
+                  <FilledDiv
+                    onClick={() => navigate(`/article/${localization.articleId}/${localization.languageCode}`)}
+                    key={localization.languageCode} background={'#896DC8'} borderRadius={'10px'}
+                    padding={'5px 16px'}
+                  >
                     {localization.languageCode.toUpperCase()}
                     <SvgSelector id={localization.languageCode}/>
                   </FilledDiv>
@@ -54,9 +58,11 @@ const ArticleInfo: FC<IArticleInfoProps> = ({article, localization, error, isLoa
             <FilledDiv className={cl.infoBlock}>
               <p className={cl.infoBlockTitle}>Автори</p>
               <div className={cl.contributors}>
-                {contributors.map(author =>
-                  <FilledDiv key={author.id} className={cl.contributor} background={'#896DC8'} borderRadius={'10px'}
-                             padding={'6px 15px'}>
+                {contributors.isLoading ? <ContributorsSkeleton/> : contributors.data!.map(author =>
+                  <FilledDiv
+                    key={author.id} className={cl.contributor} background={'#896DC8'} borderRadius={'10px'}
+                    padding={'6px 15px'}
+                  >
                     <div className={cl.role}>
                       <p>{getContributorRole(localization.contributors, author.id)}</p>
                       <p>{author.userName}</p>

@@ -1,16 +1,14 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import ArticlesThread from '../../../components/Article/Thread/ArticlesThread';
-import NewsSpace from '../../../components/mainSpace/news/NewsSpace';
 import Layout from '../../../components/Layout/Layout';
 import {useTranslation} from "react-i18next";
 import ArticlesThreadTitle from "../../../components/Article/Thread/ArticlesThreadTitle";
 import {loadLocalizations} from "../../../components/Article/Thread/ArticlesThreadSpace.functions";
-import useLoading from "../../../hooks/useLoading";
 import IExtendedArticle from "../../../types/IExtendedArticle";
 import ArticlesThreadSpaceSkeleton from "../../../components/Article/Thread/ArticlesThreadSpaceSkeleton";
 import {UkrainianLanguage} from "../../../utils/constants";
-import {isAuthorized} from "../../../utils/JwtHelper";
-
+import {useQuery, useQueryClient} from "react-query";
+import {useAppSelector} from "../../../store/storeConfiguration";
 
 const ArticlesThreadSpace = () => {
   const [articlesLanguage, setArticlesLanguage] = useState<string>(localStorage.getItem('articlesLanguage') ?? UkrainianLanguage);
@@ -20,8 +18,16 @@ const ArticlesThreadSpace = () => {
     localStorage.setItem('articlesLanguage', value);
     setArticlesLanguage(value);
   }
-  const handleSetArticles = (articles: IExtendedArticle[]) => setArticles(articles);
 
+  const {isLogin} = useAppSelector(state => state.generalReducer);
+
+  const queryClient = useQueryClient();
+  const articles = useQuery<IExtendedArticle[], string>(['articles', articlesLanguage, isLogin],
+    () => loadLocalizations(articlesLanguage));
+
+  const handleSetArticles = (newArticles: IExtendedArticle[]) => {
+    queryClient.setQueryData(['articles', articlesLanguage, isLogin], newArticles);
+  }
 
   const titles = {
     center:
@@ -30,37 +36,20 @@ const ArticlesThreadSpace = () => {
         setArticlesLanguage={handleSetArticlesLanguage}
         options={languages}
       />,
-    // right: <h2>{t('news')}</h2>
   }
 
-
-  const {startLoading, finishLoading, isLoading, error, setError} = useLoading();
-
-  const [articles, setArticles] = useState<IExtendedArticle[]>([]);
-
-  useEffect(() => {
-    startLoading();
-    loadLocalizations(articlesLanguage)
-      .then(({articles}) => {
-        setArticles(articles);
-      })
-      .catch(e => {
-        setError(e);
-      })
-      .finally(() => {
-        finishLoading();
-      })
-  }, [articlesLanguage, isAuthorized()]);
-
+  if (articles.isError) return <div>{articles.error}</div>
 
   return (
-    <Layout titles={titles}
-      // rightBar={<NewsSpace/>}
+    <Layout
+      titles={titles}
     >
       {
-        error.isError ? <div>{error.message}</div> :
-          isLoading ? <ArticlesThreadSpaceSkeleton/> :
-            <ArticlesThread articles={articles} setArticles={handleSetArticles}/>
+        articles.isLoading ? <ArticlesThreadSpaceSkeleton/> :
+          <ArticlesThread
+            articles={articles.data!}
+            setArticles={handleSetArticles}
+          />
       }
     </Layout>
   );
