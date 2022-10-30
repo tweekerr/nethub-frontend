@@ -1,8 +1,7 @@
 import React from 'react';
 import Layout from "../../components/Layout/Layout";
-import UserLibrary, {ILibraryItem} from "../../components/Library/UserLibrary";
+import {ILibraryItem} from "../../components/Library/UserLibrary";
 import SavedArticles from "../../components/Article/Saved/SavedArticles";
-import ArticlesThread from "../../components/Article/Thread/ArticlesThread";
 import ArticlesThreadSpace from "../Articles/Thread/ArticlesThreadSpace";
 
 const ByYouSpace = () => {

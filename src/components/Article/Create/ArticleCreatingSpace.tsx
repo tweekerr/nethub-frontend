@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import ArticleSettings from './ArticleSettings';
 import Layout from "../../Layout/Layout";
 import CreateArticleForm from "./CreateArticleForm";
@@ -11,7 +11,7 @@ import useCustomSnackbar from "../../../hooks/useCustomSnackbar";
 import {ArticleStorage} from "../../../utils/localStorageProvider";
 import {useParams} from "react-router-dom";
 import {articlesApi} from "../../../api/userApi";
-import useLoading from "../../../hooks/useLoading";
+import {useMutation, useQuery} from 'react-query';
 
 type CreateArticleFormRef = React.ElementRef<typeof CreateArticleForm>
 
@@ -30,22 +30,9 @@ const ArticleCreatingSpace = () => {
     tags: ArticleStorage.getTags() ? JSON.parse(ArticleStorage.getTags()!) : [] as string[],
   } as ILocalization;
 
-  const {error, setError, startLoading, finishLoading} = useLoading();
-
-  const [images, setImages] = useState<string[]>([]);
   const {id} = useParams();
-
-  useEffect(() => {
-    if (id) {
-      const loadImages = async () => {
-        return await articlesApi.getArticleImages()
-      };
-
-      loadImages().then(response => {
-        setImages(response)
-      })
-    }
-  }, [])
+  const images = useQuery('articleImages', () => articlesApi.getArticleImages(), {enabled: !!id});
+  const createMutation = useMutation('createArticle', () => createArticle());
 
   const [article, setArticle] = useState<ILocalization>(defaultState)
 
@@ -103,27 +90,12 @@ const ArticleCreatingSpace = () => {
 
     if (!await validateArticleForm()) return;
 
-    startLoading();
-    (async () => {
-      const articleId = await createArticleFormRef
-        .current?.getTinyRef()
-        .current?.saveImages(null);
+    const articleId = await createArticleFormRef
+      .current?.getTinyRef()
+      .current?.saveImages(null);
 
-      await articlesApi.createLocalization(articleId!, 'ua', article)
-    })().then(() => {
-    })
-      .catch((e) => {
-        setError(true);
-        enqueueError(e.message)
-      })
-      .finally(() => {
-        finishLoading()
-        if (!error.isError) {
-          ArticleStorage.clearArticleData()
-          setArticle(defaultState);
-        }
-        // console.log(article)
-      })
+    await articlesApi.createLocalization(articleId!, 'ua', article)
+    ArticleStorage.clearArticleData()
   };
 
 
@@ -131,15 +103,16 @@ const ArticleCreatingSpace = () => {
     <Layout
       titles={titles}
       rightBar={
-      <ArticleSettings
-        article={article}
-        setArticle={updateArticle}
-        errors={errors}
-        setError={setTagsError}
-        createArticle={createArticle}
-        images={images}
-      />
-    }>
+        <ArticleSettings
+          article={article}
+          setArticle={updateArticle}
+          errors={errors}
+          setError={setTagsError}
+          createArticle={createMutation.mutateAsync}
+          images={images.data ?? []}
+        />
+      }
+    >
       <CreateArticleForm
         article={article}
         setArticleValue={setArticleValue}

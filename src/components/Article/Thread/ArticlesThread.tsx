@@ -4,6 +4,8 @@ import ArticleShort from '../Shared/ArticleShort';
 import {Skeleton} from "@mui/material";
 import {articlesApi} from "../../../api/userApi";
 import IExtendedArticle from "../../../types/IExtendedArticle";
+import {useQueryClient} from "react-query";
+import {useAppSelector} from "../../../store/storeConfiguration";
 
 interface IArticlesThreadProps {
   articles: IExtendedArticle[],
@@ -12,12 +14,18 @@ interface IArticlesThreadProps {
 
 const ArticlesThread: FC<IArticlesThreadProps> = ({articles, setArticles}) => {
 
-  const handleSaving = (id: number, code: string) => async () => await articlesApi.toggleSavingLocalization(id, code);
+  const queryClient = useQueryClient();
+
+  const handleSaving = (localization: IExtendedArticle) => async () => {
+    await articlesApi.toggleSavingLocalization(localization.articleId, localization.languageCode);
+    await queryClient.invalidateQueries('savedArticles');
+    setArticles(articles.map((a) => a.localizationId === localization.localizationId
+      ? {...a, isSaved: !a.isSaved} : a));
+  }
+
   const handleSetRate = (localization: IExtendedArticle) => (value: number) => {
     setArticles(articles.map((a) => a.localizationId === localization.localizationId ? {...a, rate: value} : a));
   }
-
-  console.log(articles, 'articles')
 
 
   return (
@@ -28,7 +36,7 @@ const ArticlesThread: FC<IArticlesThreadProps> = ({articles, setArticles}) => {
             key={item.localizationId}
             localization={item}
             setRate={handleSetRate(item)}
-            save={{actual: item.isSaved ?? false, handle: handleSaving(item.articleId, item.languageCode)}}
+            save={{actual: item.isSaved ?? false, handle: handleSaving(item)}}
             timeShow={'published'}
           />
         )) : <Skeleton height={'100px'}/>}

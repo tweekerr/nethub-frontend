@@ -11,7 +11,7 @@ import { FilledDiv } from '../../basisComps/Basic.styled';
 interface IArticleSettingsProps {
   article: ILocalization,
   setArticle: (article: ILocalization) => void,
-  createArticle: () => void
+  createArticle: () => Promise<void>,
   errors: IArticleFormErrors,
   setError: (flag: boolean) => void;
   images: string[]
