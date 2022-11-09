@@ -1,11 +1,10 @@
-import React, {FC, useEffect, useLayoutEffect, useRef, useState} from 'react';
+import React, {FC, useLayoutEffect, useRef, useState} from 'react';
 import Menu from "./Menu/Menu";
 import {ILayoutProps} from "./Layout";
 import BarWrapper from "./BarWrapper";
 import cl from './Layout.module.sass'
 import {Box} from "@chakra-ui/react";
 import AnimateHeight from 'react-animate-height';
-import ErrorBlock from "../Article/Shared/ErrorBlock";
 import ErrorBoundary from "./ErrorBoundary";
 
 
@@ -70,7 +69,7 @@ const Body: FC<Omit<ILayoutProps, 'showHeader' | 'showFooter'>> =
             </ErrorBoundary>
           </Box>
 
-          {/*side-bar*/}
+          {/*sidebar*/}
           <BarWrapper className={cl.right}>
             <ErrorBoundary config={rightBar?.error}>
               {rightBar?.children ?? null}

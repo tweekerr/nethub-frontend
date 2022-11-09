@@ -81,9 +81,9 @@ export const articlesApi = {
   getArticleImages: async () => {
     return ['https://upload.wikimedia.org/wikipedia/commons/e/ed/Gibson_Les_Paul%28sg%29_1962.jpg', 'https://ru.wargaming.net/clans/media/clans/emblems/cl_1/1/emblem_195x195.png', 'https://ru-wotp.wgcdn.co/dcont/fb/image/wgfest_ps__006.jpg']
   },
-  addImagesToArticle: (id: string, formdata: FormData) => {
+  addImagesToArticle: (id: string, formData: FormData) => {
     return _api
-      .post(`/articles/${id}/images`, formdata)
+      .post(`/articles/${id}/images`, formData)
       .then((res) => res.data);
   },
   getArticles: async (code: string) => {

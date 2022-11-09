@@ -29,9 +29,3 @@ declare global {
     };
   }
 }
-
-declare global {
-  interface UserCredential {
-    _tokenResponse: any
-  }
-}

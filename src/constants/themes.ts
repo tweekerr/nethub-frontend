@@ -73,10 +73,6 @@ const components = {
   FilledDiv: FilledDivConfig,
 };
 
-const fonts = {
-  heading: "'M PLUS Rounded 1c'"
-};
-
 const colors = {
   violetLight: '#F3EEFF',
   purpleLight: '#896DC8',
@@ -96,7 +92,6 @@ const theme = extendTheme({
   styles,
   components,
   colors,
-  // fonts
 });
 
 export default theme;

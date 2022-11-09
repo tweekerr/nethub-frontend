@@ -1,7 +1,6 @@
 import React, {FC} from 'react';
 import {IExchangesResponse} from "../../types/api/Currency/ICurrencyResponse";
 import {Box, Text, useColorModeValue} from "@chakra-ui/react";
-import SvgSelector from "../basisComps/SvgSelector/SvgSelector";
 import CurrencyRow from "./CurrencyRow";
 import CurrencyUsd from "../UI/icons/CurrencyUsd";
 import CurrencyEuro from "../UI/icons/CurrencyEuro";

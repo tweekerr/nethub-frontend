@@ -12,19 +12,6 @@ export default interface IArticleLocalizationResponse {
   rate: number
 }
 
-export interface ISavedLocalization {
-  userId: number,
-  articleId: number,
-  languageCode: string,
-  title: string,
-  description: string,
-  savedDate: string,
-  views: number,
-  status: string
-  rate: number,
-  vote?: 'up' | 'down'
-}
-
 export interface IContributor {
   role: 'author' | 'editor',
   userId: number

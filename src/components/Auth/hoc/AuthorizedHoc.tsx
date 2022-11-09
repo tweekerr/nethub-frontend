@@ -6,11 +6,10 @@ import {isAuthorized} from '../../../utils/JwtHelper';
 interface IAuthorizedProps {
   children: JSX.Element,
   redirectTo?: string,
-  checkAuth?: boolean
 }
 
 
-const AuthorizedHoc = ({children, redirectTo = '/login', checkAuth = true}: IAuthorizedProps) => {
+const AuthorizedHoc = ({children, redirectTo = '/login'}: IAuthorizedProps) => {
   const [isLogin, setIsLogin] = useState<boolean | null>(null);
 
   useEffect(() => {

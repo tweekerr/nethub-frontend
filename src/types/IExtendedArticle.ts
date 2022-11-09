@@ -1,5 +1,3 @@
-import {DateTime} from "luxon";
-
 export default interface IExtendedArticle {
   // [key: string]: any,
   userId?: number,

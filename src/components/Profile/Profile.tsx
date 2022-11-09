@@ -1,10 +1,9 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useState} from 'react';
 import cl from './Profile.module.sass'
 import PrivateDashboard from "./PrivateDashboard";
 import SvgSelector from "../basisComps/SvgSelector/SvgSelector";
 import IUserInfoResponse from "../../types/api/User/IUserInfoResponse";
 import IDashboardResponse from "../../types/api/Dashboard/IDashboardResponse";
-import UiButton from "../UI/button/UiButton";
 import {useNavigate} from "react-router-dom";
 import ProfileSettings from "./ProfileSettings";
 import IUpdateProfileRequest from "../../types/api/Profile/IUpdateProfileRequest";

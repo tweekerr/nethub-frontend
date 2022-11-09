@@ -4,7 +4,6 @@ import cl from './Profile.module.sass'
 import SvgSelector from "../basisComps/SvgSelector/SvgSelector";
 import IDashboardResponse from "../../types/api/Dashboard/IDashboardResponse";
 import millify from "millify";
-import UiButton from "../UI/button/UiButton";
 import SetImageModal from "./SetImageModal";
 import {ExtendedRequest, ProfileChangesType} from "./Profile";
 import {allowedImagesTypes} from "../../constants/dnd";
@@ -12,7 +11,7 @@ import useCustomSnackbar from "../../hooks/useCustomSnackbar";
 import DashboardImage from "./DashboardImage";
 import {getTimeFrom} from "../../utils/timeHelper";
 import FilledDiv from "../UI/FilledDiv";
-import {Text} from '@chakra-ui/react';
+import {Button, Text} from '@chakra-ui/react';
 
 
 interface IPrivateDashboardProps {
@@ -71,15 +70,15 @@ const PrivateDashboard: FC<IPrivateDashboardProps> = ({user, dashboard, request,
               Ви ще не опублікували жодної статті.
             </Text>
             <div>
-              <UiButton
-                backgroundColor={'white'} color={'#323232'} boldSize={500}
+              <Button
+                backgroundColor={'white'} color={'#323232'} fontWeight={500}
                 // padding={'11px 21px'}
                 onClick={() => {
                 }}
               >
                 Створити статтю
                 <SvgSelector id={'DriveFileRenameOutlineIcon'}/>
-              </UiButton>
+              </Button>
               <span>Як правильно писати статтю?</span>
             </div>
           </div>

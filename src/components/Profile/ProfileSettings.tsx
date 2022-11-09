@@ -3,7 +3,6 @@ import TitleInput from "../basisComps/titleInput/TitleInput";
 import useValidator from "../../hooks/useValidator";
 import SvgSelector from "../basisComps/SvgSelector/SvgSelector";
 import cl from './Profile.module.sass'
-import './ProfileStyles.css'
 import {ProfileChangesType} from "./Profile";
 import {useDebounce} from "../../hooks/useDebounce";
 import useCustomSnackbar from "../../hooks/useCustomSnackbar";

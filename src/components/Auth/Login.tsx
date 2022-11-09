@@ -3,7 +3,6 @@ import GoogleAuthButton from "./Buttons/GoogleAuthButton";
 import TelegramAuthButton from "./Buttons/TelegramAuthButton";
 import TitleInput from "../basisComps/titleInput/TitleInput";
 import ISsoRequest from "../../types/api/Sso/ISsoRequest";
-import UiButton from "../UI/button/UiButton";
 import {userApi} from "../../api/api";
 import {useNavigate} from "react-router-dom";
 import FacebookAuthButton from "./Buttons/FacebookAuthButton";
@@ -21,6 +20,7 @@ import {
   AccordionItem,
   AccordionPanel,
   Box,
+  Button,
   Text,
   useColorModeValue
 } from "@chakra-ui/react";
@@ -172,7 +172,7 @@ const Login = () => {
               onChange={(e) => updateRequest('middleName', e.target.value)}
               width={'100%'}
             />
-            <UiButton onClick={secondStep}>Зареєструватись</UiButton>
+            <Button onClick={secondStep}>Зареєструватись</Button>
           </AccordionPanel>
         </AccordionItem>
       </Accordion>

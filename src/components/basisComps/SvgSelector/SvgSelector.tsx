@@ -12,7 +12,7 @@ interface ISvgSelectorProps extends SVGProps<any> {
 }
 
 const SvgSelector: FC<ISvgSelectorProps> = (props) => {
-  const {id, className, ...rest} = props;
+  const {id, className} = props;
 
   switch (id) {
     case "LightLogo":

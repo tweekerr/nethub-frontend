@@ -4,7 +4,6 @@ import {useActions, useAppSelector} from './store/storeConfiguration';
 import React, {useEffect, useState} from 'react';
 import {switchLocal} from "./utils/localization";
 import AppRouter from './components/AppRouter';
-import './App.module.css';
 import './i18n'
 import {SnackbarProvider} from 'notistack';
 import {check} from "./App.functions";

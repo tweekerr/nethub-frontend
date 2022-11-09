@@ -7,11 +7,11 @@ import ProfileSpace from "../pages/Profile/ProfileSpace";
 
 interface IPath {
   path: string,
-  component: () => JSX.Element,
+  Component: () => JSX.Element,
   authorized: boolean
 }
 
-export const paths = [
+export const paths: IPath[] = [
   {
     path: '/',
     Component: ArticlesThreadSpace,
