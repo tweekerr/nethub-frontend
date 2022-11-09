@@ -2,7 +2,7 @@ import {JWTStorage} from "./utils/localStorageProvider";
 import {isAccessTokenExpired, isAuthorized, isRefreshTokenExpired} from "./utils/JwtHelper";
 import jwtDecode from "jwt-decode";
 import IJwtPayload from "./types/IJwtPayload";
-import {userApi} from "./api/userApi";
+import {userApi} from "./api/api";
 
 export async function check() {
   if (isAuthorized()) {

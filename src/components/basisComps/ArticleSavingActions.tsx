@@ -1,10 +1,10 @@
 import React, {FC} from 'react';
-import {FilledDiv} from "./Basic.styled";
 import cl from "./ВasicComps.module.sass";
 import IconButton from "../UI/iconButton/IconButton";
-import {isAuthorized} from "../../utils/JwtHelper";
 import useCustomSnackbar from "../../hooks/useCustomSnackbar";
 import {useQueryClient} from "react-query";
+import FilledDiv from '../UI/FilledDiv';
+import {useColorModeValue} from "@chakra-ui/react";
 
 interface ISavingActionsProps {
   isSavedDefault: boolean,
@@ -21,7 +21,6 @@ const ArticleSavingActions: FC<ISavingActionsProps> = ({isSavedDefault, onSave, 
     e.stopPropagation()
     await onSave();
     await queryClient.invalidateQueries('articles');
-    await queryClient.invalidateQueries('savedArticles');
   }
 
   function copyToClipboard(e: React.MouseEvent) {
@@ -31,10 +30,14 @@ const ArticleSavingActions: FC<ISavingActionsProps> = ({isSavedDefault, onSave, 
       .catch(() => enqueueError('Помилка копіювання'))
   }
 
+  const blockColor = useColorModeValue('#FFFFFF', '#EFEFEF');
+
   return (
     <FilledDiv
       onClick={(e) => e.stopPropagation()} background={'white'} className={cl.actionsRight}
       padding={'4px 13px'}
+      width={'fit-content'}
+      bg={blockColor}
     >
       <IconButton iconId={'ExternalLink'} checkAuth={false} onClick={copyToClipboard}/>
       <IconButton

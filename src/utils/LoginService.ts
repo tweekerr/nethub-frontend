@@ -7,25 +7,14 @@ import {ProviderType} from "../types/ProviderType";
 
 export default class LoginService {
   static async ProviderHandle(provider: ProviderType): Promise<ISsoRequest> {
-    let providerResult: ISsoRequest = {} as ISsoRequest;
-    let usedProvider: ProviderType;
-
     switch (provider) {
       case ProviderType.GOOGLE:
-        providerResult = await LoginService.googleHandle();
-        usedProvider = ProviderType.GOOGLE;
-        break;
+        return await LoginService.googleHandle();
       case ProviderType.TELEGRAM:
-        providerResult = await LoginService.telegramHandle()
-        usedProvider = ProviderType.TELEGRAM;
-        break;
+        return await LoginService.telegramHandle()
       case ProviderType.FACEBOOK:
-        providerResult = await LoginService.facebookHandle()
-        usedProvider = ProviderType.FACEBOOK
-        break;
+        return await LoginService.facebookHandle()
     }
-
-    return providerResult;
   }
 
   private static async googleHandle(): Promise<ISsoRequest> {
@@ -55,7 +44,6 @@ export default class LoginService {
   private static async telegramHandle(): Promise<ISsoRequest> {
 
     return new Promise((resolve, reject) => {
-      // @ts-ignore
       window.Telegram.Login.auth(
         {bot_id: '5533270293', request_access: true},
         (data: any) => {
@@ -88,11 +76,6 @@ export default class LoginService {
             resolve(request)
           }, 100)
 
-
-          // setRequest(userInfo);
-          // Here you would want to validate data like described there https://core.telegram.org/widgets/login#checking-authorization
-          // doWhateverYouWantWithData(data);
-
           // resolve({username: data.username ?? data.first_name ?? data.last_name, profilePhoto: data.photo_url});
         }
       );
@@ -102,7 +85,6 @@ export default class LoginService {
   private static async facebookHandle(): Promise<ISsoRequest> {
     const credential = await signInWithPopup(auth, facebookProvider);
 
-    console.log('credential', credential)
     //@ts-ignore
     const tokenResponse: IProviderTokenResponse = credential._tokenResponse;
     return {

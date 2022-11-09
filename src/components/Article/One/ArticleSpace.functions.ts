@@ -1,4 +1,4 @@
-import {articlesApi, userApi} from "../../../api/userApi";
+import {articlesApi, userApi} from "../../../api/api";
 import {IContributor} from "../../../types/api/Article/IArticleLocalizationResponse";
 import IUserInfoResponse from "../../../types/api/User/IUserInfoResponse";
 import {articleUserRoles} from "../../../constants/article";

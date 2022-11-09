@@ -1,5 +1,6 @@
 import React, {FC, PropsWithChildren} from 'react';
 import classes from '../UiComps.module.sass'
+import {Button} from "@chakra-ui/react";
 
 interface IUiButtonProps extends PropsWithChildren {
   onClick: (e: React.MouseEvent) => void,
@@ -22,7 +23,7 @@ const UiButton: FC<IUiButtonProps> = ({
                                         fontSize
                                       }) => {
   return (
-    <button
+    <Button
       style={{
         padding: padding ?? '5px 15px',
         backgroundColor: backgroundColor ?? '#896DC8',
@@ -31,9 +32,10 @@ const UiButton: FC<IUiButtonProps> = ({
         width: width ?? 'fit-content',
         fontSize: fontSize ?? '16px'
       }}
-      onClick={onClick} className={classes.buttonUi}>
+      onClick={onClick} className={classes.buttonUi}
+    >
       {children}
-    </button>
+    </Button>
   );
 };
 

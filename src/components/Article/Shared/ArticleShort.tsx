@@ -2,12 +2,12 @@ import React, {FC} from 'react';
 import cl from "../Thread/ArticlesThreadSpace.module.sass"
 import ArticlesRateCounter from "./ArticlesRateCounter";
 import ArticleSavingActions from "../../basisComps/ArticleSavingActions";
-import {FilledDiv} from '../../basisComps/Basic.styled';
 import {useNavigate} from "react-router-dom";
 import IExtendedArticle from "../../../types/IExtendedArticle";
-import {StyledLink} from "../../basisComps/PublicBasis/styled";
 import classes from "../../basisComps/PublicBasis/PublicBasis.module.scss";
 import {DateTime} from "luxon";
+import FilledDiv from '../../UI/FilledDiv';
+import {Link, Text, useColorModeValue} from "@chakra-ui/react";
 
 
 interface IArticleItemProps {
@@ -34,18 +34,39 @@ const ArticleShort: FC<IArticleItemProps> = ({localization, save, textBeforeTime
 
 
   return (
-    <FilledDiv className={cl.blogItem}
-               onClick={() => navigate(`/article/${localization.articleId}/${localization.languageCode}`)}>
-      <StyledLink href='#'>
+    <FilledDiv
+      className={cl.articleItem}
+      onClick={() => navigate(`/article/${localization.articleId}/${localization.languageCode}`)}
+    >
+      <Link href='#'>
         <div className={classes.titleTime}>
-          <h2 className={classes.publicTitle}>{localization.title}</h2>
-          <p className={classes.timeAgo}>{textBeforeTime ? `${textBeforeTime}: ${getTimeAgo()}` : getTimeAgo()}</p>
+          <Text
+            as={'h2'}
+            className={classes.publicTitle}
+            color={useColorModeValue('#242D35', '#EFEFEF')}
+          >
+            {localization.title}
+          </Text>
+          <Text
+            as={'p'}
+            className={classes.timeAgo}
+            color={useColorModeValue('#757575', '#EFEFEF')}
+          >
+            {textBeforeTime ? `${textBeforeTime}: ${getTimeAgo()}` : getTimeAgo()}
+          </Text>
         </div>
-        <p className={classes.publicDes}>{localization.description}</p>
-      </StyledLink>
-      <div className={cl.downFuncItems}>
-        <ArticlesRateCounter actualVote={localization.vote ?? 'none'} current={localization.rate}
-                             setCurrent={setRate} articleId={localization.articleId}/>
+        <Text
+          as={'p'} className={classes.publicDes}
+          color={useColorModeValue('#4F5B67', '#EFEFEF')}
+        >
+          {localization.description}
+        </Text>
+      </Link>
+      <div className={cl.actions}>
+        <ArticlesRateCounter
+          actualVote={localization.vote ?? 'none'} current={localization.rate}
+          setCurrent={setRate} articleId={localization.articleId}
+        />
         <ArticleSavingActions
           isSavedDefault={save.actual}
           onSave={save.handle}

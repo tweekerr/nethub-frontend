@@ -1,12 +1,12 @@
+import {Skeleton} from '@chakra-ui/react';
 import React from 'react';
-import {Skeleton} from "@mui/material";
 import cl from '../ArticleSpace.module.sass'
 
 const ArticleBodySkeleton = () => {
   return (
     <div className={cl.articleBodySkeleton}>
-      <Skeleton variant='rounded' height={300} width={'100%'}/>
-      <Skeleton variant='rounded' height={300} width={'100%'}/>
+      <Skeleton height={300}/>
+      <Skeleton height={300}/>
     </div>
   );
 };

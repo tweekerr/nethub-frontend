@@ -8,10 +8,6 @@ declare module '*.module.sass';
 
 export type ILanguage = 'uk' | 'en';
 
-export type IGeneral = {
-  theme: 'light' | 'dark';
-};
-
 export type APIError = {
   message: string;
   status: number;
@@ -22,4 +18,20 @@ export interface TinyConfig {
   plugins: string[];
   key: string;
   toolbar: string;
+}
+
+declare global {
+  interface Window {
+    Telegram: {
+      Login: {
+        auth: (config: any, callback: (data: any) => void) => void;
+      }
+    };
+  }
+}
+
+declare global {
+  interface UserCredential {
+    _tokenResponse: any
+  }
 }

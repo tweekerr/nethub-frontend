@@ -4,8 +4,6 @@ export function getTimeFrom(date: string) {
   const a = DateTime.fromISO(date);
   const diff = DateTime.utc().diff(a, ['years', 'months', 'weeks', 'days', 'hours', 'minutes', 'seconds']).toObject();
 
-  console.log('diff', diff);
-
   if (diff.years! > 0)
     return diff.months! > 0
       ? getGateString(diff.years!, 'year') + ' and ' + getGateString(diff.months!, 'month')

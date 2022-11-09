@@ -18,29 +18,27 @@
   height: 48px
   border-radius: 12px
 
+  svg
+    flex: 30%
+    display: grid
+    place-items: center
 
-.menuPoint svg
-  flex: 30%
-  display: grid
-  place-items: center
-
-
-.menuPoint p
-  flex: 70%
-  font-weight: 700
-  font-size: 14px
-  line-height: 150%
-  -webkit-touch-callout: none
-  /* iOS Safari */
-  -webkit-user-select: none
-  /* Chrome/Safari/Opera */
-  -khtml-user-select: none
-  /* Konqueror */
-  -moz-user-select: none
-  /* Firefox */
-  -ms-user-select: none
-  /* Internet Explorer/Edge */
-  user-select: none
+  p
+    flex: 70%
+    font-weight: 700
+    font-size: 14px
+    line-height: 150%
+    -webkit-touch-callout: none
+    /* iOS Safari */
+    -webkit-user-select: none
+    /* Chrome/Safari/Opera */
+    -khtml-user-select: none
+    /* Konqueror */
+    -moz-user-select: none
+    /* Firefox */
+    -ms-user-select: none
+    /* Internet Explorer/Edge */
+    user-select: none
 
 
 .menuPointContainer > p
@@ -58,8 +56,6 @@
 .menuPoint:hover
   cursor: pointer
   transition: 0.2s
-  background-color: #bbafea
-  color: white
 
   svg
     transition: 0.2s
@@ -70,14 +66,15 @@
     transition: 0.2s
 
 
-.menuPoint.disabled:hover
-  cursor: pointer
-  transition: 0.2s
-  background-color: lightgray
-  color: white
+.menuPoint.disabled
+  cursor: initial
+  svg
+    fill: #8B8B8B
+
+  p
+    color: #8B8B8B
 
 .menuPointActive
-  background-color: #896DC8
   color: white
 
   p

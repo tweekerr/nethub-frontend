@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {FilledDiv} from '../basisComps/Basic.styled';
+import FilledDiv from "../UI/FilledDiv";
 
 interface IPublicDashboardProps {
 }

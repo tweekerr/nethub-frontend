@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
-import TextField from '@mui/material/TextField';
+import {Input} from '@chakra-ui/react';
 
-export interface IUiInputProps {
+export interface IUiInputProps{
   placeholder: string,
   width: string,
   value: string | null,
@@ -22,19 +22,16 @@ const UiInput: FC<IUiInputProps> =
    }) => {
 
     return (
-      <TextField
+      <Input
         disabled={disabled}
-        multiline={type === 'textarea'}
-        rows={type === 'textarea' ? rows : 1}
-        error={error}
-        helperText={helperText}
-        sx={{width: width, background: 'white'}}
+        isInvalid={error}
+        placeholder={placeholder}
         value={value ?? ''}
         size={'small'}
         onChange={(e) => {
           setValue(e.target.value)
         }}
-        label={[placeholder]}
+        // label={[placeholder]}
       />
     );
   }

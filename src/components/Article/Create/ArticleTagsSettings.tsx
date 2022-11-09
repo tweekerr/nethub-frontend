@@ -1,14 +1,11 @@
 import SvgSelector from "../../basisComps/SvgSelector/SvgSelector";
 import classes from "./ArticleCreating.module.sass"
 import React, {FC, useState} from "react";
-import UiInput from "../../UI/input/UiInput";
-import ThemeTag from "../../basisComps/ThemeTag";
-import {IArticleFormErrors} from "../../../types/ILocalization";
-import useValidation from "../../../hooks/useValidation";
+import ThemeTag from "../One/Body/ThemeTag";
 import {regexTest} from "../../../utils/validators";
 import {tagRegex} from "../../../utils/regex";
 import useCustomSnackbar from "../../../hooks/useCustomSnackbar";
-import useValidator from "../../../hooks/useValidator";
+import {Button, Input} from "@chakra-ui/react";
 
 interface IArticleTagsSettingsProps {
   tags: string[],
@@ -39,15 +36,16 @@ const ArticleTagsSettings: FC<IArticleTagsSettingsProps> = ({tags, addToAllTags,
   return (
     <>
       <div className={classes.fixedTags}>
-        <UiInput placeholder={'Теги'}
-                 value={middleTag}
-                 setValue={setMiddleTag}
-                 width={'75%'}
-                 error={error}
+        <Input
+          placeholder={'Теги'}
+          value={middleTag}
+          onChange={(e) => setMiddleTag(e.target.value)}
+          width={'75%'}
+          isInvalid={error}
         />
-        <button onClick={addTag}>
+        <Button onClick={addTag}>
           <SvgSelector id={"AddIcon"}/>
-        </button>
+        </Button>
       </div>
       <div className={classes.addedTags}>
         {

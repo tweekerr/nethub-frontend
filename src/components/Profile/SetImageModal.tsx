@@ -1,14 +1,22 @@
 import React, {FC} from 'react';
-import {Box, Modal, Typography} from "@mui/material";
 import cl from './Profile.module.sass'
-import {FilledDiv} from '../basisComps/Basic.styled';
-import UiInput from "../UI/input/UiInput";
-import UiButton from "../UI/button/UiButton";
 import useValidator from "../../hooks/useValidator";
 import {isNotNullOrWhiteSpace, regexTest} from "../../utils/validators";
 import {imageLinkRegex} from "../../utils/regex";
 import useCustomSnackbar from "../../hooks/useCustomSnackbar";
 import ProfileImageDrop from "./ProfileImageDrop";
+import {
+  Box,
+  Button,
+  Input,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
+  Text,
+  useColorModeValue
+} from "@chakra-ui/react";
 
 interface ISetImageModalProps {
   isModalOpened: boolean,
@@ -19,7 +27,14 @@ interface ISetImageModalProps {
   handleDrop: (e: React.DragEvent<HTMLSpanElement>) => Promise<void>
 }
 
-const SetImageModal: FC<ISetImageModalProps> = ({isModalOpened, closeModal, imageLink, setImageLink, onClick, handleDrop}) => {
+const SetImageModal: FC<ISetImageModalProps> = ({
+                                                  isModalOpened,
+                                                  closeModal,
+                                                  imageLink,
+                                                  setImageLink,
+                                                  onClick,
+                                                  handleDrop
+                                                }) => {
 
   const {subscribeValidator, validateAll, errors} = useValidator<{ link: boolean }>();
   const {enqueueError} = useCustomSnackbar();
@@ -45,28 +60,32 @@ const SetImageModal: FC<ISetImageModalProps> = ({isModalOpened, closeModal, imag
 
   return (
     <Modal
-      open={isModalOpened}
+      isOpen={isModalOpened}
       onClose={closeModal}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
     >
-      <FilledDiv className={cl.setImageModal}>
-        <Typography variant={'h6'}>Редагування фотографії профілю</Typography>
-        <div>
-          <div className={cl.leftModalBlock}>
-            <Typography variant={'inherit'}>Додати посилання на фото</Typography>
-            <UiInput
-              error={errors.link} width={'100%'} placeholder={'Посилання'} value={imageLink}
-              setValue={setImageLink}
+      <ModalOverlay/>
+      <ModalContent bg={useColorModeValue('violetLight', '#1F2023')} minW={'45%'} paddingBottom={3} top={150}>
+        <ModalHeader><Text as={'h6'}>Редагування фотографії профілю</Text></ModalHeader>
+        <ModalBody className={cl.setImageModalBody}>
+          <Box className={cl.leftModalBlock}>
+            <Text as={'p'}>Додати посилання на фото</Text>
+            <Input
+              isInvalid={errors.link} width={'100%'} placeholder={'Посилання'} value={imageLink}
+              onChange={(e) => setImageLink(e.target.value)}
             />
-            <UiButton onClick={handleOnClick} width={'100%'}>Зберегти</UiButton>
-          </div>
-          <div><Box bgcolor={'#FFFFFF'} width={2} height={131} margin={'0 30px'}/></div>
-          <div className={cl.rightModalBlock}>
+            <Button onClick={handleOnClick} width={'100%'}>Зберегти</Button>
+          </Box>
+          <Box
+            width={1} height={'15vh'}
+            margin={'0 30px'}
+            borderRadius={10}
+            bg={'#FFFFFF'}
+          />
+          <Box className={cl.rightModalBlock}>
             <ProfileImageDrop onDrop={handleDrop}/>
-          </div>
-        </div>
-      </FilledDiv>
+          </Box>
+        </ModalBody>
+      </ModalContent>
     </Modal>
   );
 };

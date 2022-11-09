@@ -1,10 +1,10 @@
 import React, {FC, useState} from 'react';
 import cl from './UserLibrary.module.sass';
-import {ToggleButton} from "@mui/material";
-import {StyledToggleButtonGroup} from '../basisComps/Basic.styled';
+import RadioCardGroup, {RadioGroupConfig} from "../UI/RadioCardGroup";
 
 interface IUserLibraryProps {
-  items: ILibraryItem[]
+  items: ILibraryItem[],
+  radioGroupConfig: RadioGroupConfig
 }
 
 export interface ILibraryItem {
@@ -12,31 +12,23 @@ export interface ILibraryItem {
   component: React.ReactNode
 }
 
-const UserLibrary: FC<IUserLibraryProps> = ({ items}) => {
+const UserLibrary: FC<IUserLibraryProps> = ({items, radioGroupConfig}) => {
   const [renderComponent, setRenderComponent] = useState<React.ReactNode>(items[0].component)
-  const [selectedPage, setSelectedPage] = useState<number>(0);
 
   const handleChange = (
-    event: React.MouseEvent<HTMLElement>,
-    newAlignment: number,
+    newAlignment: string
   ) => {
-    setSelectedPage(newAlignment);
-    setRenderComponent(items[newAlignment].component)
+    setRenderComponent(items.filter(i => i.name === newAlignment)[0].component)
   };
 
   return (
     <div className={cl.libraryWrapper}>
       <div className={cl.contentButtons}>
-        <StyledToggleButtonGroup
-          color="primary"
-          value={selectedPage}
-          exclusive
+        <RadioCardGroup
+          config={radioGroupConfig}
           onChange={handleChange}
-        >
-          {items.map((i, index) =>
-            <ToggleButton key={i.name} value={index}>{i.name}</ToggleButton>
-          )}
-        </StyledToggleButtonGroup>
+          options={items.map(i => i.name)}
+        />
       </div>
       <div className={cl.actualComponent}>
         {renderComponent}

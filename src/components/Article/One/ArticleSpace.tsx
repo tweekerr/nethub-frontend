@@ -10,18 +10,17 @@ import IArticleLocalizationResponse from "../../../types/api/Article/IArticleLoc
 import {RateVariants} from "../Shared/ArticlesRateCounter";
 import {useQuery, useQueryClient} from "react-query";
 import {useAppSelector} from "../../../store/storeConfiguration";
-import {Skeleton} from '@mui/material';
 import {getArticle, getArticleActions, getLocalization,} from "./ArticleSpace.functions";
+import {Skeleton, Text} from "@chakra-ui/react";
 
 
 const ArticleSpace = () => {
     const queryClient = useQueryClient();
     const {id, code} = useParams();
     const {isLogin} = useAppSelector(state => state.generalReducer);
-    const article = useQuery(['article', id], () => getArticle(id!), {staleTime: 50000});
+    const article = useQuery(['article', id], () => getArticle(id!));
     const localization = useQuery<IArticleLocalizationResponse, any>(['articleLocalization', id, code], () => getLocalization(id!, code!),
       {
-        staleTime: 50000,
         onSuccess: async () => {
           if (isLogin) {
             setUserActions(await getArticleActions(id!, code!))
@@ -38,24 +37,24 @@ const ArticleSpace = () => {
 
     if (localization.isError || article.isError) {
       if (localization.error?.message === 'No such article localization') {
-        return <Layout><p>Дана стаття ще пишеться :)</p></Layout>
+        return <Layout><Text as={'p'}>Дана стаття ще пишеться :)</Text></Layout>
       }
-      return <Layout><p>{localization.error?.message}</p></Layout>
+      return <Layout><Text as={'p'}>{localization.error?.message}</Text></Layout>
+    }
+
+    const rightBar = {
+      children: (localization.isLoading || article.isLoading)
+        ? <Skeleton height={200}/>
+        : <ArticleInfo
+          isError={localization.isError}
+          article={article.data!}
+          localization={localization.data!}
+          isLoading={localization.isLoading}
+        />
     }
 
     return (
-      <Layout
-        rightBar={
-          (localization.isLoading || article.isLoading)
-            ? <Skeleton variant={'rounded'} width={'100%'} height={200}/>
-            : <ArticleInfo
-              isError={localization.isError}
-              article={article.data!}
-              localization={localization.data!}
-              isLoading={localization.isLoading}
-            />}
-      >
-
+      <Layout rightBar={rightBar}>
         <div className={cl.layoutBody}>
           {
             localization.isLoading || article.isLoading ? <ArticleBodySkeleton/> :

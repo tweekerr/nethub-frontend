@@ -1,9 +1,5 @@
-import React, {forwardRef, ForwardRefRenderFunction, useImperativeHandle, useMemo} from 'react';
-import classes from "../Auth/Login.module.sass";
-import {StyledAccordion, StyledAccordionDetails, StyledAccordionSummary} from "../Auth/styled";
-import {Typography} from "@mui/material";
+import React, {forwardRef, ForwardRefRenderFunction, useImperativeHandle, useMemo, useRef} from 'react';
 import TitleInput from "../basisComps/titleInput/TitleInput";
-import UiButton from "../UI/button/UiButton";
 import useValidator from "../../hooks/useValidator";
 import SvgSelector from "../basisComps/SvgSelector/SvgSelector";
 import cl from './Profile.module.sass'
@@ -14,13 +10,16 @@ import useCustomSnackbar from "../../hooks/useCustomSnackbar";
 import {usernameDebounce} from "../../utils/debounceHelper";
 import {useAppSelector} from "../../store/storeConfiguration";
 import {isNotNullOrWhiteSpace} from "../../utils/validators";
+import {Accordion, AccordionButton, AccordionItem, AccordionPanel, Text, useColorModeValue} from "@chakra-ui/react";
+import FilledDiv from "../UI/FilledDiv";
 
 type RequestType = {
   username: string,
+  email: string,
   firstName: string,
   lastName: string,
   middleName?: string,
-  description: string | null
+  description?: string,
 };
 
 interface IProfileSettingsProps {
@@ -49,6 +48,7 @@ const ProfileSettings: ForwardRefRenderFunction<IProfileSettingsHandle, IProfile
   ({request, setRequest, changes, lockFlag, expanded, setExpanded}, ref) => {
     const {enqueueError, enqueueSuccess} = useCustomSnackbar();
     const {user} = useAppSelector(state => state.generalReducer)
+    const accordionButtonRef = useRef<HTMLButtonElement>(null);
 
     const debounceLogic = async (username: string | null, showMessage?: boolean) => {
       if (username === user.username) {
@@ -79,10 +79,10 @@ const ProfileSettings: ForwardRefRenderFunction<IProfileSettingsHandle, IProfile
       }
     }), []);
 
-    const handleUpdateUsername = (username: string) => {
-      setRequest({...request, username});
+    const handleUpdateUsername = (event: React.ChangeEvent<HTMLInputElement>) => {
+      setRequest({...request, username: event.target.value});
       changes.add('username');
-      debounce(username, true);
+      debounce(event.target.value, true);
     }
 
     const handleUpdateProfileInfo = useMemo(() => {
@@ -128,79 +128,92 @@ const ProfileSettings: ForwardRefRenderFunction<IProfileSettingsHandle, IProfile
 
     const handleSettingsButton = async () => {
       setExpanded(!expanded)
+      accordionButtonRef?.current!.click();
       // isExpanded
       //   ? window.scrollTo({top: 0, behavior: 'smooth'})
       //   : accordionDetailsRef.current?.scrollIntoView({behavior: 'smooth'})
     }
 
     return (
-      <>
-        <StyledAccordion
-          className={classes.accordionActive}
-          disableGutters
-          expanded={expanded}
-        >
-          <StyledAccordionSummary
-            aria-controls="panel1a-content"
-            id="panel1a-header"
-          >
+      <Accordion allowToggle>
+        <AccordionItem>
+          <FilledDiv>
             <div className={cl.settingsTitle}>
               <div>
                 <div>
                   <SvgSelector id={'Settings'}/>
                 </div>
-                <Typography fontWeight={700} fontSize={20}>Уточніть інформацію</Typography>
+                <Text fontWeight={700} fontSize={20} as={'p'}>Уточніть інформацію</Text>
               </div>
-              <UiButton
-                padding={'12px 35px'}
+              <AccordionButton
+                ref={accordionButtonRef}
+                width={'fit-content'}
+                bg={useColorModeValue('#896DC8', '#835ADF')}
+                borderRadius={'12px'}
+                minW={'120px'}
+                minH={'40px'}
+                justifyContent={'center'}
                 onClick={handleSettingsButton}
+                _hover={{bg: '#BBAFEA'}}
+                // bg={useColorModeValue('#896DC8', '#896DC8')}
               >
-                Змінити
-              </UiButton>
+                <Text
+                  as={'b'}
+                  color={useColorModeValue('#FFFFFF', '#EFEFEF')}
+                  fontWeight={'semibold'}
+                  fontSize={14}
+                >
+                  Змінити
+                </Text>
+              </AccordionButton>
             </div>
-          </StyledAccordionSummary>
-          <StyledAccordionDetails>
-            <div>
+          </FilledDiv>
+          <AccordionPanel paddingInlineStart={0} paddingInlineEnd={0}>
+            <FilledDiv
+              width={'100%'}
+            >
               <TitleInput
                 title={'Username*'} placeholder={'Ім\'я користувача'} value={request.username}
-                error={errors.username}
-                setValue={handleUpdateUsername}
+                isInvalid={errors.username}
+                onChange={handleUpdateUsername}
+                width={'100%'}
+              />
+              <TitleInput
+                title={'Email'} placeholder={'Електронна пошта'} defaultValue={request.email}
+                isInvalid={errors.email}
                 width={'100%'}
               />
               <TitleInput
                 title={'Firstname*'} placeholder={'Iм\'я'} value={request.firstName}
-                error={errors.firstName}
-                setValue={(firstName: string) => handleUpdateProfileInfo({...request, firstName})}
+                isInvalid={errors.firstName}
+                onChange={(e) => handleUpdateProfileInfo({...request, firstName: e.target.value})}
                 width={'100%'}
               />
               <TitleInput
                 title={'Lastname*'} placeholder={'Прізвище'} value={request.lastName}
-                error={errors.lastName}
-                setValue={(lastName: string) => handleUpdateProfileInfo({...request, lastName})}
+                isInvalid={errors.lastName}
+                onChange={(e) => handleUpdateProfileInfo({...request, lastName: e.target.value})}
                 width={'100%'}
               />
               <TitleInput
                 title={'Middlename'} placeholder={'По-батькові'} value={request.middleName ?? ''}
-                error={errors.middleName}
-                setValue={(middleName: string) => handleUpdateProfileInfo({...request, middleName})}
+                isInvalid={errors.middleName}
+                onChange={(e) => handleUpdateProfileInfo({...request, middleName: e.target.value})}
                 width={'100%'}
               />
               <TitleInput
-                title={'Description'} placeholder={'Опис'} value={request.description ?? null}
-                error={errors.description}
-                setValue={(description: string) => handleUpdateProfileInfo({
+                title={'Description'} placeholder={'Опис'} value={request.description ?? ''}
+                isInvalid={errors.description}
+                onChange={(e) => handleUpdateProfileInfo({
                   ...request,
-                  description: description === '' ? null : description
+                  description: e.target.value === '' ? undefined : e.target.value
                 })}
                 width={'100%'}
-                type={'textarea'}
-                rows={5}
               />
-            </div>
-          </StyledAccordionDetails>
-        </StyledAccordion>
-        <div id='end'></div>
-      </>
+            </FilledDiv>
+          </AccordionPanel>
+        </AccordionItem>
+      </Accordion>
     );
   };
 

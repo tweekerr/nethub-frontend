@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import classes from './PublicBasis.module.scss';
-import {StyledLink} from './styled';
+import {Link} from "@chakra-ui/react";
 
 interface IShortItemProps {
   title: string,
@@ -10,7 +10,7 @@ interface IShortItemProps {
 
 const ShortItem: FC<IShortItemProps> = ({title, description, timeAgo}) => {
   return (
-    <StyledLink href='#'>
+    <Link href='#'>
       <div className={classes.titleTime}>
         <h2 className={classes.publicTitle}>{title}</h2>
         {
@@ -19,7 +19,7 @@ const ShortItem: FC<IShortItemProps> = ({title, description, timeAgo}) => {
         }
       </div>
       <p className={classes.publicDes}>{description}</p>
-    </StyledLink>
+    </Link>
   );
 };
 

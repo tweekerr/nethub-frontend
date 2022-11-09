@@ -16,6 +16,7 @@ import IDashboardResponse from "../types/api/Dashboard/IDashboardResponse";
 import IExtendedArticle from "../types/IExtendedArticle";
 import INewsResponse from "../types/api/News/INewsResponse";
 import IUpdateProfileRequest from "../types/api/Profile/IUpdateProfileRequest";
+import ICurrencyResponse from "../types/api/Currency/ICurrencyResponse";
 
 export const _api = axios.create({
   //TODO: must be general link
@@ -37,8 +38,6 @@ _api.interceptors.response.use(
   },
   async (error) => {
     const originalRequest = error.config;
-    if (error.response.status !== 200)
-      throw new Error(error.response.data.message);
 
     if (
       error.response.status === 401 &&
@@ -200,3 +199,10 @@ export const userApi = {
     await _api.put('user/username', {username});
   }
 };
+
+export const infoApi = {
+  getCurrenciesRate: async () => {
+    const response: AxiosResponse<ICurrencyResponse> = await _api.get('/currency');
+    return response.data;
+  }
+}

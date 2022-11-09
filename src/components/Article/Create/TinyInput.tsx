@@ -2,14 +2,14 @@ import React, {forwardRef, ForwardRefRenderFunction, useCallback, useImperativeH
 import {Editor} from '@tinymce/tinymce-react';
 import {Editor as TinyEditor} from 'tinymce';
 import classes from './ArticleCreating.module.sass';
-import {articlesApi} from "../../../api/userApi";
+import {articlesApi} from "../../../api/api";
 import {tinyConfig} from "../../../utils/constants";
 
 interface ITinyInputProps {
   data: string;
   setData: (value: string) => void;
   editorTitle: string;
-  error: boolean
+  isInvalid: boolean
 }
 
 interface ITinyInputHandle {
@@ -17,7 +17,7 @@ interface ITinyInputHandle {
 }
 
 const TinyInput: ForwardRefRenderFunction<ITinyInputHandle, ITinyInputProps> =
-  ({data, setData, editorTitle, error}, ref) => {
+  ({data, setData, editorTitle, isInvalid}, ref) => {
     const editorRef = useRef<TinyEditor | null>(null);
 
     const saveImageCallback = useCallback(async (id: string | null) => {
@@ -52,7 +52,7 @@ const TinyInput: ForwardRefRenderFunction<ITinyInputHandle, ITinyInputProps> =
     return (
       <div className={classes.tinyInput}>
         <p>{editorTitle}</p>
-        <div className={error ? classes.wrong : ''}>
+        <div className={isInvalid ? classes.wrong : ''}>
           <Editor
             onInit={(evt, editor) => editorRef.current = editor}
             value={data}

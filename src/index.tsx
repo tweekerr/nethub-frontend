@@ -5,6 +5,8 @@ import store from "./store/storeConfiguration";
 import {BrowserRouter} from "react-router-dom";
 import {Provider} from "react-redux";
 import './index.scss'
+import {ChakraProvider, ColorModeScript} from "@chakra-ui/react";
+import theme from "./constants/themes";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -12,7 +14,12 @@ const root = ReactDOM.createRoot(
 root.render(
   <Provider store={store}>
     <BrowserRouter>
-      <App/>
+      <ColorModeScript initialColorMode={theme.config.initialColorMode}/>
+      <ChakraProvider
+        theme={theme}
+      >
+        <App/>
+      </ChakraProvider>
     </BrowserRouter>
   </Provider>
 );

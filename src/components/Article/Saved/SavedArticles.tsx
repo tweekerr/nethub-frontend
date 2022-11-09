@@ -4,7 +4,7 @@ import './transitions.css'
 import ArticleShort from "../Shared/ArticleShort";
 import {loadSavedArticles} from "./SavedArticles.functions";
 import SavedArticlesSkeleton from "./SavedArticlesSkeleton";
-import {articlesApi} from "../../../api/userApi";
+import {articlesApi} from "../../../api/api";
 import {CSSTransition, TransitionGroup} from 'react-transition-group';
 import IExtendedArticle from "../../../types/IExtendedArticle";
 import {useQuery, useQueryClient} from "react-query";
@@ -13,7 +13,7 @@ const SavedArticles = () => {
   const queryClient = useQueryClient();
   const savedArticles = useQuery<IExtendedArticle[], string>('savedArticles', () => loadSavedArticles());
 
-  console.log('savedArticles', savedArticles);
+  // console.log('savedArticles', savedArticles);
 
   const handleSetRate = (localization: IExtendedArticle) => (value: number) => {
     const articleIndex = savedArticles.data!.indexOf(localization);
@@ -25,7 +25,6 @@ const SavedArticles = () => {
     await articlesApi.toggleSavingLocalization(id, code);
     const savedArticleIndex = savedArticles.data!.findIndex(a => a.articleId === id && a.languageCode === code);
     queryClient.setQueryData('savedArticles', savedArticles.data!.filter((a, index) => index !== savedArticleIndex));
-    await queryClient.invalidateQueries('articles');
   }
 
   if (savedArticles.isError) return <div>{savedArticles.error}</div>;

@@ -1,16 +1,19 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import cl from './Profile.module.sass'
 import PrivateDashboard from "./PrivateDashboard";
 import SvgSelector from "../basisComps/SvgSelector/SvgSelector";
-import {FilledDiv} from '../basisComps/Basic.styled';
 import IUserInfoResponse from "../../types/api/User/IUserInfoResponse";
 import IDashboardResponse from "../../types/api/Dashboard/IDashboardResponse";
 import UiButton from "../UI/button/UiButton";
 import {useNavigate} from "react-router-dom";
 import ProfileSettings from "./ProfileSettings";
 import IUpdateProfileRequest from "../../types/api/Profile/IUpdateProfileRequest";
-import {userApi} from "../../api/userApi";
+import {userApi} from "../../api/api";
 import {useActions, useAppSelector} from "../../store/storeConfiguration";
+import FilledDiv from '../UI/FilledDiv';
+import {Button, Text} from '@chakra-ui/react';
+import AnimateHeight from "react-animate-height";
+
 
 interface IProfileProps {
   user: IUserInfoResponse,
@@ -19,7 +22,8 @@ interface IProfileProps {
 
 export interface ExtendedRequest extends IUpdateProfileRequest {
   username: string,
-  image: string | File
+  image: string | File,
+  email: string
 }
 
 export type ProfileChangesType = 'profile' | 'photo' | 'username';
@@ -33,6 +37,7 @@ const Profile: FC<IProfileProps> = ({user, dashboard}) => {
   const {user: reduxUser} = useAppSelector(state => state.generalReducer);
   const [request, setRequest] = useState<ExtendedRequest>({
     username: user.userName,
+    email: user.email,
     image: '',
     firstName: user.firstName,
     lastName: user.lastName,
@@ -102,45 +107,45 @@ const Profile: FC<IProfileProps> = ({user, dashboard}) => {
       <FilledDiv
         className={cl.profileButton}
         width={'100%'}
-        color={'#242D35'}
-        onClick={() => {
-        }}
       >
         <div className={cl.buttonInside}>
           <div>
             <div>
               <SvgSelector id={'ProfileCreated'}/>
             </div>
-            Створені вами статті
+            <Text as={'p'}>
+              Створені вами статті
+            </Text>
           </div>
-          <UiButton
+          <Button
             fontSize={'14px'}
-            padding={'11px 34px'}
             onClick={() => navigate('/by-you')}
-          >Показати</UiButton>
+            minW={'120px'}
+          >
+            Показати
+          </Button>
         </div>
       </FilledDiv>
       <FilledDiv
         className={cl.profileButton}
         width={'100%'}
-        color={'#242D35'}
-        onClick={() => {
-        }}
       >
         <div className={cl.buttonInside}>
           <div>
             <div>
               <SvgSelector id={'ProfileBookmark'}/>
             </div>
-            Збережені вами статті
+            <Text as={'p'}>
+              Збережені вами статті
+            </Text>
           </div>
-          <UiButton
+          <Button
             fontSize={'14px'}
-            padding={'11px 34px'}
+            minW={'120px'}
             onClick={() => navigate('/saved')}
           >
             Показати
-          </UiButton>
+          </Button>
         </div>
       </FilledDiv>
       <ProfileSettings
@@ -152,13 +157,17 @@ const Profile: FC<IProfileProps> = ({user, dashboard}) => {
         expanded={isSettingsExpanded}
         setExpanded={setIsSettingsExpanded}
       />
-      {
-        changes.length > 0 &&
+      <AnimateHeight
+        height={changes.length > 0 ? 'auto' : 0}
+        duration={700}
+      >
         <div className={cl.saveChangesBlock}>
-          <p>Ви внесли зміни до профілю, збережіть їх</p>
-          <UiButton onClick={updateProfile} padding={'15px 95px'}>Зберегти</UiButton>
+          <Text as={'p'}>
+            Ви внесли зміни до профілю, збережіть їх
+          </Text>
+          <Button onClick={updateProfile} padding={'15px 95px'}>Зберегти</Button>
         </div>
-      }
+      </AnimateHeight>
     </div>
   );
 };

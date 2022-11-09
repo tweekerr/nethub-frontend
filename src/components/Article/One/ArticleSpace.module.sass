@@ -4,15 +4,10 @@
   flex-direction: column
 
 .articleWrapper
-  width: 100%
   height: fit-content
 
 .articleTitle
   margin-bottom: 15px
-
-  .title
-    font-size: 18px
-    font-weight: bold
 
 .articleDescription
   font-size: 12px
@@ -41,10 +36,6 @@
     font-size: 12px
     line-height: 15px
     cursor: pointer
-
-  .tag:hover
-    background-color: #8267be
-    transition: 0.2s
 
 .actions
   display: flex
@@ -85,8 +76,6 @@
 
 
 .infoBlock
-  display: flex
-  flex-direction: column
   margin-bottom: 10px
 
 .infoBlockTitle
@@ -109,14 +98,11 @@
     div
       cursor: pointer
       color: white
+      display: flex
+      align-items: center
 
       svg
         margin-left: 10px
-
-    div:hover
-      background-color: #8267be
-      transition: 0.2s
-
 
 .contributors
   display: flex
@@ -125,10 +111,8 @@
 
   .contributor
     display: flex
-    width: fit-content
     cursor: pointer
     align-items: center
-
 
     img
       border-radius: 22px
@@ -149,40 +133,44 @@
         font-weight: 700
 
       p
-        color: white
         display: block
 
     .role
       width: 80%
       display: flex
       flex-direction: column
-
-  .contributor:hover
-    background-color: #8267be
-    transition: 0.2s
+      align-items: flex-start
 
 .originalLink
-  width: fit-content
-
   a
-    color: white
     font-weight: 700
     cursor: pointer
 
-.originalLink:hover
-  background-color: #8267be
-  transition: 0.2s
-
+.themeTag
+  display: flex
+  height: 26px
+  padding: 5px 14px
+  border-radius: 10px
+  align-items: center
+  text-align: center
+  justify-content: center
+  font-weight: 700
+  font-size: 12px
+  line-height: 15px
+  color: white
+  margin-right: 5px
+  cursor: pointer
 
 //=================Skeletons=================
 
 .articleBodySkeleton
   width: 100%
 
-  span:first-child
+  div:first-child
     margin-bottom: 10px
 
 .contributorsSkeleton
   display: flex
   flex-wrap: wrap
   gap: 5px
+

@@ -1,5 +1,5 @@
 import React, {FC, PropsWithChildren} from 'react';
-import {Box} from "@mui/material";
+import {Box} from "@chakra-ui/react";
 
 interface IBarWrapperProps extends PropsWithChildren {
   className?: string

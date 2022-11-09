@@ -1,5 +1,6 @@
 import React, {FC} from 'react';
-import {StyledButton} from "../styled";
+import googleLogo from '../../../assets/images/google.png';
+import {Button, Text, useColorModeValue} from "@chakra-ui/react";
 
 interface IGoogleAuthProps {
   onClick: (e: React.MouseEvent) => void
@@ -7,14 +8,18 @@ interface IGoogleAuthProps {
 
 const GoogleAuthButton: FC<IGoogleAuthProps> = ({onClick}) => {
   return (
-    <StyledButton onClick={onClick}>
+    <Button
+      padding={'25px 20px'}
+      bg={useColorModeValue('whiteLight', 'whiteDark')} onClick={onClick}>
       <img
         style={{height: '25px', width: '25px', marginRight: '10px'}}
-        src="https://www.freepnglogos.com/uploads/google-logo-png/google-logo-png-suite-everything-you-need-know-about-google-newest-0.png"
+        src={googleLogo}
         alt="Google Login"
       />
-      Google
-    </StyledButton>
+      <Text as={'p'} color='#000000' fontWeight={'semibold'}>
+        Google
+      </Text>
+    </Button>
   );
 };
 

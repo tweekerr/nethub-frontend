@@ -1,14 +1,16 @@
 import React, {useState} from 'react';
-import ArticlesThread from '../../../components/Article/Thread/ArticlesThread';
 import Layout from '../../../components/Layout/Layout';
 import {useTranslation} from "react-i18next";
 import ArticlesThreadTitle from "../../../components/Article/Thread/ArticlesThreadTitle";
-import {loadLocalizations} from "../../../components/Article/Thread/ArticlesThreadSpace.functions";
 import IExtendedArticle from "../../../types/IExtendedArticle";
-import ArticlesThreadSpaceSkeleton from "../../../components/Article/Thread/ArticlesThreadSpaceSkeleton";
 import {UkrainianLanguage} from "../../../utils/constants";
 import {useQuery, useQueryClient} from "react-query";
 import {useAppSelector} from "../../../store/storeConfiguration";
+import ArticlesThreadSpaceSkeleton from "../../../components/Article/Thread/ArticlesThreadSpaceSkeleton";
+import ArticlesThread from "../../../components/Article/Thread/ArticlesThread";
+import Currency from "../../../components/Currency/Currency";
+import {Text} from "@chakra-ui/react";
+import {articlesApi} from "../../../api/api";
 
 const ArticlesThreadSpace = () => {
   const [articlesLanguage, setArticlesLanguage] = useState<string>(localStorage.getItem('articlesLanguage') ?? UkrainianLanguage);
@@ -22,32 +24,38 @@ const ArticlesThreadSpace = () => {
   const {isLogin} = useAppSelector(state => state.generalReducer);
 
   const queryClient = useQueryClient();
-  const articles = useQuery<IExtendedArticle[], string>(['articles', articlesLanguage, isLogin],
-    () => loadLocalizations(articlesLanguage));
+  const articlesAccessor = useQuery<IExtendedArticle[], Error>(['articles', articlesLanguage, isLogin],
+    () => articlesApi.getArticles(articlesLanguage)
+  );
 
   const handleSetArticles = (newArticles: IExtendedArticle[]) => {
     queryClient.setQueryData(['articles', articlesLanguage, isLogin], newArticles);
   }
 
-  const titles = {
-    center:
-      <ArticlesThreadTitle
-        articlesLanguage={articlesLanguage}
-        setArticlesLanguage={handleSetArticlesLanguage}
-        options={languages}
-      />,
-  }
-
-  if (articles.isError) return <div>{articles.error}</div>
+  const rightBar = {
+    children: <Currency/>,
+    title: <Text as={'h2'}>Курс</Text>,
+    error: {show:true, customMessage: 'Test'}
+  };
 
   return (
     <Layout
-      titles={titles}
+      title={
+        <ArticlesThreadTitle
+          articlesLanguage={articlesLanguage}
+          setArticlesLanguage={handleSetArticlesLanguage}
+          options={languages}
+        />}
+      rightBar={rightBar}
+      error={{show: true}}
     >
       {
-        articles.isLoading ? <ArticlesThreadSpaceSkeleton/> :
-          <ArticlesThread
-            articles={articles.data!}
+        // articlesAccessor.isError ? <ErrorBlock/>
+        //   :
+        articlesAccessor.isLoading
+          ? <ArticlesThreadSpaceSkeleton/>
+          : <ArticlesThread
+            articles={articlesAccessor.data!}
             setArticles={handleSetArticles}
           />
       }

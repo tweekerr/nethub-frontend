@@ -1,7 +1,7 @@
 import React, {FC, useState} from 'react';
-import {Typography} from "@mui/material";
 import SvgSelector from "../basisComps/SvgSelector/SvgSelector";
-import {FilledDiv} from '../basisComps/Basic.styled';
+import {Text, useColorModeValue} from "@chakra-ui/react";
+import FilledDiv from "../UI/FilledDiv";
 
 interface IProfileImageDropProps {
   onDrop: (e: React.DragEvent<HTMLSpanElement>) => Promise<void>,
@@ -10,6 +10,7 @@ interface IProfileImageDropProps {
 const ProfileImageDrop: FC<IProfileImageDropProps> = ({onDrop}) => {
 
   const [drag, setDrag] = useState<boolean>(false);
+  const dndBg = useColorModeValue('whiteLight', 'whiteDark');
 
   const handleDrop = async (e: React.DragEvent<HTMLSpanElement>) => {
     await onDrop(e);
@@ -28,22 +29,21 @@ const ProfileImageDrop: FC<IProfileImageDropProps> = ({onDrop}) => {
   }
 
 
-
   return (
     <FilledDiv
       onDragStart={handleDragStart}
       onDragLeave={handleDragLeave}
       onDragOver={handleDragStart}
       onDrop={handleDrop}
-      background={drag ? 'lightgray' : '#FFFFFF'} padding={'33px 76px'}
+      background={drag ? 'lightgray' : dndBg} padding={'33px 76px'}
     >
-      <Typography
+      <Text
+        as={'p'}
         color={'#838383'}
         fontWeight={700}
-        variant={'inherit'}
       >
         {drag ? 'Відпустіть для відправки' : 'Перетягніть фото сюди'}
-      </Typography>
+      </Text>
       <SvgSelector id={'Dnd'}/>
     </FilledDiv>
   );

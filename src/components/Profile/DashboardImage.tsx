@@ -3,6 +3,7 @@ import cl from "./Profile.module.sass";
 import SvgSelector from "../basisComps/SvgSelector/SvgSelector";
 import {useAppSelector} from "../../store/storeConfiguration";
 import {createImageFromInitials} from "../../utils/logoGenerator";
+import {Image} from "@chakra-ui/react";
 
 interface IDashboardImageProps {
   openModal: () => void,
@@ -48,11 +49,13 @@ const DashboardImage: FC<IDashboardImageProps> = ({openModal, handleDrop: onDrop
       onDrop={handleDrop}
       className={`${cl.dashboardMainImage} + ${drag ? cl.darkFilter : ''}`} onClick={openModal}
     >
-      <img
+      <Image
         src={image}
+        minH={110}
+        minW={110}
         onError={handleImageError}
         alt={'damaged'}
-      ></img>
+      />
       <SvgSelector id={'DriveFileRenameOutlineIcon'}/>
     </div>
   );

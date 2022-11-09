@@ -1,8 +1,6 @@
 import React, {FC} from 'react';
-import {FilledDiv} from '../../basisComps/Basic.styled';
 import SvgSelector from "../../basisComps/SvgSelector/SvgSelector";
 import cl from './ArticleSpace.module.sass'
-import {Skeleton} from "@mui/material";
 import IArticleLocalizationResponse from "../../../types/api/Article/IArticleLocalizationResponse";
 import IArticleResponse from "../../../types/api/Article/IArticleResponse";
 import {createImageFromInitials} from "../../../utils/logoGenerator";
@@ -10,6 +8,8 @@ import {getArticleContributors, getContributorRole} from "./ArticleSpace.functio
 import {useNavigate} from "react-router-dom";
 import {useQuery} from "react-query";
 import ContributorsSkeleton from "./ContributorsSkeleton";
+import FilledDiv from '../../UI/FilledDiv';
+import {Button, Link, Skeleton, Text, useColorModeValue} from "@chakra-ui/react";
 
 interface IArticleInfoProps {
   article: IArticleResponse,
@@ -21,6 +21,7 @@ interface IArticleInfoProps {
 const ArticleInfo: FC<IArticleInfoProps> = ({article, localization, isError, isLoading}) => {
 
   const navigate = useNavigate();
+  const whiteTextColor = useColorModeValue('whiteLight', 'whiteDark');
 
   const contributors = useQuery(['contributors', localization.articleId, localization.languageCode],
     () => getArticleContributors(localization.contributors), {staleTime: 50000});
@@ -31,57 +32,80 @@ const ArticleInfo: FC<IArticleInfoProps> = ({article, localization, isError, isL
     return domain.charAt(0).toUpperCase() + domain.slice(1);
   }
 
+  const divBg = useColorModeValue('purpleLight', 'purpleDark');
+
   return (
     isError ? <></> :
       <div className={cl.articleInfo}>
         {
-          isLoading ? <Skeleton height={75} variant='rounded' className={cl.infoBlock}/> :
+          isLoading ? <Skeleton height={100} className={cl.infoBlock}/> :
             <FilledDiv className={cl.infoBlock}>
               <p className={cl.infoBlockTitle}>Переклади</p>
               <div className={cl.translates}>
                 {article.localizations?.map(localization =>
-                  <FilledDiv
+                  <Button
                     onClick={() => navigate(`/article/${localization.articleId}/${localization.languageCode}`)}
-                    key={localization.languageCode} background={'#896DC8'} borderRadius={'10px'}
+                    key={localization.languageCode}
+                    borderRadius={'10px'}
                     padding={'5px 16px'}
+                    width={'fit-content'}
                   >
-                    {localization.languageCode.toUpperCase()}
+                    <Text as={'p'} mr={2} color={whiteTextColor}>
+                      {localization.languageCode.toUpperCase()}
+                    </Text>
                     <SvgSelector id={localization.languageCode}/>
-                  </FilledDiv>
+                  </Button>
                 )}
               </div>
             </FilledDiv>
         }
 
         {
-          isLoading ? <Skeleton width={'100%'} height={100} variant='rounded' className={cl.infoBlock}/> :
+          isLoading ? <Skeleton height={100} className={cl.infoBlock}/> :
             <FilledDiv className={cl.infoBlock}>
-              <p className={cl.infoBlockTitle}>Автори</p>
+              <Text as={'p'} className={cl.infoBlockTitle}>Автори</Text>
               <div className={cl.contributors}>
                 {contributors.isLoading ? <ContributorsSkeleton/> : contributors.data!.map(author =>
-                  <FilledDiv
-                    key={author.id} className={cl.contributor} background={'#896DC8'} borderRadius={'10px'}
+                  <Button
+                    key={author.id}
+                    className={cl.contributor}
+                    width={'fit-content'}
+                    bg={divBg}
+                    borderRadius={'10px'}
                     padding={'6px 15px'}
+                    color={whiteTextColor}
                   >
                     <div className={cl.role}>
-                      <p>{getContributorRole(localization.contributors, author.id)}</p>
-                      <p>{author.userName}</p>
+                      <Text as={'p'}>{getContributorRole(localization.contributors, author.id)}</Text>
+                      <Text as={'p'}>{author.userName}</Text>
                     </div>
                     <img src={author.profilePhotoLink ?? createImageFromInitials(25, author.userName)} alt={'damaged'}/>
-                  </FilledDiv>
+                  </Button>
                 )}
               </div>
             </FilledDiv>
         }
 
         {
-          isLoading ? <Skeleton width={'100%'} height={100} variant='rounded' className={cl.infoBlock}/> :
+          isLoading ? <Skeleton height={100} className={cl.infoBlock}/> :
             article.originalArticleLink &&
             <FilledDiv className={cl.infoBlock}>
-              <p className={cl.infoBlockTitle}>Перейти до оригіналу:</p>
-              <FilledDiv background={'#896DC8'} borderRadius={'10px'} padding={'5px 16px'} className={cl.originalLink}>
-                <a>{getDomain(article.originalArticleLink)}</a>
-              </FilledDiv>
+              <Text as={'p'} className={cl.infoBlockTitle}>Перейти до оригіналу:</Text>
+              <Button
+                background={'#896DC8'}
+                borderRadius={'10px'}
+                padding={'5px 16px'}
+                className={cl.originalLink}
+                width={'fit-content'}
+                bg={divBg}
+              >
+                <Link
+                  color={whiteTextColor}
+                  href={article.originalArticleLink}
+                >
+                  {getDomain(article.originalArticleLink)}
+                </Link>
+              </Button>
             </FilledDiv>
         }
       </div>

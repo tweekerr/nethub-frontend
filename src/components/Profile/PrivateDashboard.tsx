@@ -1,7 +1,5 @@
 import React, {FC, useState} from 'react';
-import {FilledDiv} from '../basisComps/Basic.styled';
 import IUserInfoResponse from "../../types/api/User/IUserInfoResponse";
-import {Typography} from "@mui/material";
 import cl from './Profile.module.sass'
 import SvgSelector from "../basisComps/SvgSelector/SvgSelector";
 import IDashboardResponse from "../../types/api/Dashboard/IDashboardResponse";
@@ -13,6 +11,8 @@ import {allowedImagesTypes} from "../../constants/dnd";
 import useCustomSnackbar from "../../hooks/useCustomSnackbar";
 import DashboardImage from "./DashboardImage";
 import {getTimeFrom} from "../../utils/timeHelper";
+import FilledDiv from "../UI/FilledDiv";
+import {Text} from '@chakra-ui/react';
 
 
 interface IPrivateDashboardProps {
@@ -67,9 +67,9 @@ const PrivateDashboard: FC<IPrivateDashboardProps> = ({user, dashboard, request,
         </div>
         {dashboard!.articlesCount === 0 ?
           <div className={cl.dashboardEmpty}>
-            <Typography variant={'inherit'}>
+            <Text as={'p'}>
               Ви ще не опублікували жодної статті.
-            </Typography>
+            </Text>
             <div>
               <UiButton
                 backgroundColor={'white'} color={'#323232'} boldSize={500}
@@ -86,22 +86,22 @@ const PrivateDashboard: FC<IPrivateDashboardProps> = ({user, dashboard, request,
           :
           <div className={cl.filledDashboard}>
             <div style={{width: articlesViews().length > 4 ? '50%' : '40%'}} className={cl.dashboardInfoBlock}>
-              <Typography variant={'inherit'}>
+              <Text as={'p'}>
                 Опубліковано:
-              </Typography>
+              </Text>
               <div>
-                <Typography variant={'inherit'}>{articlesCount()}</Typography>
-                <Typography variant={'inherit'}>статтей</Typography>
+                <Text as={'p'}>{articlesCount()}</Text>
+                <Text as={'p'}>статтей</Text>
               </div>
             </div>
 
             <div style={{width: articlesViews().length > 5 ? '50%' : '40%'}} className={cl.dashboardInfoBlock}>
-              <Typography variant={'inherit'}>
+              <Text as={'p'}>
                 Статті зібрали:
-              </Typography>
+              </Text>
               <div>
-                <Typography variant={'inherit'}>{articlesViews()}</Typography>
-                <Typography variant={'inherit'}>переглядів</Typography>
+                <Text as={'p'}>{articlesViews()}</Text>
+                <Text as={'p'}>переглядів</Text>
               </div>
             </div>
           </div>

@@ -10,18 +10,13 @@ import useValidator from "../../../hooks/useValidator";
 import useCustomSnackbar from "../../../hooks/useCustomSnackbar";
 import {ArticleStorage} from "../../../utils/localStorageProvider";
 import {useParams} from "react-router-dom";
-import {articlesApi} from "../../../api/userApi";
+import {articlesApi} from "../../../api/api";
 import {useMutation, useQuery} from 'react-query';
 
 type CreateArticleFormRef = React.ElementRef<typeof CreateArticleForm>
 
 const ArticleCreatingSpace = () => {
   const {t} = useTranslation();
-
-  const titles = {
-    center: <h2>{t('article.create.mainSettings')}</h2>,
-    right: <h2>Налаштування</h2>
-  }
 
   const defaultState = {
     title: ArticleStorage.getTitle() ?? '',
@@ -98,20 +93,22 @@ const ArticleCreatingSpace = () => {
     ArticleStorage.clearArticleData()
   };
 
+  const rightBar = {
+    title: <h2>Налаштування</h2>,
+    children: <ArticleSettings
+      article={article}
+      setArticle={updateArticle}
+      errors={errors}
+      setError={setTagsError}
+      createArticle={createMutation.mutateAsync}
+      images={images.data ?? []}
+    />
+  }
 
   return (
     <Layout
-      titles={titles}
-      rightBar={
-        <ArticleSettings
-          article={article}
-          setArticle={updateArticle}
-          errors={errors}
-          setError={setTagsError}
-          createArticle={createMutation.mutateAsync}
-          images={images.data ?? []}
-        />
-      }
+      title={<h2>{t('article.create.mainSettings')}</h2>}
+      rightBar={rightBar}
     >
       <CreateArticleForm
         article={article}

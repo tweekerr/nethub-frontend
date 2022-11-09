@@ -1,21 +1,11 @@
-import React, {useState} from 'react';
-import {Box, Grid, Typography} from "@mui/material";
-import {
-  StyledAccordion,
-  StyledAccordionDetails,
-  StyledAccordionSummary,
-  StyledFirstStep,
-  StyledRoot,
-  StyledSecondStep
-} from "./styled";
+import React, {useRef, useState} from 'react';
 import GoogleAuthButton from "./Buttons/GoogleAuthButton";
 import TelegramAuthButton from "./Buttons/TelegramAuthButton";
 import TitleInput from "../basisComps/titleInput/TitleInput";
 import ISsoRequest from "../../types/api/Sso/ISsoRequest";
 import UiButton from "../UI/button/UiButton";
-import {userApi} from "../../api/userApi";
+import {userApi} from "../../api/api";
 import {useNavigate} from "react-router-dom";
-import classes from './Login.module.sass'
 import FacebookAuthButton from "./Buttons/FacebookAuthButton";
 import LoginService from "../../utils/LoginService";
 import {ProviderType} from "../../types/ProviderType";
@@ -25,22 +15,23 @@ import useValidator from "../../hooks/useValidator";
 import useCustomSnackbar from "../../hooks/useCustomSnackbar";
 import {useActions} from "../../store/storeConfiguration";
 import {usernameDebounce} from '../../utils/debounceHelper';
+import {
+  Accordion,
+  AccordionButton,
+  AccordionItem,
+  AccordionPanel,
+  Box,
+  Text,
+  useColorModeValue
+} from "@chakra-ui/react";
 
 interface ISecondStep {
-  isActive: boolean,
+  isExpanded: boolean,
   enableEmail: boolean
 }
 
-interface ILoginErrors {
-  username: boolean,
-  email: boolean,
-  firstName: boolean,
-  lastName: boolean,
-  middleName: boolean,
-}
-
 const Login = () => {
-  const [registrationStep, setRegistrationStep] = useState<ISecondStep>({isActive: false, enableEmail: false});
+  const [registrationStep, setRegistrationStep] = useState<ISecondStep>({isExpanded: false, enableEmail: false});
   const [request, setRequest] = useState<ISsoRequest>({
     username: '',
     firstName: '',
@@ -51,6 +42,7 @@ const Login = () => {
   const {enqueueError} = useCustomSnackbar();
   const {subscribeValidator, validateAll, errors, setErrors} = useValidator<ILoginErrors>();
   const navigate = useNavigate();
+  const accordionButtonRef = useRef<HTMLButtonElement | null>(null);
 
   const debounceLogic = async (username: string | null) => await usernameDebounce(username, setErrors, errors, enqueueError);
   const debounce = useDebounce(debounceLogic, 1000);
@@ -88,13 +80,24 @@ const Login = () => {
   }
 
   const firstStep = async (provider: ProviderType) => {
-    setRegistrationStep({isActive: false, enableEmail: false});
+    let isExpanded = registrationStep.isExpanded;
+
+    if (isExpanded) {
+      accordionButtonRef.current?.click();
+      isExpanded = !isExpanded;
+    }
+    setRegistrationStep({isExpanded: false, enableEmail: false});
+
     const providerRequest = await LoginService.ProviderHandle(provider);
     setRequest(providerRequest);
 
     const {isProviderRegistered} = await userApi.checkIfExists(providerRequest.providerKey, provider);
     if (!isProviderRegistered) {
-      setRegistrationStep({isActive: true, enableEmail: !providerRequest.email});
+      if (!isExpanded) {
+        accordionButtonRef.current?.click();
+        isExpanded = !isExpanded
+      }
+      setRegistrationStep({isExpanded, enableEmail: !providerRequest.email});
       return;
     }
     const user = await userApi.authenticate({...providerRequest, type: "login"});
@@ -116,72 +119,73 @@ const Login = () => {
   }
 
   return (
-    <StyledRoot>
-      <StyledFirstStep>
-        <Typography color={'secondary'} fontWeight={700}>
-          Оберіть спосіб авторизації
-        </Typography>
-        <Grid mt={2} container>
-          <GoogleAuthButton onClick={async () => await firstStep(ProviderType.GOOGLE)}/>
-          <TelegramAuthButton onClick={async () => await firstStep(ProviderType.TELEGRAM)}/>
-          <FacebookAuthButton onClick={async () => await firstStep(ProviderType.FACEBOOK)}/>
-        </Grid>
-      </StyledFirstStep>
-      <Box margin={'10px'}></Box>
-      <StyledAccordion
-        className={registrationStep.isActive ? classes.accordionActive : classes.accordionDisabled}
-        disableGutters
-        expanded={registrationStep.isActive} disabled={!registrationStep.isActive}
-      >
-        <StyledAccordionSummary
-          aria-controls="panel1a-content"
-          id="panel1a-header"
-        >
-          <Typography color={'secondary'} fontWeight={700}>Уточніть інформацію</Typography>
-        </StyledAccordionSummary>
-        <StyledAccordionDetails>
-          <StyledSecondStep>
+    <>
+      <Accordion allowToggle>
+        <AccordionItem bg={useColorModeValue('#F3EEFF', '#333439')} padding={'20px'} borderRadius={'12px'}>
+          <Text as={'b'} color={useColorModeValue('#757575', 'whiteDark')}>
+            Оберіть спосіб авторизації
+          </Text>
+          <Box margin={'10px'}/>
+          <Box display={'flex'} gap={6} mt={'5px'}>
+            <GoogleAuthButton onClick={async () => await firstStep(ProviderType.GOOGLE)}/>
+            {/*<GoogleAuthButton onClick={() => accordionButtonRef.current?.click()}/>*/}
+            <TelegramAuthButton onClick={async () => await firstStep(ProviderType.TELEGRAM)}/>
+            <FacebookAuthButton onClick={async () => await firstStep(ProviderType.FACEBOOK)}/>
+          </Box>
+          <AccordionButton ref={accordionButtonRef} display={'none'}/>
+          <AccordionPanel paddingInlineStart={0} paddingInlineEnd={0}>
+            <Box margin={'10px'}/>
+            <Text as={'p'} fontWeight={700}>Уточніть інформацію</Text>
+            <Box margin={'10px'}/>
             <TitleInput
-              title={'Username*'} placeholder={'Ім\'я користувача'} value={request.username}
-              error={errors.username}
-              setValue={(username: string) => {
-                updateRequest('username', username);
-                if (username !== null && username !== '')
-                  debounce(username)
+              title={'Username*'} placeholder={'Ім\'я користувача'} value={request.username!}
+              isInvalid={errors.username}
+              onChange={(e) => {
+                updateRequest('username', e.target.value);
+                if (e.target.value !== null && e.target.value !== '')
+                  debounce(e.target.value)
               }}
               width={'100%'}
             />
             <TitleInput
-              title={'Email*'} placeholder={'Електронна пошта'} value={request.email}
-              error={errors.email}
-              setValue={(email: string) => updateRequest('email', email)}
+              title={'Email*'} placeholder={'Електронна пошта'} value={request.email!}
+              isInvalid={errors.email}
+              onChange={(e) => updateRequest('email', e.target.value)}
               width={'100%'}
-              disabled={!registrationStep.enableEmail}
+              isDisabled={!registrationStep.enableEmail}
             />
             <TitleInput
-              title={'Firstname*'} placeholder={'Iм\'я'} value={request.firstName}
-              error={errors.firstName}
-              setValue={(firstname: string) => updateRequest('firstName', firstname)}
+              title={'Firstname*'} placeholder={'Iм\'я'} value={request.firstName!}
+              isInvalid={errors.firstName}
+              onChange={(e) => updateRequest('firstName', e.target.value)}
               width={'100%'}
             />
             <TitleInput
-              title={'Lastname*'} placeholder={'Прізвище'} value={request.lastName}
-              error={errors.lastName}
-              setValue={(lastname: string) => updateRequest('lastName', lastname)}
+              title={'Lastname*'} placeholder={'Прізвище'} value={request.lastName!}
+              isInvalid={errors.lastName}
+              onChange={(e) => updateRequest('lastName', e.target.value)}
               width={'100%'}
             />
             <TitleInput
               title={'Middlename'} placeholder={'По-батькові'} value={request.middleName}
-              error={errors.middleName}
-              setValue={(middlename: string) => updateRequest('middleName', middlename)}
+              isInvalid={errors.middleName}
+              onChange={(e) => updateRequest('middleName', e.target.value)}
               width={'100%'}
             />
             <UiButton onClick={secondStep}>Зареєструватись</UiButton>
-          </StyledSecondStep>
-        </StyledAccordionDetails>
-      </StyledAccordion>
-    </StyledRoot>
+          </AccordionPanel>
+        </AccordionItem>
+      </Accordion>
+    </>
   );
 };
+
+interface ILoginErrors {
+  username: boolean,
+  email: boolean,
+  firstName: boolean,
+  lastName: boolean,
+  middleName: boolean,
+}
 
 export default Login;

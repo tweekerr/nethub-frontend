@@ -1,4 +1,4 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import SvgSelector from "../../basisComps/SvgSelector/SvgSelector";
 import cl from '../UiComps.module.sass';
 import useCustomSnackbar from "../../../hooks/useCustomSnackbar";
@@ -14,6 +14,10 @@ interface IIconButtonProps {
 
 const IconButton: FC<IIconButtonProps> = ({iconId, onClick, filledIconId, defaultState, checkAuth = true}) => {
   const [isActive, setIsActive] = useState<boolean>(defaultState ?? false);
+
+  useEffect(() => {
+    setIsActive(defaultState ?? false)
+  }, [])
 
   const {enqueueError} = useCustomSnackbar();
 
