@@ -7,10 +7,10 @@ import {ProfileChangesType} from "./Profile";
 import {useDebounce} from "../../hooks/useDebounce";
 import useCustomSnackbar from "../../hooks/useCustomSnackbar";
 import {usernameDebounce} from "../../utils/debounceHelper";
-import {useAppSelector} from "../../store/storeConfiguration";
 import {isNotNullOrWhiteSpace} from "../../utils/validators";
 import {Accordion, AccordionButton, AccordionItem, AccordionPanel, Text, useColorModeValue} from "@chakra-ui/react";
 import FilledDiv from "../UI/FilledDiv";
+import {useAppStore} from "../../store/config";
 
 type RequestType = {
   username: string,
@@ -46,7 +46,7 @@ interface IProfileSettingsHandle {
 const ProfileSettings: ForwardRefRenderFunction<IProfileSettingsHandle, IProfileSettingsProps> =
   ({request, setRequest, changes, lockFlag, expanded, setExpanded}, ref) => {
     const {enqueueError, enqueueSuccess} = useCustomSnackbar();
-    const {user} = useAppSelector(state => state.generalReducer)
+    const user = useAppStore(state => state.user);
     const accordionButtonRef = useRef<HTMLButtonElement>(null);
 
     const debounceLogic = async (username: string | null, showMessage?: boolean) => {

@@ -8,10 +8,10 @@ import {useNavigate} from "react-router-dom";
 import ProfileSettings from "./ProfileSettings";
 import IUpdateProfileRequest from "../../types/api/Profile/IUpdateProfileRequest";
 import {userApi} from "../../api/api";
-import {useActions, useAppSelector} from "../../store/storeConfiguration";
 import FilledDiv from '../UI/FilledDiv';
 import {Button, Text} from '@chakra-ui/react';
 import AnimateHeight from "react-animate-height";
+import {useAppStore} from "../../store/config";
 
 
 interface IProfileProps {
@@ -33,7 +33,6 @@ type ProfileSettingsRef = React.ElementRef<typeof ProfileSettings>
 const Profile: FC<IProfileProps> = ({user, dashboard}) => {
   const navigate = useNavigate();
 
-  const {user: reduxUser} = useAppSelector(state => state.generalReducer);
   const [request, setRequest] = useState<ExtendedRequest>({
     username: user.userName,
     email: user.email,
@@ -45,7 +44,7 @@ const Profile: FC<IProfileProps> = ({user, dashboard}) => {
   });
   const [changes, setChanges] = useState<ProfileChangesType[]>([]);
   const profileSettingsRef = React.createRef<ProfileSettingsRef>();
-  const {updateProfile: updateProfileAction} = useActions();
+  const {updateProfile: updateProfileAction, user: reduxUser} = useAppStore();
   const [lockFlag, setLockFlag] = useState<boolean>(false);
   const [isSettingsExpanded, setIsSettingsExpanded] = useState<boolean>(false);
 

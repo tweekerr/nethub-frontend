@@ -1,6 +1,5 @@
 import 'moment/locale/uk';
 import 'moment/locale/en-gb';
-import {useActions, useAppSelector} from './store/storeConfiguration';
 import React, {useEffect, useState} from 'react';
 import {switchLocal} from "./utils/localization";
 import AppRouter from './components/AppRouter';
@@ -9,10 +8,11 @@ import {SnackbarProvider} from 'notistack';
 import {check} from "./App.functions";
 import {QueryClient, QueryClientProvider} from 'react-query';
 import {ReactQueryDevtools} from "react-query/devtools";
+import {useAppStore} from "./store/config";
 
 function App() {
-  const {language} = useAppSelector((state) => state.generalReducer);
-  const {login} = useActions();
+  const language = useAppStore(state => state.language);
+  const login = useAppStore(state => state.login);
 
 
   useEffect(() => {

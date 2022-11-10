@@ -5,12 +5,12 @@ import ArticlesThreadTitle from "../../../components/Article/Thread/ArticlesThre
 import IExtendedArticle from "../../../types/IExtendedArticle";
 import {UkrainianLanguage} from "../../../utils/constants";
 import {useQuery, useQueryClient} from "react-query";
-import {useAppSelector} from "../../../store/storeConfiguration";
 import ArticlesThreadSpaceSkeleton from "./ArticlesThreadSpaceSkeleton";
 import ArticlesThread from "../../../components/Article/Thread/ArticlesThread";
 import Currency from "../../../components/Currency/Currency";
 import {Text} from "@chakra-ui/react";
 import {articlesApi} from "../../../api/api";
+import {useAppStore} from "../../../store/config";
 
 const ArticlesThreadSpace = () => {
   const [articlesLanguage, setArticlesLanguage] = useState<string>(localStorage.getItem('articlesLanguage') ?? UkrainianLanguage);
@@ -21,7 +21,7 @@ const ArticlesThreadSpace = () => {
     setArticlesLanguage(value);
   }
 
-  const {isLogin} = useAppSelector(state => state.generalReducer);
+  const isLogin = useAppStore(state => state.isLogin);
 
   const queryClient = useQueryClient();
   const articlesAccessor = useQuery<IExtendedArticle[], Error>(['articles', articlesLanguage, isLogin],
@@ -35,7 +35,7 @@ const ArticlesThreadSpace = () => {
   const rightBar = {
     children: <Currency/>,
     title: <Text as={'h2'}>Курс</Text>,
-    error: {show:true, customMessage: 'Test'}
+    error: {show:true, customMessage: 'Помилка'}
   };
 
   return (

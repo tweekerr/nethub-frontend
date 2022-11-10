@@ -1,5 +1,4 @@
 import axios, {AxiosResponse} from 'axios';
-import {IReduxUser} from "../store/generalSlice";
 import IAuthResult from "../types/api/Refresh/IAuthResult";
 import ISsoRequest from "../types/api/Sso/ISsoRequest";
 import ICheckEmailResponse from "../types/api/CheckEmail/ICheckEmailRequest";
@@ -17,6 +16,7 @@ import IExtendedArticle from "../types/IExtendedArticle";
 import INewsResponse from "../types/api/News/INewsResponse";
 import IUpdateProfileRequest from "../types/api/Profile/IUpdateProfileRequest";
 import ICurrencyResponse from "../types/api/Currency/ICurrencyResponse";
+import {IReduxUser} from "../types/IReduxUser";
 
 export const _api = axios.create({
   //TODO: must be general link

@@ -4,7 +4,6 @@ import cl from './Header.module.sass'
 import layoutClasses from '../Layout.module.sass'
 import LoggedUserBar from './LoggedUserBar';
 import UnloggedUserBar from './UnloggedUserBar';
-import {useAppSelector} from "../../../store/storeConfiguration";
 import {useNavigate} from "react-router-dom";
 import {
   Box,
@@ -18,11 +17,12 @@ import {
   useColorModeValue
 } from "@chakra-ui/react";
 import {SearchIcon} from "@chakra-ui/icons";
+import {useAppStore} from "../../../store/config";
 
 const Header: React.FC = () => {
 
   const {toggleColorMode, colorMode} = useColorMode();
-  const {isLogin} = useAppSelector((state) => state.generalReducer);
+  const isLogin = useAppStore(state => state.isLogin);
   const navigate = useNavigate();
   const [searchValue, setSearchValue] = React.useState<string>('');
   const headerBackgroundColor = useColorModeValue("#FFFFFF", '#323232')

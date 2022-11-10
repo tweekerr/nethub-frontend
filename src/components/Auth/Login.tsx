@@ -12,7 +12,6 @@ import {isNotNullOrWhiteSpace} from "../../utils/validators";
 import {useDebounce} from "../../hooks/useDebounce";
 import useValidator from "../../hooks/useValidator";
 import useCustomSnackbar from "../../hooks/useCustomSnackbar";
-import {useActions} from "../../store/storeConfiguration";
 import {usernameDebounce} from '../../utils/debounceHelper';
 import {
   Accordion,
@@ -24,6 +23,7 @@ import {
   Text,
   useColorModeValue
 } from "@chakra-ui/react";
+import {useAppStore} from "../../store/config";
 
 interface ISecondStep {
   isExpanded: boolean,
@@ -38,7 +38,7 @@ const Login = () => {
     lastName: '',
     email: ''
   } as ISsoRequest);
-  const {login} = useActions();
+  const {login} = useAppStore();
   const {enqueueError} = useCustomSnackbar();
   const {subscribeValidator, validateAll, errors, setErrors} = useValidator<ILoginErrors>();
   const navigate = useNavigate();

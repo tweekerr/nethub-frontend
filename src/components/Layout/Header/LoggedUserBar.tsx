@@ -1,13 +1,13 @@
 import React, {FC, useEffect, useState} from 'react';
 import {Avatar, Text, useColorModeValue} from '@chakra-ui/react';
 import classes from './Header.module.sass';
-import {useActions, useAppSelector} from "../../../store/storeConfiguration";
 import {createImageFromInitials} from "../../../utils/logoGenerator";
 import {useNavigate} from "react-router-dom";
+import {useAppStore} from "../../../store/config";
 
 const LoggedUserBar: FC = () => {
-    const {user} = useAppSelector((state) => state.generalReducer);
-    const {logout} = useActions();
+    const {user, logout} = useAppStore();
+
     const navigate = useNavigate();
     const getImage = () => user.profilePhotoLink ?? createImageFromInitials(500, user.username);
     const [image, setImage] = useState<string>(getImage());

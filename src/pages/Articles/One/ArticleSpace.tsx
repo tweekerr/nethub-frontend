@@ -8,15 +8,15 @@ import ArticleBodySkeleton from "../../../components/Article/One/Body/ArticleBod
 import IArticleLocalizationResponse from "../../../types/api/Article/IArticleLocalizationResponse";
 import {RateVariants} from "../../../components/Article/Shared/ArticlesRateCounter";
 import {useQuery, useQueryClient} from "react-query";
-import {useAppSelector} from "../../../store/storeConfiguration";
 import {getArticle, getArticleActions, getLocalization,} from "./ArticleSpace.functions";
 import {Box, Skeleton, Text} from "@chakra-ui/react";
+import {useAppStore} from "../../../store/config";
 
 
 const ArticleSpace = () => {
     const queryClient = useQueryClient();
     const {id, code} = useParams();
-    const {isLogin} = useAppSelector(state => state.generalReducer);
+    const isLogin = useAppStore(state => state.isLogin);
     const article = useQuery(['article', id], () => getArticle(id!));
     const localization = useQuery<IArticleLocalizationResponse, any>(['articleLocalization', id, code], () => getLocalization(id!, code!),
       {
