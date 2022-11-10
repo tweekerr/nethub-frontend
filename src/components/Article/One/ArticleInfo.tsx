@@ -1,10 +1,10 @@
 import React, {FC} from 'react';
-import SvgSelector from "../../basisComps/SvgSelector/SvgSelector";
-import cl from './ArticleSpace.module.sass'
+import SvgSelector from "../../UI/SvgSelector/SvgSelector";
+import cl from './ArticleInfo.module.sass'
 import IArticleLocalizationResponse from "../../../types/api/Article/IArticleLocalizationResponse";
 import IArticleResponse from "../../../types/api/Article/IArticleResponse";
 import {createImageFromInitials} from "../../../utils/logoGenerator";
-import {getArticleContributors, getContributorRole} from "./ArticleSpace.functions";
+import {getArticleContributors, getContributorRole} from "../../../pages/Articles/One/ArticleSpace.functions";
 import {useNavigate} from "react-router-dom";
 import {useQuery} from "react-query";
 import ContributorsSkeleton from "./ContributorsSkeleton";

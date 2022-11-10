@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import classes from './ArticlesThreadSpace.module.sass';
+import classes from './ArticlesThread.module.sass';
 import ArticleShort from '../Shared/ArticleShort';
 import {articlesApi} from "../../../api/api";
 import IExtendedArticle from "../../../types/IExtendedArticle";
@@ -28,7 +28,7 @@ const ArticlesThread: FC<IArticlesThreadProps> = ({articles, setArticles}) => {
 
 
   return (
-    <div className={classes.blogSpace}>
+    <div className={classes.thread}>
       {articles.length > 0 ?
         articles.map((item) => (
           <ArticleShort

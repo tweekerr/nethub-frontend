@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import {Box, Text, useColorModeValue} from "@chakra-ui/react";
-import SvgSelector from "../basisComps/SvgSelector/SvgSelector";
+import SvgSelector from "../UI/SvgSelector/SvgSelector";
 import cl from './Currency.module.sass';
 
 interface ICryptoChangeProps {

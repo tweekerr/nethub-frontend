@@ -1,7 +1,7 @@
 import React, {useRef, useState} from 'react';
 import GoogleAuthButton from "./Buttons/GoogleAuthButton";
 import TelegramAuthButton from "./Buttons/TelegramAuthButton";
-import TitleInput from "../basisComps/titleInput/TitleInput";
+import TitleInput from "../UI/TitleInput/TitleInput";
 import ISsoRequest from "../../types/api/Sso/ISsoRequest";
 import {userApi} from "../../api/api";
 import {useNavigate} from "react-router-dom";

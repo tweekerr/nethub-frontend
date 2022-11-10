@@ -1,9 +1,9 @@
 import React from 'react';
 import {Box, Button, Text, useColorModeValue} from "@chakra-ui/react";
-import cl from './NotFound.module.sass';
+import cl from './NotFoundSpace.module.sass';
 import Layout from "../components/Layout/Layout";
-import SvgSelector from "../components/basisComps/SvgSelector/SvgSelector";
-import ErrorBlock from "../components/Article/Shared/ErrorBlock";
+import SvgSelector from "../components/UI/SvgSelector/SvgSelector";
+import ErrorBlock from "../components/Layout/ErrorBlock";
 
 const NotFoundSpace = () => {
   const textColor = useColorModeValue('whiteLight', 'whiteDark');

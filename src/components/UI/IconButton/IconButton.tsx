@@ -1,5 +1,5 @@
 import React, {FC, useEffect, useState} from 'react';
-import SvgSelector from "../../basisComps/SvgSelector/SvgSelector";
+import SvgSelector from "../SvgSelector/SvgSelector";
 import cl from '../UiComps.module.sass';
 import useCustomSnackbar from "../../../hooks/useCustomSnackbar";
 import {isAuthorized} from "../../../utils/JwtHelper";

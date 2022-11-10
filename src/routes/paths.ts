@@ -1,7 +1,7 @@
 import ArticlesThreadSpace from '../pages/Articles/Thread/ArticlesThreadSpace';
-import {AuthSpace} from "../components/Auth/AuthSpace";
-import ArticleCreatingSpace from "../components/Article/Create/ArticleCreatingSpace";
-import ArticleSpace from "../components/Article/One/ArticleSpace";
+import {AuthSpace} from "../pages/Auth/AuthSpace";
+import ArticleCreatingSpace from "../pages/Articles/Create/ArticleCreatingSpace";
+import ArticleSpace from "../pages/Articles/One/ArticleSpace";
 import SavedSpace from "../pages/Saved/SavedSpace";
 import ProfileSpace from "../pages/Profile/ProfileSpace";
 

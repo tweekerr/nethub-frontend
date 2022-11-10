@@ -1,5 +1,5 @@
 import React, {FC, PropsWithChildren} from 'react';
-import FilledDiv from "../../UI/FilledDiv";
+import FilledDiv from "../UI/FilledDiv";
 import {BoxProps, Text, useColorModeValue} from '@chakra-ui/react';
 
 interface IErrorBlockProps extends PropsWithChildren, BoxProps {

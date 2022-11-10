@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import {ICryptoResponse} from "../../types/api/Currency/ICurrencyResponse";
 import {Box, Text, useColorModeValue} from "@chakra-ui/react";
-import SvgSelector from "../basisComps/SvgSelector/SvgSelector";
+import SvgSelector from "../UI/SvgSelector/SvgSelector";
 import CurrencyRow from "./CurrencyRow";
 import CryptoChange from "./CryptoChange";
 

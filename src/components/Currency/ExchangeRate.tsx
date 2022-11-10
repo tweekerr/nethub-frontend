@@ -2,8 +2,8 @@ import React, {FC} from 'react';
 import {IExchangesResponse} from "../../types/api/Currency/ICurrencyResponse";
 import {Box, Text, useColorModeValue} from "@chakra-ui/react";
 import CurrencyRow from "./CurrencyRow";
-import CurrencyUsd from "../UI/icons/CurrencyUsd";
-import CurrencyEuro from "../UI/icons/CurrencyEuro";
+import CurrencyUsd from "../UI/Icons/CurrencyUsd";
+import CurrencyEuro from "../UI/Icons/CurrencyEuro";
 
 interface IExchangeProps {
   rate: IExchangesResponse

@@ -1,6 +1,6 @@
 import React from 'react';
 import UserLibrary, {ILibraryItem} from "../../components/Library/UserLibrary";
-import SvgSelector from "../../components/basisComps/SvgSelector/SvgSelector";
+import SvgSelector from "../../components/UI/SvgSelector/SvgSelector";
 import Layout from "../../components/Layout/Layout";
 import SavedArticles from "../../components/Article/Saved/SavedArticles";
 import ArticlesThreadSpace from "../Articles/Thread/ArticlesThreadSpace";

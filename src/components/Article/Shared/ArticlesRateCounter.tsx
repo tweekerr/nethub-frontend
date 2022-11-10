@@ -1,6 +1,6 @@
 import React, {FC, useState} from 'react';
-import SvgSelector from "../../basisComps/SvgSelector/SvgSelector";
-import cl from "../../basisComps/ВasicComps.module.sass";
+import SvgSelector from "../../UI/SvgSelector/SvgSelector";
+import cl from './ArticleRateCounter.module.sass';
 import {articlesApi} from "../../../api/api";
 import useCustomSnackbar from "../../../hooks/useCustomSnackbar";
 import {isAuthorized} from "../../../utils/JwtHelper";

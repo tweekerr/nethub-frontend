@@ -1,5 +1,5 @@
 import React, {FC, useState} from 'react';
-import SvgSelector from "../basisComps/SvgSelector/SvgSelector";
+import SvgSelector from "../UI/SvgSelector/SvgSelector";
 import {Text, useColorModeValue} from "@chakra-ui/react";
 import FilledDiv from "../UI/FilledDiv";
 

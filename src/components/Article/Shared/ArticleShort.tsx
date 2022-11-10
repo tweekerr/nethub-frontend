@@ -1,10 +1,9 @@
 import React, {FC} from 'react';
-import cl from "../Thread/ArticlesThreadSpace.module.sass"
 import ArticlesRateCounter from "./ArticlesRateCounter";
-import ArticleSavingActions from "../../basisComps/ArticleSavingActions";
+import ArticleSavingActions from "./ArticleSavingActions";
 import {useNavigate} from "react-router-dom";
 import IExtendedArticle from "../../../types/IExtendedArticle";
-import classes from "../../basisComps/PublicBasis/PublicBasis.module.scss";
+import cl from "./ArticleShort.module.sass";
 import {DateTime} from "luxon";
 import FilledDiv from '../../UI/FilledDiv';
 import {Link, Text, useColorModeValue} from "@chakra-ui/react";
@@ -39,24 +38,24 @@ const ArticleShort: FC<IArticleItemProps> = ({localization, save, textBeforeTime
       onClick={() => navigate(`/article/${localization.articleId}/${localization.languageCode}`)}
     >
       <Link href='#'>
-        <div className={classes.titleTime}>
+        <div className={cl.titleTime}>
           <Text
             as={'h2'}
-            className={classes.publicTitle}
+            className={cl.publicTitle}
             color={useColorModeValue('#242D35', '#EFEFEF')}
           >
             {localization.title}
           </Text>
           <Text
             as={'p'}
-            className={classes.timeAgo}
+            className={cl.timeAgo}
             color={useColorModeValue('#757575', '#EFEFEF')}
           >
             {textBeforeTime ? `${textBeforeTime}: ${getTimeAgo()}` : getTimeAgo()}
           </Text>
         </div>
         <Text
-          as={'p'} className={classes.publicDes}
+          as={'p'} className={cl.description}
           color={useColorModeValue('#4F5B67', '#EFEFEF')}
         >
           {localization.description}

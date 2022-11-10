@@ -1,17 +1,16 @@
 import React, {useState} from 'react';
-import Layout from '../../Layout/Layout';
-import ArticleBody from "./Body/ArticleBody";
-import CommentsWidget from "../../Shared/CommentsWidget";
-import cl from './ArticleSpace.module.sass'
-import ArticleInfo from "./ArticleInfo";
+import Layout from '../../../components/Layout/Layout';
+import ArticleBody from "../../../components/Article/One/Body/ArticleBody";
+import CommentsWidget from "../../../components/Shared/CommentsWidget";
+import ArticleInfo from "../../../components/Article/One/ArticleInfo";
 import {useParams} from "react-router-dom";
-import ArticleBodySkeleton from "./Body/ArticleBodySkeleton";
+import ArticleBodySkeleton from "../../../components/Article/One/Body/ArticleBodySkeleton";
 import IArticleLocalizationResponse from "../../../types/api/Article/IArticleLocalizationResponse";
-import {RateVariants} from "../Shared/ArticlesRateCounter";
+import {RateVariants} from "../../../components/Article/Shared/ArticlesRateCounter";
 import {useQuery, useQueryClient} from "react-query";
 import {useAppSelector} from "../../../store/storeConfiguration";
 import {getArticle, getArticleActions, getLocalization,} from "./ArticleSpace.functions";
-import {Skeleton, Text} from "@chakra-ui/react";
+import {Box, Skeleton, Text} from "@chakra-ui/react";
 
 
 const ArticleSpace = () => {
@@ -55,7 +54,7 @@ const ArticleSpace = () => {
 
     return (
       <Layout rightBar={rightBar}>
-        <div className={cl.layoutBody}>
+        <Box width={'100%'} display={'flex'} flexDirection={'column'}>
           {
             localization.isLoading || article.isLoading ? <ArticleBodySkeleton/> :
               <ArticleBody
@@ -64,7 +63,7 @@ const ArticleSpace = () => {
               />
           }
           {<CommentsWidget display={!(localization.isLoading || article.isLoading)} deps={[id, code]}/>}
-        </div>
+        </Box>
       </Layout>
     );
   }

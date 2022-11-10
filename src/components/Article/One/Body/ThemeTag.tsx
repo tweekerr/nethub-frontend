@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import cl from "../ArticleSpace.module.sass"
+import cl from "../ArticleInfo.module.sass"
 import {Text, useColorModeValue} from "@chakra-ui/react";
 
 interface IThemeTagProps {

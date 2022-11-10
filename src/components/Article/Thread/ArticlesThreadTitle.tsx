@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import cl from './ArticlesThreadSpace.module.sass';
+import cl from './ArticlesThread.module.sass';
 import {Box, Select, Text} from "@chakra-ui/react";
 
 interface IArticleThreadTitleProps {

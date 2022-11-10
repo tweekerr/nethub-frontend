@@ -1,10 +1,10 @@
 import React, {FC} from 'react';
-import cl from '../ArticleSpace.module.sass';
+import cl from './ArticleBody.module.sass';
 import IArticleLocalizationResponse from "../../../../types/api/Article/IArticleLocalizationResponse";
-import {getArticleContributors, getAuthor} from "../ArticleSpace.functions";
+import {getArticleContributors, getAuthor} from "../../../../pages/Articles/One/ArticleSpace.functions";
 import {articlesApi} from "../../../../api/api";
 import ArticlesRateCounter, {RateVariants} from "../../Shared/ArticlesRateCounter";
-import ArticleSavingActions from "../../../basisComps/ArticleSavingActions";
+import ArticleSavingActions from "../../Shared/ArticleSavingActions";
 import {DateToRelativeCalendar} from "../../../../utils/dateHelper";
 import {useQuery} from "react-query";
 import FilledDiv from "../../../UI/FilledDiv";
@@ -28,7 +28,7 @@ const ArticleBody: FC<IArticleBodyProps> = ({localization, tags, userActions, ra
   return (
     <FilledDiv className={cl.articleWrapper}>
       <div className={cl.articleTitle}>
-        <Text as={'p'} fontWeight={'bold'} className={cl.title} fontSize={18}>{localization.title}</Text>
+        <Text as={'p'} fontWeight={'bold'} fontSize={18}>{localization.title}</Text>
       </div>
 
       <div className={cl.articleDescription}>

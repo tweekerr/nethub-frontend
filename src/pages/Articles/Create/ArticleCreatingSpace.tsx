@@ -1,7 +1,7 @@
 import React, {useRef, useState} from 'react';
-import ArticleSettings from './ArticleSettings';
-import Layout from "../../Layout/Layout";
-import CreateArticleForm from "./CreateArticleForm";
+import ArticleSettings from '../../../components/Article/Create/ArticleSettings';
+import Layout from "../../../components/Layout/Layout";
+import CreateArticleForm from "../../../components/Article/Create/CreateArticleForm";
 import ILocalization, {IArticleFormErrors} from "../../../types/ILocalization";
 import {arrayMinLength, isNotNullOrWhiteSpace, minLength, regexTest} from "../../../utils/validators";
 import {urlRegex} from "../../../utils/regex";

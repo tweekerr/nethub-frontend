@@ -1,6 +1,6 @@
 import {Skeleton} from '@chakra-ui/react';
 import React from 'react';
-import cl from '../ArticleSpace.module.sass'
+import cl from './ArticleBody.module.sass';
 
 const ArticleBodySkeleton = () => {
   return (

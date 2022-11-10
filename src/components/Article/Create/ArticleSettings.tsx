@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import classes from './ArticleCreating.module.sass';
 import ArticleTagsSettings from "./ArticleTagsSettings";
-import TitleInput from "../../basisComps/titleInput/TitleInput";
+import TitleInput from "../../UI/TitleInput/TitleInput";
 import ILocalization, {IArticleFormErrors} from "../../../types/ILocalization";
 import ArticleImagesSettings from "./ArticleImagesSettings";
 import {ArticleStorage} from "../../../utils/localStorageProvider";

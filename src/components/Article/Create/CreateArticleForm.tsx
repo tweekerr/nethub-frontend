@@ -1,6 +1,6 @@
 import React, {forwardRef, ForwardRefRenderFunction, useImperativeHandle, useRef} from 'react';
 import classes from './ArticleCreating.module.sass';
-import TitleInput from '../../basisComps/titleInput/TitleInput';
+import TitleInput from '../../UI/TitleInput/TitleInput';
 import TinyInput from "./TinyInput";
 import ILocalization, {IArticleFormErrors} from "../../../types/ILocalization";
 import {ArticleStorage} from "../../../utils/localStorageProvider";

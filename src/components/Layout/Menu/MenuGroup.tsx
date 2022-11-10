@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import SvgSelector from '../../basisComps/SvgSelector/SvgSelector';
+import SvgSelector from '../../UI/SvgSelector/SvgSelector';
 import classes from './Menu.module.sass';
 import {IMenuItem} from "./MenuData";
 import {useNavigate} from "react-router-dom";

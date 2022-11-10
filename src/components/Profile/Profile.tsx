@@ -1,7 +1,7 @@
 import React, {FC, useState} from 'react';
 import cl from './Profile.module.sass'
 import PrivateDashboard from "./PrivateDashboard";
-import SvgSelector from "../basisComps/SvgSelector/SvgSelector";
+import SvgSelector from "../UI/SvgSelector/SvgSelector";
 import IUserInfoResponse from "../../types/api/User/IUserInfoResponse";
 import IDashboardResponse from "../../types/api/Dashboard/IDashboardResponse";
 import {useNavigate} from "react-router-dom";

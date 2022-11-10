@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import cl from '../ВasicComps.module.sass';
+import cl from './TitleInput.module.sass';
 import {Input, InputProps, Text} from '@chakra-ui/react';
 
 interface ITitleInputProps extends InputProps {
@@ -14,16 +14,6 @@ const TitleInput: FC<ITitleInputProps> = (props) => {
     <div className={cl.titleInput}>
       <Text as={'p'}>{title}</Text>
       <Input{...rest}/>
-      {/*<UiInput*/}
-      {/*  disabled={disabled}*/}
-      {/*helperText={helperText}*/}
-      {/*placeholder={placeholder}*/}
-      {/*width={width}*/}
-      {/*value={value}*/}
-      {/*setValue={setValue}*/}
-      {/*type={type}*/}
-      {/*rows={rows}*/}
-      {/*/>*/}
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import React, {FC, useEffect, useState} from 'react';
 import cl from "./Profile.module.sass";
-import SvgSelector from "../basisComps/SvgSelector/SvgSelector";
+import SvgSelector from "../UI/SvgSelector/SvgSelector";
 import {useAppSelector} from "../../store/storeConfiguration";
 import {createImageFromInitials} from "../../utils/logoGenerator";
 import {Image} from "@chakra-ui/react";

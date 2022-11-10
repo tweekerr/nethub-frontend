@@ -1,9 +1,9 @@
 import React, {FC} from 'react';
-import cl from "./ВasicComps.module.sass";
-import IconButton from "../UI/iconButton/IconButton";
-import useCustomSnackbar from "../../hooks/useCustomSnackbar";
+import cl from "./ArticleSavingActions.module.sass";
+import IconButton from "../../UI/IconButton/IconButton";
+import useCustomSnackbar from "../../../hooks/useCustomSnackbar";
 import {useQueryClient} from "react-query";
-import FilledDiv from '../UI/FilledDiv';
+import FilledDiv from '../../UI/FilledDiv';
 import {useColorModeValue} from "@chakra-ui/react";
 
 interface ISavingActionsProps {

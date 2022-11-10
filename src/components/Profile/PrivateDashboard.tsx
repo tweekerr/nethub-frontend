@@ -1,7 +1,7 @@
 import React, {FC, useState} from 'react';
 import IUserInfoResponse from "../../types/api/User/IUserInfoResponse";
 import cl from './Profile.module.sass'
-import SvgSelector from "../basisComps/SvgSelector/SvgSelector";
+import SvgSelector from "../UI/SvgSelector/SvgSelector";
 import IDashboardResponse from "../../types/api/Dashboard/IDashboardResponse";
 import millify from "millify";
 import SetImageModal from "./SetImageModal";

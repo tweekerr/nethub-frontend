@@ -1,4 +1,4 @@
-import SvgSelector from "../../basisComps/SvgSelector/SvgSelector";
+import SvgSelector from "../../UI/SvgSelector/SvgSelector";
 import classes from "./ArticleCreating.module.sass"
 import React, {FC, useState} from "react";
 import ThemeTag from "../One/Body/ThemeTag";

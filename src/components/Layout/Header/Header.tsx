@@ -1,5 +1,5 @@
 import React from 'react';
-import SvgSelector from '../../basisComps/SvgSelector/SvgSelector';
+import SvgSelector from '../../UI/SvgSelector/SvgSelector';
 import cl from './Header.module.sass'
 import layoutClasses from '../Layout.module.sass'
 import LoggedUserBar from './LoggedUserBar';

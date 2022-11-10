@@ -1,7 +1,7 @@
 import React from 'react';
 import layoutClasses from "../Layout.module.sass";
 import {Box, Link, Text, useColorMode, useColorModeValue} from "@chakra-ui/react";
-import SvgSelector from "../../basisComps/SvgSelector/SvgSelector";
+import SvgSelector from "../../UI/SvgSelector/SvgSelector";
 import cl from "./Footer.module.sass";
 import {useNavigate} from "react-router-dom";
 

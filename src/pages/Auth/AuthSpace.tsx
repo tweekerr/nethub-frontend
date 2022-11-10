@@ -1,6 +1,6 @@
 import React from 'react';
-import Layout from "../Layout/Layout";
-import Login from "./Login";
+import Layout from "../../components/Layout/Layout";
+import Login from "../../components/Auth/Login";
 import {Box, Text} from "@chakra-ui/react";
 
   export const AuthSpace = () => {

@@ -1,5 +1,5 @@
 import React, {Component, ReactNode} from 'react';
-import ErrorBlock from "../Article/Shared/ErrorBlock";
+import ErrorBlock from "./ErrorBlock";
 
 export type ErrorConfig = {
   show?: boolean,

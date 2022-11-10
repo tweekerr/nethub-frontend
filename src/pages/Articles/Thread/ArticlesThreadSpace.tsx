@@ -6,7 +6,7 @@ import IExtendedArticle from "../../../types/IExtendedArticle";
 import {UkrainianLanguage} from "../../../utils/constants";
 import {useQuery, useQueryClient} from "react-query";
 import {useAppSelector} from "../../../store/storeConfiguration";
-import ArticlesThreadSpaceSkeleton from "../../../components/Article/Thread/ArticlesThreadSpaceSkeleton";
+import ArticlesThreadSpaceSkeleton from "./ArticlesThreadSpaceSkeleton";
 import ArticlesThread from "../../../components/Article/Thread/ArticlesThread";
 import Currency from "../../../components/Currency/Currency";
 import {Text} from "@chakra-ui/react";

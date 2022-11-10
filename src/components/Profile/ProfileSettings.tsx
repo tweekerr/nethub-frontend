@@ -1,7 +1,7 @@
 import React, {forwardRef, ForwardRefRenderFunction, useImperativeHandle, useMemo, useRef} from 'react';
-import TitleInput from "../basisComps/titleInput/TitleInput";
+import TitleInput from "../UI/TitleInput/TitleInput";
 import useValidator from "../../hooks/useValidator";
-import SvgSelector from "../basisComps/SvgSelector/SvgSelector";
+import SvgSelector from "../UI/SvgSelector/SvgSelector";
 import cl from './Profile.module.sass'
 import {ProfileChangesType} from "./Profile";
 import {useDebounce} from "../../hooks/useDebounce";
