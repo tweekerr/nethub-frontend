@@ -1,14 +1,13 @@
+import {Skeleton} from '@chakra-ui/react';
 import React from 'react';
-import {Skeleton} from "@mui/material";
-import cl from './SavedArticles.module.sass'
 
 const SavedArticlesSkeleton = () => {
   return (
     <>
-      <Skeleton variant={'rounded'} height={150} className={cl.skeleton}/>
-      <Skeleton variant={'rounded'} height={150} className={cl.skeleton}/>
-      <Skeleton variant={'rounded'} height={150} className={cl.skeleton}/>
-      <Skeleton variant={'rounded'} height={150} className={cl.skeleton}/>
+      <Skeleton height={150} mt={'15px'}/>
+      <Skeleton height={150} mt={'15px'}/>
+      <Skeleton height={150} mt={'15px'}/>
+      <Skeleton height={150} mt={'15px'}/>
     </>
   );
 };

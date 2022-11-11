@@ -1,15 +1,14 @@
 import React, {FC} from 'react';
-import cl from '../ArticleSpace.module.sass';
-import {FilledDiv} from '../../../basisComps/Basic.styled';
+import cl from './ArticleBody.module.sass';
 import IArticleLocalizationResponse from "../../../../types/api/Article/IArticleLocalizationResponse";
-import IUserInfoResponse from "../../../../types/api/User/IUserInfoResponse";
-import {getArticleContributors, getAuthor} from "../ArticleSpace.functions";
-import {articlesApi} from "../../../../api/userApi";
+import {getArticleContributors, getAuthor} from "../../../../pages/Articles/One/ArticleSpace.functions";
+import {articlesApi} from "../../../../api/api";
 import ArticlesRateCounter, {RateVariants} from "../../Shared/ArticlesRateCounter";
-import ArticleSavingActions from "../../../basisComps/ArticleSavingActions";
+import ArticleSavingActions from "../../Shared/ArticleSavingActions";
 import {DateToRelativeCalendar} from "../../../../utils/dateHelper";
 import {useQuery} from "react-query";
-import {Skeleton} from "@mui/material";
+import FilledDiv from "../../../UI/FilledDiv";
+import {Button, Skeleton, Text, useColorModeValue} from "@chakra-ui/react";
 
 interface IArticleBodyProps {
   localization: IArticleLocalizationResponse,
@@ -29,11 +28,11 @@ const ArticleBody: FC<IArticleBodyProps> = ({localization, tags, userActions, ra
   return (
     <FilledDiv className={cl.articleWrapper}>
       <div className={cl.articleTitle}>
-        <p className={cl.title}>{localization.title}</p>
+        <Text as={'p'} fontWeight={'bold'} fontSize={18}>{localization.title}</Text>
       </div>
 
       <div className={cl.articleDescription}>
-        <p>{localization.description}</p>
+        <Text>{localization.description}</Text>
       </div>
 
       <hr className={cl.line}/>
@@ -42,15 +41,14 @@ const ArticleBody: FC<IArticleBodyProps> = ({localization, tags, userActions, ra
 
       <div className={cl.articleTags}>
         {tags.map(tag =>
-          <FilledDiv
+          <Button
             key={tag}
             className={cl.tag}
-            background={'#896DC8'}
-            color={'white'}
-            padding={'5px 20px'}
+            maxH={30}
             borderRadius={'10px'}
+            width={'fit-content'}
           >#{tag}
-          </FilledDiv>)
+          </Button>)
         }
       </div>
 
@@ -60,8 +58,9 @@ const ArticleBody: FC<IArticleBodyProps> = ({localization, tags, userActions, ra
             current={rate.current} setCurrent={rate.setCurrent} actualVote={userActions.rate}
             articleId={localization.articleId}
           />
-          <FilledDiv background={'white'} className={cl.views} padding={'7px 19px'}>
-            <b className={cl.viewsCount}>{localization.views}</b> переглядів
+          <FilledDiv bg={useColorModeValue('whiteLight', 'whiteDark')} className={cl.views} padding={'7px 19px'}>
+            <Text as={'b'} color={'black'} className={cl.viewsCount}>{localization.views}</Text>
+            <Text as={'p'} color={'black'}>переглядів</Text>
           </FilledDiv>
         </div>
         <ArticleSavingActions
@@ -72,8 +71,8 @@ const ArticleBody: FC<IArticleBodyProps> = ({localization, tags, userActions, ra
 
       <div className={cl.creationInfo}>
         <div className={cl.author}>
-          <p>Автор: 
-            {contributors.isLoading ? <Skeleton variant={'rounded'} width={80} height={15}></Skeleton> :
+          <p>Автор:
+            {contributors.isLoading ? <Skeleton width={'100px'} height={15}/> :
               <a>{getAuthor(localization.contributors, contributors.data!)?.userName}</a>
             }
           </p>

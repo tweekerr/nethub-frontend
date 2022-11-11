@@ -1,13 +1,15 @@
-import React, {FC, useEffect, useLayoutEffect, useRef, useState} from 'react';
+import React, {FC, useLayoutEffect, useRef, useState} from 'react';
 import Menu from "./Menu/Menu";
 import {ILayoutProps} from "./Layout";
 import BarWrapper from "./BarWrapper";
 import cl from './Layout.module.sass'
-import {Box} from "@mui/material";
+import {Box} from "@chakra-ui/react";
 import AnimateHeight from 'react-animate-height';
+import ErrorBoundary from "./ErrorBoundary";
 
 
-const Body: FC<Omit<ILayoutProps, 'showHeader' | 'showFooter'>> = ({children, showSidebar = true, customSidebar, rightBar, titles}) => {
+const Body: FC<Omit<ILayoutProps, 'showHeader' | 'showFooter'>> =
+  ({children, sideBar, rightBar, title, error}) => {
 
     function getInitialHeight() {
       const storedHeight = localStorage.getItem('mainTitlesHeight');
@@ -28,51 +30,55 @@ const Body: FC<Omit<ILayoutProps, 'showHeader' | 'showFooter'>> = ({children, sh
     }, [])
 
 
-    return (<>
+    return (<Box flex={'1 1 auto'}>
         {/*titles*/}
         <AnimateHeight
           duration={700}
           height={titlesHeight}
+          style={{marginTop: '7.5px', marginBottom: '7.5px'}}
         >
-          <div id='titles' ref={titlesRef} className={cl.bodyWrapper}>
+          <Box id='titles' ref={titlesRef} className={cl.bodyWrapper}>
             <Box className={cl.left}>
-              {titles?.left && titles.left}
+              {sideBar?.title ?? null}
             </Box>
             <Box className={cl.center}>
-              {titles?.center && titles.center}
+              {title ?? null}
             </Box>
             <Box className={cl.right}>
-              {titles?.right && titles.right}
+              {rightBar?.title ?? null}
             </Box>
-          </div>
+          </Box>
         </AnimateHeight>
 
-        <div className={cl.bodyWrapper}>
+        <Box className={cl.bodyWrapper}>
 
           {/*left-bar*/}
           <BarWrapper className={cl.left}>
-            {showSidebar &&
-              (customSidebar ? customSidebar : <Menu/>)
-            }
+            <ErrorBoundary config={sideBar?.error}>
+              {(sideBar?.showSidebar ?? true)
+                ? (sideBar?.children ?? <Menu/>)
+                : null
+              }
+            </ErrorBoundary>
           </BarWrapper>
 
           {/*body-content*/}
           <Box className={cl.center}>
-            {children}
+            <ErrorBoundary config={error}>
+              {children}
+            </ErrorBoundary>
           </Box>
 
-          {/*side-bar*/}
+          {/*sidebar*/}
           <BarWrapper className={cl.right}>
-            {rightBar &&
-              rightBar
-            }
+            <ErrorBoundary config={rightBar?.error}>
+              {rightBar?.children ?? null}
+            </ErrorBoundary>
           </BarWrapper>
 
-        </div>
-      </>
-
+        </Box>
+      </Box>
     )
-  }
-;
+  };
 
 export default Body;

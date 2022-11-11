@@ -1,12 +1,12 @@
 import React, {FC} from 'react';
 import classes from './ArticleCreating.module.sass';
-import UiButton from '../../UI/button/UiButton';
 import ArticleTagsSettings from "./ArticleTagsSettings";
-import TitleInput from "../../basisComps/titleInput/TitleInput";
+import TitleInput from "../../UI/TitleInput/TitleInput";
 import ILocalization, {IArticleFormErrors} from "../../../types/ILocalization";
 import ArticleImagesSettings from "./ArticleImagesSettings";
 import {ArticleStorage} from "../../../utils/localStorageProvider";
-import { FilledDiv } from '../../basisComps/Basic.styled';
+import FilledDiv from '../../UI/FilledDiv';
+import {Button} from "@chakra-ui/react";
 
 interface IArticleSettingsProps {
   article: ILocalization,
@@ -19,9 +19,9 @@ interface IArticleSettingsProps {
 
 const ArticleSettings: FC<IArticleSettingsProps> = ({article, setArticle, createArticle, errors, setError, images}) => {
 
-  const handleSetLink = (link: string) => {
-    setArticle({...article, originalLink: link});
-    ArticleStorage.setLink(link);
+  const handleSetLink = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setArticle({...article, originalLink: event.target.value});
+    ArticleStorage.setLink(event.target.value);
   }
   const handleSetTags = (tag: string) => {
     const allTags = [...article.tags, tag];
@@ -49,9 +49,9 @@ const ArticleSettings: FC<IArticleSettingsProps> = ({article, setArticle, create
       </FilledDiv>
       <FilledDiv className={classes.settingsItem}>
         <TitleInput
-          error={errors.originalLink}
+          isInvalid={errors.originalLink}
           value={article.originalLink}
-          setValue={handleSetLink}
+          onChange={handleSetLink}
           title={"Посилання на оригінал "}
           placeholder={"Посилання на статтю"}
           width={"100%"}/>
@@ -65,7 +65,7 @@ const ArticleSettings: FC<IArticleSettingsProps> = ({article, setArticle, create
           <p className={classes.specification}>*натисність, щоб скопіювати посилання на фото</p>
         </FilledDiv>
       }
-      <UiButton onClick={createArticle}>Створити статтю</UiButton>
+      <Button onClick={createArticle}>Створити статтю</Button>
     </div>
   );
 };

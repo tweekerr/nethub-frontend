@@ -1,10 +1,10 @@
 import React, {forwardRef, ForwardRefRenderFunction, useImperativeHandle, useRef} from 'react';
 import classes from './ArticleCreating.module.sass';
-import TitleInput from '../../basisComps/titleInput/TitleInput';
+import TitleInput from '../../UI/TitleInput/TitleInput';
 import TinyInput from "./TinyInput";
 import ILocalization, {IArticleFormErrors} from "../../../types/ILocalization";
 import {ArticleStorage} from "../../../utils/localStorageProvider";
-import {FilledDiv} from '../../basisComps/Basic.styled';
+import FilledDiv from "../../UI/FilledDiv";
 
 interface IMainArticleProps {
   article: ILocalization,
@@ -23,14 +23,14 @@ const CreateArticleForm: ForwardRefRenderFunction<IMainArticleHandle, IMainArtic
 
     const tinyRef = useRef<TinyRef>(null)
 
-    const handleUpdateTitle = (value: string) => {
-      setArticleValue('title')(value);
-      ArticleStorage.setTitle(value)
+    const handleUpdateTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
+      setArticleValue('title')(event.target.value);
+      ArticleStorage.setTitle(event.target.value)
     }
 
-    const handleUpdateDescription = (value: string) => {
-      setArticleValue('description')(value);
-      ArticleStorage.setDescription(value)
+    const handleUpdateDescription = (event: React.ChangeEvent<HTMLInputElement>) => {
+      setArticleValue('description')(event.target.value);
+      ArticleStorage.setDescription(event.target.value)
     }
     const handleUpdateHtml = (value: string) => {
       setArticleValue('html')(value);
@@ -47,23 +47,23 @@ const CreateArticleForm: ForwardRefRenderFunction<IMainArticleHandle, IMainArtic
       <div className={classes.createArticle}>
         <FilledDiv className={classes.mainArticleParams}>
           <TitleInput
-            error={errors.title}
+            isInvalid={errors.title}
             value={article.title}
-            setValue={handleUpdateTitle}
+            onChange={handleUpdateTitle}
             title={'Заголовок статті'}
             placeholder={'Заголовок вашої статті'}
             width={'100%'}
           />
           <TitleInput
-            error={errors.description}
+            isInvalid={errors.description}
             value={article.description}
-            setValue={handleUpdateDescription}
+            onChange={handleUpdateDescription}
             title={'Заголовок статті'}
             placeholder={'Заголовок вашої статті'}
             width={'100%'}
           />
           <TinyInput
-            error={errors.html}
+            isInvalid={errors.html}
             data={article.html}
             setData={handleUpdateHtml}
             editorTitle={'Текст статті'}

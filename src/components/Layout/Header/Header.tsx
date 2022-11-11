@@ -1,51 +1,74 @@
 import React from 'react';
-import SvgSelector from '../../basisComps/SvgSelector/SvgSelector';
-import UiInput from '../../UI/input/UiInput';
-import classes from './Header.module.sass'
+import SvgSelector from '../../UI/SvgSelector/SvgSelector';
+import cl from './Header.module.sass'
 import layoutClasses from '../Layout.module.sass'
 import LoggedUserBar from './LoggedUserBar';
-import TextLinker from '../../basisComps/TextLinker';
-import {Box, Switch} from '@mui/material';
 import UnloggedUserBar from './UnloggedUserBar';
-import {useActions, useAppSelector} from "../../../store/storeConfiguration";
 import {useNavigate} from "react-router-dom";
+import {
+  Box,
+  Button,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  Link,
+  Switch,
+  useColorMode,
+  useColorModeValue
+} from "@chakra-ui/react";
+import {SearchIcon} from "@chakra-ui/icons";
+import {useAppStore} from "../../../store/config";
 
 const Header: React.FC = () => {
-  const {switchTheme} = useActions();
-  const {isLogin} = useAppSelector((state) => state.generalReducer);
+
+  const {toggleColorMode, colorMode} = useColorMode();
+  const isLogin = useAppStore(state => state.isLogin);
   const navigate = useNavigate();
+  const [searchValue, setSearchValue] = React.useState<string>('');
+  const headerBackgroundColor = useColorModeValue("#FFFFFF", '#323232')
+
 
   return (
-    <Box bgcolor={'header.main'}  className={classes.header}>
-      <div className={layoutClasses.left}>
-        <a onClick={() => navigate('/')}>
-          <SvgSelector className={classes.logo} id="navbarLogo"/>
-        </a>
-      </div>
-      <div className={layoutClasses.center} style={{justifyContent: 'center'}}>
-        <div className={classes.headerCenter}>
-          <UiInput
-            placeholder={'Пошук'}
-            value={''}
-            setValue={() => console.log(' ')}
-            width={"70%"}
-          />
-          <TextLinker
-            onClick={() => {
-            }}
-            placeholder={'Створити'}
-            link={'/article/20037/ua'}
-            svgId={'DriveFileRenameOutlineIcon'}
-          />
-          <Switch onClick={() => switchTheme()}/>
-        </div>
-      </div>
-      <div className={layoutClasses.right}>
-        <div className={classes.userEntry}>
+    <header className={cl.header} style={{backgroundColor: headerBackgroundColor}}>
+      <Box className={layoutClasses.left}>
+        <Link onClick={() => navigate('/')}>
+          <SvgSelector className={cl.logo} id={colorMode === 'light' ? 'LightLogo' : 'DarkLogo'}/>
+        </Link>
+      </Box>
+      <Box className={layoutClasses.center} style={{justifyContent: 'center'}}>
+        <Box className={cl.headerCenter}>
+
+          <InputGroup width={'70%'}>
+            <InputLeftElement
+              pointerEvents='none'
+              children={<SearchIcon color={useColorModeValue('#B1BAC5', '#757575')}/>}
+            />
+            <Input
+              variant={'outline'}
+              value={searchValue}
+              placeholder={'Пошук'}
+              onChange={(event) => setSearchValue(event.target.value)}
+            />
+          </InputGroup>
+
+          <Button
+            onClick={() => navigate('/article/20037/ua')}
+          >
+            Створити
+            <SvgSelector id={'DriveFileRenameOutlineIcon'}/>
+
+          </Button>
+          {/*<Switch id="email-alerts" />*/}
+          <Switch colorScheme={"#8359DF"} onChange={toggleColorMode} defaultChecked={colorMode !== 'light'} size='md'/>
+        </Box>
+      </Box>
+      <Box className={layoutClasses.right}>
+        <Box className={cl.userEntry}>
           {isLogin ? <LoggedUserBar/> : <UnloggedUserBar/>}
-        </div>
-      </div>
-    </Box>
+        </Box>
+      </Box>
+    </header>
   );
 };
+
 export default Header;

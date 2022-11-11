@@ -1,27 +1,18 @@
 import 'moment/locale/uk';
 import 'moment/locale/en-gb';
-
-import {createTheme, ThemeProvider} from '@mui/material';
-import {useActions, useAppSelector} from './store/storeConfiguration';
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {switchLocal} from "./utils/localization";
 import AppRouter from './components/AppRouter';
-import './App.module.css';
 import './i18n'
 import {SnackbarProvider} from 'notistack';
 import {check} from "./App.functions";
-import {darkTheme, lightTheme} from "./constants/themes";
 import {QueryClient, QueryClientProvider} from 'react-query';
 import {ReactQueryDevtools} from "react-query/devtools";
+import {useAppStore} from "./store/config";
 
 function App() {
-  const {theme, language} = useAppSelector((state) => state.generalReducer);
-  const {login} = useActions();
-
-  const themeOptions = useMemo(
-    () => createTheme(theme === 'light' ? lightTheme : darkTheme),
-    [theme]
-  );
+  const language = useAppStore(state => state.language);
+  const login = useAppStore(state => state.login);
 
 
   useEffect(() => {
@@ -37,7 +28,7 @@ function App() {
     defaultOptions: {
       queries: {
         retry: 1,
-      staleTime: 50000
+        staleTime: 50000
       },
     }
   }));
@@ -49,11 +40,11 @@ function App() {
         maxSnack={3} autoHideDuration={3000} preventDuplicate
         anchorOrigin={{horizontal: 'right', vertical: 'top'}}
       >
-        <ThemeProvider theme={themeOptions}>
-          <AppRouter/>
-        </ThemeProvider>
+        <AppRouter/>
       </SnackbarProvider>
-      {isTest && <ReactQueryDevtools initialIsOpen={false}/>}
+      {
+        isTest && <ReactQueryDevtools initialIsOpen={false}/>
+      }
     </QueryClientProvider>
   );
 }

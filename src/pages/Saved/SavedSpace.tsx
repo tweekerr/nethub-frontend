@@ -1,27 +1,13 @@
 import React from 'react';
 import UserLibrary, {ILibraryItem} from "../../components/Library/UserLibrary";
-import {Typography} from "@mui/material";
-import SvgSelector from "../../components/basisComps/SvgSelector/SvgSelector";
+import SvgSelector from "../../components/UI/SvgSelector/SvgSelector";
 import Layout from "../../components/Layout/Layout";
 import SavedArticles from "../../components/Article/Saved/SavedArticles";
 import ArticlesThreadSpace from "../Articles/Thread/ArticlesThreadSpace";
 import cl from './SavedSpace.module.sass';
+import {Text} from "@chakra-ui/react";
 
 const SavedSpace = () => {
-  const titles = {
-    center: <Typography
-      mb={2}
-      display={'initial'}
-      color={'secondary.contrastText'}
-      fontWeight={700}
-      variant="h4"
-      sx={{margin: 0}}
-    >
-      Збережено вами {''}
-      <SvgSelector id={'SavedOutlinedFilled'} className={cl.titleIcon}/>
-    </Typography>
-  }
-
 
   const items: ILibraryItem[] = [
     {
@@ -35,9 +21,24 @@ const SavedSpace = () => {
   ]
 
   return (
-    <Layout titles={titles}>
+    <Layout
+      title={<Text
+        as={'h2'}
+        fontWeight={700}
+        display={'flex'}
+        alignItems={'center'}
+      >
+        Збережено вами
+        <SvgSelector id={'SavedOutlinedFilled'} className={cl.titleIcon}/>
+      </Text>}
+    >
       <UserLibrary
-        items={items}/>
+        items={items}
+        radioGroupConfig={{
+          name: 'saved',
+          defaultValue: 'Статті',
+        }}
+      />
     </Layout>
   );
 };

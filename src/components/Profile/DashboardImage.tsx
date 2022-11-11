@@ -1,8 +1,9 @@
 import React, {FC, useEffect, useState} from 'react';
 import cl from "./Profile.module.sass";
-import SvgSelector from "../basisComps/SvgSelector/SvgSelector";
-import {useAppSelector} from "../../store/storeConfiguration";
+import SvgSelector from "../UI/SvgSelector/SvgSelector";
 import {createImageFromInitials} from "../../utils/logoGenerator";
+import {Image} from "@chakra-ui/react";
+import {useAppStore} from "../../store/config";
 
 interface IDashboardImageProps {
   openModal: () => void,
@@ -11,7 +12,7 @@ interface IDashboardImageProps {
 
 const DashboardImage: FC<IDashboardImageProps> = ({openModal, handleDrop: onDrop}) => {
 
-  const {user} = useAppSelector(state => state.generalReducer);
+  const user = useAppStore(state => state.user);
   const [drag, setDrag] = useState<boolean>(false);
   const getImage = () => user.profilePhotoLink ?? createImageFromInitials(500, user.username);
   const [image, setImage] = useState<string>(getImage());
@@ -48,11 +49,13 @@ const DashboardImage: FC<IDashboardImageProps> = ({openModal, handleDrop: onDrop
       onDrop={handleDrop}
       className={`${cl.dashboardMainImage} + ${drag ? cl.darkFilter : ''}`} onClick={openModal}
     >
-      <img
+      <Image
         src={image}
+        minH={110}
+        minW={110}
         onError={handleImageError}
         alt={'damaged'}
-      ></img>
+      />
       <SvgSelector id={'DriveFileRenameOutlineIcon'}/>
     </div>
   );

@@ -1,6 +1,5 @@
 import React, {FC} from 'react';
 import classes from './ArticleCreating.module.sass'
-import ClickImage from "../../UI/ClickImage";
 
 interface IArticleImagesSettings {
   images: string[]

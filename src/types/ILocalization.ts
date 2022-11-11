@@ -3,7 +3,7 @@ export default interface ILocalization {
   description: string,
   html: string,
   tags: string[],
-  originalLink: string | null
+  originalLink?: string
 }
 
 export interface IArticleFormErrors{

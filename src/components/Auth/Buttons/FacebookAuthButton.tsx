@@ -1,5 +1,6 @@
 import React, {FC} from "react";
-import {StyledButton} from "../styled";
+import facebookLogo from '../../../assets/images/facebook.png';
+import {Button, Text, useColorModeValue} from "@chakra-ui/react";
 
 interface IFacebookAuthProps {
   onClick: (e: React.MouseEvent) => void
@@ -7,14 +8,19 @@ interface IFacebookAuthProps {
 
 const FacebookAuthButton: FC<IFacebookAuthProps> = ({onClick}) => {
   return (
-    <StyledButton onClick={onClick}>
+    <Button
+      padding={'25px 20px'}
+      bg={useColorModeValue('whiteLight', 'whiteDark')} onClick={onClick}
+    >
       <img
         style={{height: '25px', width: '25px', marginRight: '10px'}}
-        src="https://www.freepnglogos.com/uploads/facebook-logo-icon/facebook-logo-clipart-flat-facebook-logo-png-icon-circle-22.png"
-        alt="Google Login"
+        src={facebookLogo}
+        alt="Facebook Login"
       />
-      Facebook
-    </StyledButton>
+      <Text as={'p'} color='#000000' fontWeight={'semibold'}>
+        Facebook
+      </Text>
+    </Button>
   );
 };
 

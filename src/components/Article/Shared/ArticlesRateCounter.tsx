@@ -1,10 +1,11 @@
 import React, {FC, useState} from 'react';
-import SvgSelector from "../../basisComps/SvgSelector/SvgSelector";
-import cl from "../../basisComps/ВasicComps.module.sass";
-import {FilledDiv} from "../../basisComps/Basic.styled";
-import {articlesApi} from "../../../api/userApi";
+import SvgSelector from "../../UI/SvgSelector/SvgSelector";
+import cl from './ArticleRateCounter.module.sass';
+import {articlesApi} from "../../../api/api";
 import useCustomSnackbar from "../../../hooks/useCustomSnackbar";
 import {isAuthorized} from "../../../utils/JwtHelper";
+import FilledDiv from '../../UI/FilledDiv';
+import {useColorModeValue} from "@chakra-ui/react";
 
 interface IRateCounterProps {
   articleId: number,
@@ -83,13 +84,17 @@ const ArticlesRateCounter: FC<IRateCounterProps> = ({
     }
   }
 
+  const blockColor = useColorModeValue('#FFFFFF', '#EFEFEF');
 
   return (
     <FilledDiv
       onClick={(e) => e.stopPropagation()}
       background={'white'}
       padding={'7px 9px'}
-      className={cl.rating}>
+      className={cl.rating}
+      width={'fit-content'}
+      bg={blockColor}
+    >
       <div onClick={handleDownVote}>
         <SvgSelector id={'ArrowDown'} className={counterState === 'down' ? cl.ratingDown : ''}/>
       </div>

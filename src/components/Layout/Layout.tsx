@@ -1,37 +1,50 @@
-import {Box} from '@mui/material';
 import React, {FC, PropsWithChildren, ReactNode} from 'react';
 import Header from './Header/Header';
 import Body from "./Body";
 import Flag from "./Flag";
+import {Box} from "@chakra-ui/react";
+import Footer from "./Footer/Footer";
+import cl from './Layout.module.sass';
+import {ErrorConfig} from "./ErrorBoundary";
+
+export interface ISectionConfig {
+  title?: ReactNode
+  children?: ReactNode,
+  error?: ErrorConfig
+}
+
+export interface ISideBarConfig extends ISectionConfig {
+  showSidebar?: boolean
+}
 
 export interface ILayoutProps extends PropsWithChildren {
-  showSidebar?: boolean,
-  customSidebar?: ReactNode,
-  rightBar?: ReactNode
-  titles?: { left?: ReactNode, center?: ReactNode, right?: ReactNode },
-  showHeader?: boolean,
-  showFooter?: boolean
+  sideBar?: ISideBarConfig,
+  rightBar?: ISectionConfig,
+  title?: ReactNode,
+  error?: ErrorConfig
+  hf?: { header?: boolean, footer?: boolean }
 }
 
 const Layout: FC<ILayoutProps> =
   ({
-     children, showSidebar = true, customSidebar, rightBar,
-     titles, showHeader = true, showFooter = true
+     children, sideBar, rightBar,
+     title, error, hf
    }) => {
 
     return (
-      <Box sx={{bgcolor: 'background.default'}}>
+      <Box className={cl.mainBody} minH={'100%'}>
         <Flag/>
-        {showHeader && <Header/>}
-        <Body showSidebar={showSidebar}
-              customSidebar={customSidebar}
-              rightBar={rightBar}
-              titles={titles}
+        {(hf?.header ?? true) ? <Header/> : null}
+        <Body
+          sideBar={sideBar}
+          rightBar={rightBar}
+          title={title}
+          error={error}
         >
           {children}
         </Body>
 
-        {/*{showFooter && 'Footer'}*/}
+        {(hf?.footer ?? true) ? <Footer/> : null}
       </Box>
     );
   };

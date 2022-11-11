@@ -1,21 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import {Navigate, useLocation} from "react-router-dom";
-import jwtDecode from "jwt-decode";
-import IJwtPayload from "../../../types/IJwtPayload";
+import {Navigate} from "react-router-dom";
 import Layout from "../../Layout/Layout";
-import {isAccessTokenExpired, isAuthorized, isRefreshTokenExpired} from '../../../utils/JwtHelper';
-import {userApi} from "../../../api/userApi";
-import {useActions} from "../../../store/storeConfiguration";
-import {JWTStorage} from "../../../utils/localStorageProvider";
+import {isAuthorized} from '../../../utils/JwtHelper';
 
 interface IAuthorizedProps {
   children: JSX.Element,
   redirectTo?: string,
-  checkAuth?: boolean
 }
 
 
-const AuthorizedHoc = ({children, redirectTo = '/login', checkAuth = true}: IAuthorizedProps) => {
+const AuthorizedHoc = ({children, redirectTo = '/login'}: IAuthorizedProps) => {
   const [isLogin, setIsLogin] = useState<boolean | null>(null);
 
   useEffect(() => {
@@ -33,7 +27,7 @@ const AuthorizedHoc = ({children, redirectTo = '/login', checkAuth = true}: IAut
   }
 
   if (isLogin === null)
-    return (<Layout showSidebar={false}/>)
+    return (<Layout sideBar={{showSidebar: false}}/>)
 
 
   return isLogin ? children : <Navigate to={redirectTo}/>;

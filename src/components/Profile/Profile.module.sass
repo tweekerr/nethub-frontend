@@ -78,6 +78,8 @@
     transition: 0.3s
     position: relative
     width: 15%
+    display: flex
+    align-items: center
 
     img
       height: 109px
@@ -89,7 +91,7 @@
       color: white
       position: absolute
       left: 80px
-      bottom: 5px
+      bottom: 10px
 
   .darkFilter
     transition: 0.3s
@@ -126,46 +128,37 @@
           font-weight: 400
           font-size: 20px
 
-
-.setImageModal
-  position: absolute
-  top: 50%
-  left: 50%
-  transform: translate(-50%, -50%)
-  background-color: #F3EEFF
-  border: 0
-  outline: 0
+.setImageModalBody
   display: flex
-  flex-direction: column
-  width: 45%
+  justify-content: space-between
 
   h6
     font-weight: 700
     margin-bottom: 20px
 
-  > div
+  .leftModalBlock
+    width: 45%
     display: flex
-    justify-content: space-between
+    flex-direction: column
 
-    .leftModalBlock
-      width: 45%
+    p
+      margin-bottom: 10px
+
+    button
+      margin-top: 10px
+
+  .rightModalBlock
+    display: flex
+    flex-direction: column
+    width: 45%
+
+    > div
+      display: flex
+      flex-direction: column
+      align-items: center
 
       p
-        margin-bottom: 10px
-
-      button
-        margin-top: 10px
-
-    .rightModalBlock
-      width: 45%
-
-      > div
-        display: flex
-        flex-direction: column
-        align-items: center
-
-        p
-          margin-bottom: 12px
+        margin-bottom: 12px
 
 
 .settingsTitle

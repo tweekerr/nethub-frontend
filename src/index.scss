@@ -1,4 +1,4 @@
-*{
+* {
   box-sizing: border-box;
   font-family: 'Inter', sans-serif;
 }
@@ -8,7 +8,7 @@ body {
 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
+  line-height: 1;
 }
 
 code {
@@ -42,15 +42,14 @@ time, mark, audio, video {
 
 }
 
+html, body, #root {
+  height: 100%;
+}
+
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
   display: block;
-}
-
-body {
-  line-height: 1;
-
 }
 
 ol, ul {
@@ -63,7 +62,6 @@ blockquote, q {
 
 blockquote:before, blockquote:after,
 q:before, q:after {
-  content: '';
   content: none;
 }
 
@@ -93,24 +91,7 @@ html {
   }
 }
 
-.layoutContainer {
-  max-width: 73%;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: row;
-  min-height: calc(100vh - 78px);
-}
-
 a {
   text-decoration: none;
   color: black;
-}
-
-.nonCopyrable {
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  -o-user-select: none;
-  user-select: none;
 }

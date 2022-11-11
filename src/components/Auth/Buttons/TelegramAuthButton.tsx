@@ -1,5 +1,6 @@
 import React, {FC, useEffect, useRef} from 'react';
-import {StyledButton} from "../styled";
+import telegramLogo from '../../../assets/images/telegram.png';
+import {Button, Text, useColorModeValue} from "@chakra-ui/react";
 
 interface ITelegramAuthButtonProps {
   onClick: (e: React.MouseEvent) => void
@@ -17,14 +18,20 @@ const TelegramAuthButton: FC<ITelegramAuthButtonProps> = ({onClick}) => {
   }, [])
 
   return (
-    <StyledButton ref={ref} onClick={onClick}>
+    <Button
+      ref={ref}
+      padding={'25px 20px'}
+      bg={useColorModeValue('whiteLight', 'whiteDark')} onClick={onClick}
+    >
       <img
         style={{height: '25px', width: '25px', marginRight: '10px'}}
-        src="https://www.freepnglogos.com/uploads/telegram-logo-2.png"
+        src={telegramLogo}
         alt="Telegram Login"
       />
-      Telegram
-    </StyledButton>
+      <Text as={'p'} color='#000000' fontWeight={'semibold'}>
+        Telegram
+      </Text>
+    </Button>
   );
 }
 
