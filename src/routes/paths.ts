@@ -4,6 +4,7 @@ import ArticleCreatingSpace from "../pages/Articles/Create/ArticleCreatingSpace"
 import ArticleSpace from "../pages/Articles/One/ArticleSpace";
 import SavedSpace from "../pages/Saved/SavedSpace";
 import ProfileSpace from "../pages/Profile/ProfileSpace";
+import ContributorArticlesSpace from "../pages/Articles/Contributor/ContributorArticlesSpace";
 
 interface IPath {
   path: string,
@@ -46,5 +47,15 @@ export const paths: IPath[] = [
     path: '/profile',
     Component: ProfileSpace,
     authorized: true
+  },
+  {
+    path: '/profile/:id',
+    Component: ProfileSpace,
+    authorized: false
+  },
+  {
+    path: 'articles/by/:contributorId',
+    Component: ContributorArticlesSpace,
+    authorized: false
   }
 ]

@@ -17,6 +17,7 @@ import INewsResponse from "../types/api/News/INewsResponse";
 import IUpdateProfileRequest from "../types/api/Profile/IUpdateProfileRequest";
 import ICurrencyResponse from "../types/api/Currency/ICurrencyResponse";
 import {IReduxUser} from "../types/IReduxUser";
+import {Operator} from "../types/Operators";
 
 export const _api = axios.create({
   //TODO: must be general link
@@ -87,9 +88,18 @@ export const articlesApi = {
       .then((res) => res.data);
   },
   getArticles: async (code: string) => {
-    const result: AxiosResponse<IExtendedArticle[]> = await _api.get(`articles/${code}/get-thread?page=1&perPage=20`)
-    return result.data
+    const result: AxiosResponse<IExtendedArticle[]> =
+      await _api.get(`articles/${code}/get-thread?page=1&pageSize=20&Filters=languageCode` + Operator.Equals + code
+        + ',contributorRole' + Operator.Equals + 'Author')
+    return result.data;
   },
+  getUserArticles: async (id: string | number, code: string) => {
+    const result: AxiosResponse<IExtendedArticle[]> =
+      await _api.get(`articles/${code}/get-thread?page=1&pageSize=20&Filters=languageCode` + Operator.Equals + code
+        + ',contributorId' + Operator.Equals + id);
+    return result.data;
+  },
+
   getNews: async () => {
     const response: AxiosResponse<INewsResponse[]> = await _api.get('/news?Page=1&PerPage=3');
     return response.data;
@@ -127,7 +137,7 @@ export const articlesApi = {
 }
 
 export const userApi = {
-  getUsersInfo: async (ids: number[]) => {
+  getUsersInfo: async (ids: number[] | string[]) => {
     const result: AxiosResponse<IUserInfoResponse[]> = await _api.get('/user/users-info', {
       params: {
         Ids: ids
@@ -138,17 +148,15 @@ export const userApi = {
     })
     return result.data;
   },
-  getUserDashboard: async (userId: number): Promise<IDashboardResponse> => {
+  getUserDashboard: async (userId: string): Promise<IDashboardResponse> => {
     const result: AxiosResponse<IDashboardResponse> = await _api.get(`user/${userId}/dashboard`)
     return result.data
   },
   authenticate: async (request: ISsoRequest): Promise<IReduxUser> => {
     const response: AxiosResponse<IAuthResult> = await _api.post('/user/sso', request);
-    const {profilePhotoLink, username, firstName} = response.data;
     JWTStorage.setTokensData(response.data);
 
-    console.log('response', response.data)
-    return {username, profilePhotoLink, firstName}
+    return response.data;
   },
   checkIfExists: async (key: string, provider: ProviderType): Promise<ICheckEmailResponse> => {
     const response: AxiosResponse<ICheckEmailResponse> = await _api.post('/user/check-user-exists', {key, provider})

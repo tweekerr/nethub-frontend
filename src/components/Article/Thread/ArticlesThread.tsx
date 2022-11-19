@@ -4,7 +4,7 @@ import ArticleShort from '../Shared/ArticleShort';
 import {articlesApi} from "../../../api/api";
 import IExtendedArticle from "../../../types/IExtendedArticle";
 import {useQueryClient} from "react-query";
-import {Skeleton} from "@chakra-ui/react";
+import ErrorBlock from "../../Layout/ErrorBlock";
 
 interface IArticlesThreadProps {
   articles: IExtendedArticle[],
@@ -29,8 +29,8 @@ const ArticlesThread: FC<IArticlesThreadProps> = ({articles, setArticles}) => {
 
   return (
     <div className={classes.thread}>
-      {articles.length > 0 ?
-        articles.map((item) => (
+      {articles.length > 0
+        ? articles.map((item) => (
           <ArticleShort
             key={item.localizationId}
             localization={item}
@@ -38,7 +38,11 @@ const ArticlesThread: FC<IArticlesThreadProps> = ({articles, setArticles}) => {
             save={{actual: item.isSaved ?? false, handle: handleSaving(item)}}
             timeShow={'published'}
           />
-        )) : <Skeleton height={'100px'}/>}
+        ))
+        : <ErrorBlock>
+          Користувач ще не написав жодноЇ статті
+        </ErrorBlock>
+      }
     </div>
   );
 };

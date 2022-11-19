@@ -70,6 +70,11 @@ const components = {
       }
     }),
   },
+  Text: {
+    baseStyle: {
+      wordWrap: 'none'
+    }
+  },
   FilledDiv: FilledDivConfig,
 };
 

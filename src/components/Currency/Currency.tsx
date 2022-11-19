@@ -22,21 +22,21 @@ const Currency = () => {
   if (currencies.isLoading) return <Skeleton height='270px'/>
 
   return (
-    currencies.isError ? <div>{currencies.error}</div>
-      : <FilledDiv
-        bg={blockColor} border={colorMode === 'light' ? '1px solid #EFEFEF' : ''}
-        height={'fit-content'}
-      >
-        <ExchangeRate rate={currencies.data!.exchanges!}/>
-        <hr className={cl.line}/>
-        <CryptoRate rate={currencies.data!.crypto!}/>
-        <Box display={'flex'}>
-          <Text as={'p'} fontSize={14} color={updatedColor}>оновлено: </Text>
-          <Text fontSize={14} color={updatedColor}
-            as={'p'} fontWeight={'bold'}
-          >{date.hour > 9 ? date.hour : `0${date.hour}`}:{date.minute > 9 ? date.minute : `0${date.minute}`}</Text>
-        </Box>
-      </FilledDiv>
+    <FilledDiv
+      bg={blockColor} border={colorMode === 'light' ? '1px solid #EFEFEF' : ''}
+      height={'fit-content'}
+    >
+      <ExchangeRate rate={currencies.data!.exchanges!}/>
+      <hr className={cl.line}/>
+      <CryptoRate rate={currencies.data!.crypto!}/>
+      <Box display={'flex'}>
+        <Text as={'p'} fontSize={14} color={updatedColor}>оновлено: </Text>
+        <Text
+          fontSize={14} color={updatedColor}
+          as={'p'} fontWeight={'bold'}
+        >{date.hour > 9 ? date.hour : `0${date.hour}`}:{date.minute > 9 ? date.minute : `0${date.minute}`}</Text>
+      </Box>
+    </FilledDiv>
   );
 };
 

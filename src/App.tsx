@@ -19,7 +19,7 @@ function App() {
     switchLocal(language);
     (async () => await check())().then((data) => {
       if (data)
-        login({username: data.username, profilePhotoLink: data.image, firstName: data.firstname})
+        login({username: data.username, profilePhotoLink: data.image, firstName: data.firstname, id: data.sid})
     })
 
   }, []);

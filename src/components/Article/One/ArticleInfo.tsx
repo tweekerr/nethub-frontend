@@ -74,6 +74,7 @@ const ArticleInfo: FC<IArticleInfoProps> = ({article, localization, isError, isL
                     borderRadius={'10px'}
                     padding={'6px 15px'}
                     color={whiteTextColor}
+                    onClick={() => navigate('/profile/' + author.id)}
                   >
                     <div className={cl.role}>
                       <Text as={'p'}>{getContributorRole(localization.contributors, author.id)}</Text>

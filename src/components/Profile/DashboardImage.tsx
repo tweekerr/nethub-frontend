@@ -51,8 +51,9 @@ const DashboardImage: FC<IDashboardImageProps> = ({openModal, handleDrop: onDrop
     >
       <Image
         src={image}
-        minH={110}
-        minW={110}
+        minH={120}
+        minW={120}
+        maxW={120}
         onError={handleImageError}
         alt={'damaged'}
       />

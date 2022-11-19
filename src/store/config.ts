@@ -16,7 +16,7 @@ interface IStoreInitialState {
 
 export const useAppStore = create<IStoreInitialState>(set => ({
   isLogin: null,
-  user: {username: '', profilePhotoLink: null, firstName: ''},
+  user: {id: '', username: '', profilePhotoLink: null, firstName: ''},
   language: Localizations.Ukrainian,
   login: (reduxUser: IReduxUser) => set({
     isLogin: true,

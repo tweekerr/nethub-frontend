@@ -1,16 +1,16 @@
 import React, {FC, useState} from 'react';
-import IUserInfoResponse from "../../types/api/User/IUserInfoResponse";
-import cl from './Profile.module.sass'
-import SvgSelector from "../UI/SvgSelector/SvgSelector";
-import IDashboardResponse from "../../types/api/Dashboard/IDashboardResponse";
+import IUserInfoResponse from "../../../types/api/User/IUserInfoResponse";
+import cl from '../Profile.module.sass'
+import SvgSelector from "../../UI/SvgSelector/SvgSelector";
+import IDashboardResponse from "../../../types/api/Dashboard/IDashboardResponse";
 import millify from "millify";
-import SetImageModal from "./SetImageModal";
-import {ExtendedRequest, ProfileChangesType} from "./Profile";
-import {allowedImagesTypes} from "../../constants/dnd";
-import useCustomSnackbar from "../../hooks/useCustomSnackbar";
-import DashboardImage from "./DashboardImage";
-import {getTimeFrom} from "../../utils/timeHelper";
-import FilledDiv from "../UI/FilledDiv";
+import SetImageModal from "../SetImageModal";
+import {ExtendedRequest, ProfileChangesType} from "./PrivateProfile";
+import {allowedImagesTypes} from "../../../constants/dnd";
+import useCustomSnackbar from "../../../hooks/useCustomSnackbar";
+import DashboardImage from "../DashboardImage";
+import {getTimeFrom} from "../../../utils/timeHelper";
+import FilledDiv from "../../UI/FilledDiv";
 import {Button, Text} from '@chakra-ui/react';
 
 

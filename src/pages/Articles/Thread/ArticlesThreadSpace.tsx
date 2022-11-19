@@ -35,13 +35,14 @@ const ArticlesThreadSpace = () => {
   const rightBar = {
     children: <Currency/>,
     title: <Text as={'h2'}>Курс</Text>,
-    error: {show:true, customMessage: 'Помилка'}
+    error: {show: true, customMessage: 'Помилка'}
   };
 
   return (
     <Layout
       title={
         <ArticlesThreadTitle
+          title={'Стрічка'}
           articlesLanguage={articlesLanguage}
           setArticlesLanguage={handleSetArticlesLanguage}
           options={languages}
@@ -50,8 +51,6 @@ const ArticlesThreadSpace = () => {
       error={{show: true}}
     >
       {
-        // articlesAccessor.isError ? <ErrorBlock/>
-        //   :
         articlesAccessor.isLoading
           ? <ArticlesThreadSpaceSkeleton/>
           : <ArticlesThread

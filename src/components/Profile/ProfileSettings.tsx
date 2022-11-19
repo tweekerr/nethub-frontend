@@ -3,7 +3,7 @@ import TitleInput from "../UI/TitleInput/TitleInput";
 import useValidator from "../../hooks/useValidator";
 import SvgSelector from "../UI/SvgSelector/SvgSelector";
 import cl from './Profile.module.sass'
-import {ProfileChangesType} from "./Profile";
+import {ProfileChangesType} from "./Private/PrivateProfile";
 import {useDebounce} from "../../hooks/useDebounce";
 import useCustomSnackbar from "../../hooks/useCustomSnackbar";
 import {usernameDebounce} from "../../utils/debounceHelper";

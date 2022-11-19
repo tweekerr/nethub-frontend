@@ -1,17 +1,17 @@
 import React, {FC, useState} from 'react';
-import cl from './Profile.module.sass'
+import cl from '../Profile.module.sass'
 import PrivateDashboard from "./PrivateDashboard";
-import SvgSelector from "../UI/SvgSelector/SvgSelector";
-import IUserInfoResponse from "../../types/api/User/IUserInfoResponse";
-import IDashboardResponse from "../../types/api/Dashboard/IDashboardResponse";
+import SvgSelector from "../../UI/SvgSelector/SvgSelector";
+import IUserInfoResponse from "../../../types/api/User/IUserInfoResponse";
+import IDashboardResponse from "../../../types/api/Dashboard/IDashboardResponse";
 import {useNavigate} from "react-router-dom";
-import ProfileSettings from "./ProfileSettings";
-import IUpdateProfileRequest from "../../types/api/Profile/IUpdateProfileRequest";
-import {userApi} from "../../api/api";
-import FilledDiv from '../UI/FilledDiv';
+import ProfileSettings from "../ProfileSettings";
+import IUpdateProfileRequest from "../../../types/api/Profile/IUpdateProfileRequest";
+import {userApi} from "../../../api/api";
+import FilledDiv from '../../UI/FilledDiv';
 import {Button, Text} from '@chakra-ui/react';
 import AnimateHeight from "react-animate-height";
-import {useAppStore} from "../../store/config";
+import {useAppStore} from "../../../store/config";
 
 
 interface IProfileProps {
@@ -30,7 +30,7 @@ export type ProfileChangesType = 'profile' | 'photo' | 'username';
 type ProfileSettingsRef = React.ElementRef<typeof ProfileSettings>
 
 
-const Profile: FC<IProfileProps> = ({user, dashboard}) => {
+const PrivateProfile: FC<IProfileProps> = ({user, dashboard}) => {
   const navigate = useNavigate();
 
   const [request, setRequest] = useState<ExtendedRequest>({
@@ -82,6 +82,7 @@ const Profile: FC<IProfileProps> = ({user, dashboard}) => {
     const newUserName = changes.includes('username') ? request.username : reduxUser.username;
 
     updateProfileAction({
+      ...reduxUser,
       firstName: newFirstName,
       username: newUserName,
       profilePhotoLink: newProfileImage === '' ? reduxUser.profilePhotoLink : newProfileImage
@@ -170,4 +171,4 @@ const Profile: FC<IProfileProps> = ({user, dashboard}) => {
   );
 };
 
-export default Profile;
+export default PrivateProfile;
