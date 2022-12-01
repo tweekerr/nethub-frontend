@@ -47,6 +47,11 @@ export const thirdGroup: IMenuItem[] = [
     itemName: 'Налаштування',
     link: '/profile',
     isActive: true
-
+  },
+  {
+    svgId: 'Settings',
+    itemName: 'Тестова сторінка',
+    link: '/test',
+    isActive: true
   }
 ];

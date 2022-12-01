@@ -30,7 +30,7 @@
   margin-bottom: 1%
 
 div.wrong
-  border: 1px solid red
+  border: 2px solid #DF2638
   border-radius: 12px
 
 .articleSettings
@@ -54,7 +54,7 @@ div.wrong
   margin-top: 20px
 
 
-.settingsItem > .title
+.title
   font-weight: 500
   font-size: 16px
   line-height: 20px
@@ -90,6 +90,7 @@ div.wrong
   display: flex
   flex-wrap: wrap
   margin-top: 5px
+  gap: 5px
 
 
 .images
@@ -110,3 +111,13 @@ div.wrong
   @media screen and (max-width: 943px)
     width: 44%
 
+.addContributor
+  display: flex
+  flex-direction: column
+  .option
+    display: flex
+    justify-content: space-between
+    select
+      option
+        color: white
+        border: 0

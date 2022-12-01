@@ -57,7 +57,7 @@ const ContributorArticlesSpace = () => {
       {
         contributorArticlesAccessor.isLoading || contributorArticlesAccessor.isIdle
           ? <ArticlesThreadSpaceSkeleton/>
-          : <ArticlesThread articles={contributorArticlesAccessor.data!} setArticles={handleSetArticles}/>
+          : <ArticlesThread articles={contributorArticlesAccessor.data!} setArticles={handleSetArticles} byUser={true}/>
       }
     </Layout>
   );

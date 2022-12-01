@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useCallback, useRef, useState} from 'react';
 import ArticleSettings from '../../../components/Article/Create/ArticleSettings';
 import Layout from "../../../components/Layout/Layout";
 import CreateArticleForm from "../../../components/Article/Create/CreateArticleForm";
@@ -9,31 +9,35 @@ import {useTranslation} from "react-i18next";
 import useValidator from "../../../hooks/useValidator";
 import useCustomSnackbar from "../../../hooks/useCustomSnackbar";
 import {ArticleStorage} from "../../../utils/localStorageProvider";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {articlesApi} from "../../../api/api";
 import {useMutation, useQuery} from 'react-query';
+import {getArticleValidators} from "./ArticleCreatingSpace.functions";
 
 type CreateArticleFormRef = React.ElementRef<typeof CreateArticleForm>
 
 const ArticleCreatingSpace = () => {
   const {t} = useTranslation();
 
-  const defaultState = {
-    title: ArticleStorage.getTitle() ?? '',
-    description: ArticleStorage.getDescription() ?? '',
-    html: ArticleStorage.getHtml() ?? '',
-    tags: ArticleStorage.getTags() ? JSON.parse(ArticleStorage.getTags()!) : [] as string[],
-  } as ILocalization;
+  const defaultState = () => {
+    return {
+      title: ArticleStorage.getTitle() ?? '',
+      description: ArticleStorage.getDescription() ?? '',
+      html: ArticleStorage.getHtml() ?? '',
+      tags: ArticleStorage.getTags() ? JSON.parse(ArticleStorage.getTags()!) : [] as string[],
+    } as ILocalization
+  };
 
   const {id} = useParams();
   const images = useQuery('articleImages', () => articlesApi.getArticleImages(), {enabled: !!id});
   const createMutation = useMutation('createArticle', () => createArticle());
+  const navigate = useNavigate();
 
   const [article, setArticle] = useState<ILocalization>(defaultState)
 
   const {subscribeValidator, unsubscribeValidator, validateAll, errors, setErrors} = useValidator<IArticleFormErrors>();
-  const {enqueueError} = useCustomSnackbar();
-  const createArticleFormRef = useRef<CreateArticleFormRef>(null);
+  const {enqueueSuccess, enqueueError, enqueueSnackBar} = useCustomSnackbar('info');
+  const articleCreationRef = useRef<CreateArticleFormRef>(null);
 
   const setArticleValue = (key: string) => (value: any) => {
     setArticle((prev) => {
@@ -41,23 +45,14 @@ const ArticleCreatingSpace = () => {
     })
   }
 
-  const updateArticle = (article: ILocalization) => setArticle(article);
+  const setTagsError = (flag: boolean) => {
+    setErrors(prev => {
+      return {...prev, tags: flag}
+    })
+  }
 
   async function validateArticleForm() {
-    subscribeValidator({
-      value: article.title,
-      field: 'title',
-      validators: [isNotNullOrWhiteSpace, minLength(10)],
-      message: 'Мінімальна довжина заголовку - 10 символів'
-    })
-    subscribeValidator({value: article.description, field: 'description', validators: [isNotNullOrWhiteSpace]})
-    subscribeValidator({value: article.html, field: 'html', validators: [isNotNullOrWhiteSpace, minLength(1)]})
-    subscribeValidator({
-      value: article.tags,
-      field: 'tags',
-      validators: [arrayMinLength(3)],
-      message: 'Мінімальна кількість тегів - 3'
-    })
+    getArticleValidators(article).forEach(v => subscribeValidator(v))
 
     if (article.originalLink && article.originalLink !== '')
       subscribeValidator({
@@ -75,29 +70,36 @@ const ArticleCreatingSpace = () => {
     return isSuccess;
   }
 
-  const setTagsError = (flag: boolean) => {
-    setErrors(prev => {
-      return {...prev, tags: flag}
-    })
-  }
-
   const createArticle = async () => {
 
     if (!await validateArticleForm()) return;
 
-    const articleId = await createArticleFormRef
-      .current?.getTinyRef()
-      .current?.saveImages(null);
+    enqueueSnackBar('Стаття зберігається')
 
-    await articlesApi.createLocalization(articleId!, 'ua', article)
-    ArticleStorage.clearArticleData()
+    let articleId;
+
+    try {
+      articleId = await articleCreationRef
+        .current?.getTinyRef()
+        .current?.saveImages(article);
+
+      await articlesApi.createLocalization(articleId!, 'ua', article)
+      ArticleStorage.clearArticleData();
+      setArticle(defaultState);
+    } catch (e: any) {
+      enqueueError('Помилка збереження статті');
+      return;
+    }
+    enqueueSuccess('Збережено!')
+
+    navigate('/article/' + articleId + '/ua');
   };
 
   const rightBar = {
     title: <h2>Налаштування</h2>,
     children: <ArticleSettings
       article={article}
-      setArticle={updateArticle}
+      setArticle={setArticle}
       errors={errors}
       setError={setTagsError}
       createArticle={createMutation.mutateAsync}
@@ -114,7 +116,7 @@ const ArticleCreatingSpace = () => {
         article={article}
         setArticleValue={setArticleValue}
         errors={errors}
-        ref={createArticleFormRef}
+        ref={articleCreationRef}
       />
     </Layout>
   );

@@ -6,7 +6,7 @@ import ILocalization, {IArticleFormErrors} from "../../../types/ILocalization";
 import ArticleImagesSettings from "./ArticleImagesSettings";
 import {ArticleStorage} from "../../../utils/localStorageProvider";
 import FilledDiv from '../../UI/FilledDiv';
-import {Button} from "@chakra-ui/react";
+import {Button, Text} from "@chakra-ui/react";
 
 interface IArticleSettingsProps {
   article: ILocalization,
@@ -37,7 +37,7 @@ const ArticleSettings: FC<IArticleSettingsProps> = ({article, setArticle, create
   return (
     <div className={classes.articleSettings}>
       <FilledDiv>
-        <p className={classes.title}>Теги по темам</p>
+        <Text as={'p'} className={classes.title}>Теги по темам</Text>
         <ArticleTagsSettings
           tags={article.tags}
           addToAllTags={handleSetTags}
@@ -45,7 +45,7 @@ const ArticleSettings: FC<IArticleSettingsProps> = ({article, setArticle, create
           error={errors.tags}
           setError={setError}
         />
-        <p className={classes.specification}>*натисність на тег, для його видалення</p>
+        <Text as={'p'} className={classes.specification}>*натисність на тег, для його видалення</Text>
       </FilledDiv>
       <FilledDiv className={classes.settingsItem}>
         <TitleInput
@@ -54,18 +54,20 @@ const ArticleSettings: FC<IArticleSettingsProps> = ({article, setArticle, create
           onChange={handleSetLink}
           title={"Посилання на оригінал "}
           placeholder={"Посилання на статтю"}
-          width={"100%"}/>
-        <p style={{marginTop: '-10px'}} className={classes.specification}>*якщо стаття переведена, вкажіть посилання на
-          оригінал</p>
+          width={"100%"}
+        />
+        <Text as={'p'} style={{marginTop: '-10px'}} className={classes.specification}>*якщо стаття переведена, вкажіть
+          посилання на
+          оригінал</Text>
       </FilledDiv>
       {images.length > 0 &&
         <FilledDiv className={classes.settingsItem}>
-          <p className={classes.title}>Пропоновані зображення</p>
+          <Text as={'p'} className={classes.title}>Пропоновані зображення</Text>
           <ArticleImagesSettings images={images}/>
-          <p className={classes.specification}>*натисність, щоб скопіювати посилання на фото</p>
+          <Text as={'p'} className={classes.specification}>*натисність, щоб скопіювати посилання на фото</Text>
         </FilledDiv>
       }
-      <Button onClick={createArticle}>Створити статтю</Button>
+      <Button onClick={createArticle}>Зберегти статтю</Button>
     </div>
   );
 };

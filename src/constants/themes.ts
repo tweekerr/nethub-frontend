@@ -31,20 +31,24 @@ const components = {
     baseStyle: (props: StyleFunctionProps) => ({
       field: {
         color: '#757575',
-        bg: mode('#FFFFFF', "#EFEFEF")(props),
-        border: '1px solid',
-        borderColor: mode('gray.200', '#EFEFEF')(props),
+        bg: mode('#FFFFFF', '#EFEFEF')(props),
+        // border: '1px solid',
+        // borderColor: mode('gray.200', '#EFEFEF')(props),
         _placeholder: {
           color: mode('#B1BAC5', '#757575')(props)
+        },
+        _invalid: {
+          border: '2px solid',
+          borderColor: mode('error', 'error')(props),
         }
       }
     }),
     variants: (props: StyleFunctionProps) => ({
       outline: {
         field: {
-          bg: mode('#FFFFFF', "#EFEFEF")(props),
-        }
-      }
+          bg: mode('#FFFFFF', '#EFEFEF')(props),
+        },
+      },
     })
   },
   Button: {
@@ -76,6 +80,27 @@ const components = {
     }
   },
   FilledDiv: FilledDivConfig,
+  Select: {
+    baseStyle: (props: StyleFunctionProps) => ({
+      field: {
+        background: mode('#FFFFFF', '#EFEFEF')(props),
+        color: '#1F2023',
+      },
+      icon: {
+        color: '#1F2023'
+      },
+    }),
+    variants: (props: StyleFunctionProps) => ({
+      filled: {
+        _hover: {
+          background: mode('#FFFFFF', '#EFEFEF')(props)
+        }
+      }
+    }),
+    defaultProps: {
+      variant: 'filled'
+    }
+  }
 };
 
 const colors = {
@@ -84,6 +109,7 @@ const colors = {
   purpleDark: '#835ADF',
   whiteLight: '#FFFFFF',
   whiteDark: '#EFEFEF',
+  error: '#DF2638'
 };
 
 const config: ThemeConfig = {

@@ -8,7 +8,7 @@ import {APIError} from "../react-app-env";
 import {ArticleStorage, JWTStorage} from "../utils/localStorageProvider";
 import IArticleResponse from "../types/api/Article/IArticleResponse";
 import IArticleLocalizationResponse from "../types/api/Article/IArticleLocalizationResponse";
-import IUserInfoResponse from "../types/api/User/IUserInfoResponse";
+import IUserInfoResponse, {IPrivateUserInfoResponse} from "../types/api/User/IUserInfoResponse";
 import qs from 'qs';
 import {RateVariants} from "../components/Article/Shared/ArticlesRateCounter";
 import IDashboardResponse from "../types/api/Dashboard/IDashboardResponse";
@@ -70,12 +70,12 @@ _api.interceptors.response.use(
 );
 
 export const articlesApi = {
-  createArticle: async () => {
+  createArticle: async (title: string, tags: string[], originalArticleLink?: string) => {
     const result: AxiosResponse<IArticleResponse> = await _api
       .post('/articles', {
-        name: ArticleStorage.getTitle()!,
-        tags: JSON.parse(ArticleStorage.getTags()!),
-        originalArticleLink: ArticleStorage.getLink() ? ArticleStorage.getLink() : null,
+        name: title,
+        tags,
+        originalArticleLink: originalArticleLink,
       });
     return result.data;
   },
@@ -211,6 +211,13 @@ export const userApi = {
 export const infoApi = {
   getCurrenciesRate: async () => {
     const response: AxiosResponse<ICurrencyResponse> = await _api.get('/currency');
+    return response.data;
+  }
+}
+
+export const searchApi = {
+  searchUsersByUsername: async (searchValue: string) => {
+    const response: AxiosResponse<IPrivateUserInfoResponse[]> = await _api.get('/search/users?username='+searchValue);
     return response.data;
   }
 }

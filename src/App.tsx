@@ -35,17 +35,19 @@ function App() {
   const isTest = process.env.REACT_APP_IS_DEVELOPMENT === 'true'
 
   return (
-    <QueryClientProvider client={client}>
-      <SnackbarProvider
-        maxSnack={3} autoHideDuration={3000} preventDuplicate
-        anchorOrigin={{horizontal: 'right', vertical: 'top'}}
-      >
-        <AppRouter/>
-      </SnackbarProvider>
-      {
-        isTest && <ReactQueryDevtools initialIsOpen={false}/>
-      }
-    </QueryClientProvider>
+    <React.StrictMode>
+      <QueryClientProvider client={client}>
+        <SnackbarProvider
+          maxSnack={5} autoHideDuration={3000} preventDuplicate
+          anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
+        >
+          <AppRouter/>
+        </SnackbarProvider>
+        {
+          isTest && <ReactQueryDevtools initialIsOpen={false}/>
+        }
+      </QueryClientProvider>
+    </React.StrictMode>
   );
 }
 

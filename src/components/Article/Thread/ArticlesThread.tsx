@@ -9,9 +9,10 @@ import ErrorBlock from "../../Layout/ErrorBlock";
 interface IArticlesThreadProps {
   articles: IExtendedArticle[],
   setArticles: (articles: IExtendedArticle[]) => void
+  byUser?: boolean
 }
 
-const ArticlesThread: FC<IArticlesThreadProps> = ({articles, setArticles}) => {
+const ArticlesThread: FC<IArticlesThreadProps> = ({articles, setArticles, byUser}) => {
 
   const queryClient = useQueryClient();
 
@@ -40,7 +41,11 @@ const ArticlesThread: FC<IArticlesThreadProps> = ({articles, setArticles}) => {
           />
         ))
         : <ErrorBlock>
-          Користувач ще не написав жодноЇ статті
+          {
+            (byUser ?? false)
+              ? 'Користувач ще не написав жодної статті'
+              : 'На платформі ще немає статтей'
+          }
         </ErrorBlock>
       }
     </div>

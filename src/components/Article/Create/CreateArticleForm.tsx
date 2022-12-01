@@ -5,6 +5,8 @@ import TinyInput from "./TinyInput";
 import ILocalization, {IArticleFormErrors} from "../../../types/ILocalization";
 import {ArticleStorage} from "../../../utils/localStorageProvider";
 import FilledDiv from "../../UI/FilledDiv";
+import {Box, Button, Input, Select, Text} from "@chakra-ui/react";
+import AddContributors from "./AddContributors";
 
 interface IMainArticleProps {
   article: ILocalization,
@@ -44,7 +46,7 @@ const CreateArticleForm: ForwardRefRenderFunction<IMainArticleHandle, IMainArtic
     }), [tinyRef]);
 
     return (
-      <div className={classes.createArticle}>
+      <Box className={classes.createArticle}>
         <FilledDiv className={classes.mainArticleParams}>
           <TitleInput
             isInvalid={errors.title}
@@ -58,19 +60,20 @@ const CreateArticleForm: ForwardRefRenderFunction<IMainArticleHandle, IMainArtic
             isInvalid={errors.description}
             value={article.description}
             onChange={handleUpdateDescription}
-            title={'Заголовок статті'}
-            placeholder={'Заголовок вашої статті'}
+            title={'Короткий опис статті'}
+            placeholder={'Короткий опис вашої статті'}
             width={'100%'}
           />
           <TinyInput
             isInvalid={errors.html}
             data={article.html}
             setData={handleUpdateHtml}
-            editorTitle={'Текст статті'}
+            editorTitle={'Тіло статті'}
             ref={tinyRef}
           />
         </FilledDiv>
-      </div>
+        <AddContributors/>
+      </Box>
     );
   };
 

@@ -1,7 +1,7 @@
 import SvgSelector from "../../UI/SvgSelector/SvgSelector";
 import classes from "./ArticleCreating.module.sass"
 import React, {FC, useState} from "react";
-import ThemeTag from "../One/Body/ThemeTag";
+import Tag from "../One/Body/Tag";
 import {regexTest} from "../../../utils/validators";
 import {tagRegex} from "../../../utils/regex";
 import useCustomSnackbar from "../../../hooks/useCustomSnackbar";
@@ -51,8 +51,9 @@ const ArticleTagsSettings: FC<IArticleTagsSettingsProps> = ({tags, addToAllTags,
         {
           tags.length > 0 &&
           tags.map(tag =>
-            <ThemeTag key={tag} value={tag} onClick={deleteTag}/>
-          )
+            <Tag key={tag} value={tag} onClick={deleteTag}>
+              #{tag}
+            </Tag>)
         }
       </div>
     </>
