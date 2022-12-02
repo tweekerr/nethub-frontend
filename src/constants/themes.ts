@@ -109,7 +109,9 @@ const colors = {
   purpleDark: '#835ADF',
   whiteLight: '#FFFFFF',
   whiteDark: '#EFEFEF',
-  error: '#DF2638'
+  error: '#DF2638',
+  success: '#09A552',
+  warning: '#FEA613'
 };
 
 const config: ThemeConfig = {

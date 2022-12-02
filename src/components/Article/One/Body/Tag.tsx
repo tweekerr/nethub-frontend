@@ -5,24 +5,19 @@ import {Text, useColorModeValue} from "@chakra-ui/react";
 interface IThemeTagProps extends PropsWithChildren {
   value: string,
   children?: ReactNode,
-  onClick?: (value: string) => void
+  onClick?: (value: string) => void,
+  active?: boolean,
+  onHover?: boolean
 }
 
-const Tag: FC<IThemeTagProps> = ({value, onClick, children}) => {
-    const tagBg = useColorModeValue('#896DC8', '#835ADF');
+const Tag: FC<IThemeTagProps> = ({value, onClick, active, onHover, children}) => {
+    const tagBgDefault = useColorModeValue('#896DC8', '#835ADF');
+    const tagBg = active ? 'success' : tagBgDefault;
 
     return (
-      onClick ?
         <Text
-          as={'p'} onClick={() => onClick(value)} className={cl.themeTag}
-          bg={tagBg}
-          display={'block'}
-          height={'fit-content'}
-        >
-          {children ?? value}
-        </Text>
-        : <Text
-          as={'p'} className={cl.themeTag}
+          _hover={{bg: (onHover ?? true) ? 'error' : tagBg}}
+          as={'p'} onClick={() => onClick ? onClick(value) : {}} className={cl.themeTag}
           bg={tagBg}
           display={'block'}
           height={'fit-content'}

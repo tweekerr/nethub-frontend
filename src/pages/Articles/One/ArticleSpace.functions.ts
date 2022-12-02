@@ -14,7 +14,12 @@ export async function getLocalization(id: string, code: string) {
 
 export async function getArticleContributors(contributors: IContributor[]) {
   const ids = contributors.map((contributor: IContributor) => contributor.userId);
-  return await userApi.getUsersInfo(ids);
+  const users = await userApi.getUsersInfo(ids);
+
+  return contributors.map(c => {
+    const user = users.find(u => u.id === c.userId)!;
+    return {...user, role: articleUserRoles.find(r => r.en.toLowerCase() === c.role.toLowerCase())?.ua ?? c.role}
+  });
 }
 
 export async function getArticleActions(id: string, code: string) {
@@ -23,12 +28,6 @@ export async function getArticleActions(id: string, code: string) {
     articlesApi.getRate(id)
   ]);
   return {isSaved, rate: rate.rating};
-}
-
-export function getContributorRole(contributors: IContributor[], contributorId: number) {
-  const role = contributors.filter(c => c.userId === contributorId)[0].role;
-
-  return articleUserRoles.find(r => r.en.toLowerCase() === role.toLowerCase())?.ua ?? role;
 }
 
 export function getAuthor(contributors: IContributor[], users: IUserInfoResponse[]) {

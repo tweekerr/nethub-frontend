@@ -8,16 +8,17 @@ import ArticleSavingActions from "../../Shared/ArticleSavingActions";
 import {DateToRelativeCalendar} from "../../../../utils/dateHelper";
 import {useQuery} from "react-query";
 import FilledDiv from "../../../UI/FilledDiv";
-import {Button, Skeleton, Text, useColorModeValue} from "@chakra-ui/react";
+import {Badge, Box, Button, Skeleton, Text, useColorModeValue} from "@chakra-ui/react";
 
 interface IArticleBodyProps {
   localization: IArticleLocalizationResponse,
   tags: string[],
   userActions: { isSaved: boolean, rate: RateVariants }
   rate: { current: number, setCurrent: (value: number) => void }
+  variant?: 'default' | 'preview'
 }
 
-const ArticleBody: FC<IArticleBodyProps> = ({localization, tags, userActions, rate}) => {
+const ArticleBody: FC<IArticleBodyProps> = ({localization, tags, userActions, rate, variant}) => {
 
   async function handleSave() {
     await articlesApi.toggleSavingLocalization(localization.articleId, localization.languageCode);
@@ -27,9 +28,23 @@ const ArticleBody: FC<IArticleBodyProps> = ({localization, tags, userActions, ra
 
   return (
     <FilledDiv className={cl.articleWrapper}>
-      <div className={cl.articleTitle}>
+      <Box className={cl.articleTitle} display={'flex'} alignItems={'center'}>
         <Text as={'p'} fontWeight={'bold'} fontSize={18}>{localization.title}</Text>
-      </div>
+        {
+          (() => {
+            variant = "preview";
+
+            switch (variant) {
+              // case 'default':
+              //   return null;
+              case 'preview':
+                return <Badge ml={2} variant='outline' colorScheme='yellow'>
+                  Preview
+                </Badge>;
+            }
+          })()
+        }
+      </Box>
 
       <div className={cl.articleDescription}>
         <Text>{localization.description}</Text>

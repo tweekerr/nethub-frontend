@@ -5,7 +5,7 @@ import ICheckEmailResponse from "../types/api/CheckEmail/ICheckEmailRequest";
 import {ProviderType} from "../types/ProviderType";
 import ICheckUsernameResponse from "../types/api/CheckUsername/ICheckUsernameResponse";
 import {APIError} from "../react-app-env";
-import {ArticleStorage, JWTStorage} from "../utils/localStorageProvider";
+import {JWTStorage} from "../utils/localStorageProvider";
 import IArticleResponse from "../types/api/Article/IArticleResponse";
 import IArticleLocalizationResponse from "../types/api/Article/IArticleLocalizationResponse";
 import IUserInfoResponse, {IPrivateUserInfoResponse} from "../types/api/User/IUserInfoResponse";
@@ -18,6 +18,7 @@ import IUpdateProfileRequest from "../types/api/Profile/IUpdateProfileRequest";
 import ICurrencyResponse from "../types/api/Currency/ICurrencyResponse";
 import {IReduxUser} from "../types/IReduxUser";
 import {Operator} from "../types/Operators";
+import {ApiError} from "../types/ApiError";
 
 export const _api = axios.create({
   //TODO: must be general link
@@ -57,15 +58,14 @@ _api.interceptors.response.use(
           },
           {headers: {'Content-Type': 'application/json'}}
         );
-        console.log('response', response);
         localStorage.setItem('token', response.data.accessToken);
         return _api.request(originalRequest);
       } catch (e) {
         localStorage.removeItem('token');
-        console.log('НЕ АВТОРИЗОВАНИЙ');
       }
     }
-    throw error;
+
+    throw new ApiError(error.message, error.response.status);
   }
 );
 
@@ -217,7 +217,7 @@ export const infoApi = {
 
 export const searchApi = {
   searchUsersByUsername: async (searchValue: string) => {
-    const response: AxiosResponse<IPrivateUserInfoResponse[]> = await _api.get('/search/users?username='+searchValue);
+    const response: AxiosResponse<IPrivateUserInfoResponse[]> = await _api.get('/search/users?username=' + searchValue);
     return response.data;
   }
 }

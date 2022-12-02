@@ -7,14 +7,14 @@ interface IItem<TErrorType> {
   value: any,
   field: keyof TErrorType,
   validators: IValidator[],
-  message?: string,
+  message?: any,
   success?: () => void,
   error?: () => void,
 }
 
 export default function useValidator<TErrorType>() {
   const [errors, setHookErrors] = useState<TErrorType>({} as TErrorType);
-  const [items, setItems] = useState(Array<IItem<TErrorType>>());
+  const [items] = useState(Array<IItem<TErrorType>>());
   const {enqueueError} = useCustomSnackbar();
 
 

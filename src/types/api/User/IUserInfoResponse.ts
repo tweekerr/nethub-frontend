@@ -12,6 +12,7 @@ export default interface IUserInfoResponse {
 }
 
 export interface IPrivateUserInfoResponse {
+  id: number,
   userName: string,
   profilePhotoLink?: string
 }

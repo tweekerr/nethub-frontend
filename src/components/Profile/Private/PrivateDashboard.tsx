@@ -86,7 +86,7 @@ const PrivateDashboard: FC<IPrivateDashboardProps> = ({user, dashboard, request,
           <div className={cl.filledDashboard}>
             <div style={{width: articlesViews().length > 4 ? '50%' : '40%'}} className={cl.dashboardInfoBlock}>
               <Text as={'p'}>
-                Опубліковано:
+                Написано:
               </Text>
               <div>
                 <Text as={'p'}>{articlesCount()}</Text>

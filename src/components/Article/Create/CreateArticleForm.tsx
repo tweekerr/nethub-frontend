@@ -5,12 +5,13 @@ import TinyInput from "./TinyInput";
 import ILocalization, {IArticleFormErrors} from "../../../types/ILocalization";
 import {ArticleStorage} from "../../../utils/localStorageProvider";
 import FilledDiv from "../../UI/FilledDiv";
-import {Box, Button, Input, Select, Text} from "@chakra-ui/react";
-import AddContributors from "./AddContributors";
+import {Box} from "@chakra-ui/react";
+import AddContributorsBlock from "./AddContributorsBlock";
 
 interface IMainArticleProps {
   article: ILocalization,
   setArticleValue: (key: string) => (value: any) => void,
+  setArticle: (article: ILocalization) => void,
   errors: IArticleFormErrors,
 }
 
@@ -21,7 +22,7 @@ interface IMainArticleHandle {
 type TinyRef = React.ElementRef<typeof TinyInput>;
 
 const CreateArticleForm: ForwardRefRenderFunction<IMainArticleHandle, IMainArticleProps> =
-  ({article, setArticleValue, errors}, ref) => {
+  ({article, setArticleValue, setArticle, errors}, ref) => {
 
     const tinyRef = useRef<TinyRef>(null)
 
@@ -72,7 +73,7 @@ const CreateArticleForm: ForwardRefRenderFunction<IMainArticleHandle, IMainArtic
             ref={tinyRef}
           />
         </FilledDiv>
-        <AddContributors/>
+        <AddContributorsBlock article={article} setArticle={setArticle}/>
       </Box>
     );
   };

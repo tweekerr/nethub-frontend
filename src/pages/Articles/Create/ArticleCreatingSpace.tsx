@@ -1,9 +1,9 @@
-import React, {useCallback, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import ArticleSettings from '../../../components/Article/Create/ArticleSettings';
 import Layout from "../../../components/Layout/Layout";
 import CreateArticleForm from "../../../components/Article/Create/CreateArticleForm";
 import ILocalization, {IArticleFormErrors} from "../../../types/ILocalization";
-import {arrayMinLength, isNotNullOrWhiteSpace, minLength, regexTest} from "../../../utils/validators";
+import {regexTest} from "../../../utils/validators";
 import {urlRegex} from "../../../utils/regex";
 import {useTranslation} from "react-i18next";
 import useValidator from "../../../hooks/useValidator";
@@ -24,7 +24,8 @@ const ArticleCreatingSpace = () => {
       title: ArticleStorage.getTitle() ?? '',
       description: ArticleStorage.getDescription() ?? '',
       html: ArticleStorage.getHtml() ?? '',
-      tags: ArticleStorage.getTags() ? JSON.parse(ArticleStorage.getTags()!) : [] as string[],
+      // tags: ArticleStorage.getTags() ? JSON.parse(ArticleStorage.getTags()!) : [] as string[],
+      tags: ArticleStorage.getTags() ? JSON.parse(ArticleStorage.getTags()!) : ['test1', 'test2', 'test3'],
     } as ILocalization
   };
 
@@ -115,6 +116,7 @@ const ArticleCreatingSpace = () => {
       <CreateArticleForm
         article={article}
         setArticleValue={setArticleValue}
+        setArticle={setArticle}
         errors={errors}
         ref={articleCreationRef}
       />

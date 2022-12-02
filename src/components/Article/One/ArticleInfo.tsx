@@ -4,7 +4,7 @@ import cl from './ArticleInfo.module.sass'
 import IArticleLocalizationResponse from "../../../types/api/Article/IArticleLocalizationResponse";
 import IArticleResponse from "../../../types/api/Article/IArticleResponse";
 import {createImageFromInitials} from "../../../utils/logoGenerator";
-import {getArticleContributors, getContributorRole} from "../../../pages/Articles/One/ArticleSpace.functions";
+import {getArticleContributors} from "../../../pages/Articles/One/ArticleSpace.functions";
 import {useNavigate} from "react-router-dom";
 import {useQuery} from "react-query";
 import ContributorsSkeleton from "./ContributorsSkeleton";
@@ -24,7 +24,7 @@ const ArticleInfo: FC<IArticleInfoProps> = ({article, localization, isError, isL
   const whiteTextColor = useColorModeValue('whiteLight', 'whiteDark');
 
   const contributors = useQuery(['contributors', localization.articleId, localization.languageCode],
-    () => getArticleContributors(localization.contributors), {staleTime: 50000});
+    () => getArticleContributors(localization.contributors));
 
   const getDomain = (link: string) => {
     const url = new URL(link);
@@ -65,22 +65,22 @@ const ArticleInfo: FC<IArticleInfoProps> = ({article, localization, isError, isL
             <FilledDiv className={cl.infoBlock}>
               <Text as={'p'} className={cl.infoBlockTitle}>Автори</Text>
               <div className={cl.contributors}>
-                {contributors.isLoading ? <ContributorsSkeleton/> : contributors.data!.map(author =>
+                {contributors.isLoading ? <ContributorsSkeleton/> : contributors.data!.map(contributor =>
                   <Button
-                    key={author.id}
+                    key={contributor.id}
                     className={cl.contributor}
                     width={'fit-content'}
                     bg={divBg}
                     borderRadius={'10px'}
                     padding={'6px 15px'}
                     color={whiteTextColor}
-                    onClick={() => navigate('/profile/' + author.id)}
+                    onClick={() => navigate('/profile/' + contributor.id)}
                   >
                     <div className={cl.role}>
-                      <Text as={'p'}>{getContributorRole(localization.contributors, author.id)}</Text>
-                      <Text as={'p'}>{author.userName}</Text>
+                      <Text as={'p'}>{contributor.role}</Text>
+                      <Text as={'p'}>{contributor.userName}</Text>
                     </div>
-                    <img src={author.profilePhotoLink ?? createImageFromInitials(25, author.userName)} alt={'damaged'}/>
+                    <img src={contributor.profilePhotoLink ?? createImageFromInitials(25, contributor.userName)} alt={'damaged'}/>
                   </Button>
                 )}
               </div>

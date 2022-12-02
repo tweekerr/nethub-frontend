@@ -2,6 +2,10 @@ export const isNotNullOrWhiteSpace = (text: string) => {
   return text !== null && !!text.replace(/\s/g, '').length && text !== '';
 }
 
+export const isNotNull = (value: any) => {
+  return value !== null && value !== undefined && Object.keys(value).length !== 0;
+}
+
 export const minLength = (length: number) => (text: string) => {
   return text.length >= length;
 }

@@ -9,16 +9,17 @@ import IArticleLocalizationResponse from "../../../types/api/Article/IArticleLoc
 import {RateVariants} from "../../../components/Article/Shared/ArticlesRateCounter";
 import {useQuery, useQueryClient} from "react-query";
 import {getArticle, getArticleActions, getLocalization,} from "./ArticleSpace.functions";
-import {Box, Skeleton, Text} from "@chakra-ui/react";
+import {Box, Skeleton} from "@chakra-ui/react";
 import {useAppStore} from "../../../store/config";
-
+import {ApiError} from "../../../types/ApiError";
 
 const ArticleSpace = () => {
+
     const queryClient = useQueryClient();
     const {id, code} = useParams();
     const isLogin = useAppStore(state => state.isLogin);
     const article = useQuery(['article', id], () => getArticle(id!));
-    const localization = useQuery<IArticleLocalizationResponse, any>(['articleLocalization', id, code], () => getLocalization(id!, code!),
+    const localization = useQuery<IArticleLocalizationResponse, ApiError>(['articleLocalization', id, code], () => getLocalization(id!, code!),
       {
         onSuccess: async () => {
           if (isLogin) {
@@ -34,12 +35,29 @@ const ArticleSpace = () => {
 
     const handleSetRate = (value: number) => queryClient.setQueryData(['article', id], {...article, rate: value});
 
-    if (localization.isError || article.isError) {
-      if (localization.error?.message === 'No such article localization') {
-        return <Layout><Text as={'p'}>Дана стаття ще пишеться :)</Text></Layout>
+    const processError = (e: ApiError | Error) => {
+
+      if (localization.isError) {
+
+        switch (localization.error.statusCode) {
+          case 404:
+            return 'Дана стаття ще пишеться :)';
+          case 403:
+            return 'Ви повинні бути вкладником, щоб мати доступ до цієї статті'
+          default:
+            return e.message;
+        }
       }
-      return <Layout><Text as={'p'}>{localization.error?.message}</Text></Layout>
+
+      return e.message
     }
+
+    // if (localization.isError || article.isError) {
+    //   if (localization.error?.message === 'No such article localization') {
+    //     return <Layout><Text as={'p'}>Дана стаття ще пишеться :)</Text></Layout>
+    //   }
+    //   return <Layout><Text as={'p'}>{localization.error?.message}</Text></Layout>
+    // }
 
     const rightBar = {
       children: (localization.isLoading || article.isLoading)
@@ -53,12 +71,15 @@ const ArticleSpace = () => {
     }
 
     return (
-      <Layout rightBar={rightBar}>
+      <Layout
+        rightBar={rightBar}
+        error={{show: true, processError}}
+      >
         <Box width={'100%'} display={'flex'} flexDirection={'column'}>
           {
-            localization.isLoading || article.isLoading ? <ArticleBodySkeleton/> :
+            !localization.isSuccess || !article.isSuccess ? <ArticleBodySkeleton/> :
               <ArticleBody
-                localization={localization.data!} tags={article.data!.tags}
+                localization={localization.data} tags={article.data.tags}
                 userActions={userActions} rate={{current: article.data!.rate, setCurrent: handleSetRate}}
               />
           }
