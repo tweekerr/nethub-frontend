@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {FC, useState} from 'react';
 import SvgSelector from "../../UI/SvgSelector/SvgSelector";
 import cl from './ArticleRateCounter.module.sass';
 import {articlesApi} from "../../../api/api";
@@ -6,20 +6,21 @@ import useCustomSnackbar from "../../../hooks/useCustomSnackbar";
 import {isAuthorized} from "../../../utils/JwtHelper";
 import FilledDiv from '../../UI/FilledDiv';
 import {useColorModeValue} from "@chakra-ui/react";
-import {useArticleContext} from "../../../pages/Articles/One/ArticleSpace.Provider";
-import {useQueryClient} from "react-query";
 
 export type RateVariants = 'up' | 'down' | 'none';
 
-const ArticlesRateCounter = () => {
-  const queryClient = useQueryClient();
-  const {article, userActions} = useArticleContext();
-  const [counterState, setCounterState] = useState<'up' | 'down' | 'none'>(userActions.rate)
+interface IArticleRateCounterProps {
+  actualVote:RateVariants,
+  current: number,
+  setCurrent: (value: number) => void,
+  articleId: number
+}
+
+
+const ArticlesRateCounter: FC<IArticleRateCounterProps> = ({actualVote, current, setCurrent, articleId}) => {
+  const [counterState, setCounterState] = useState<RateVariants>(actualVote)
   const {enqueueError} = useCustomSnackbar();
 
-  const articleId = article.data!.id
-  const current = article.data!.rate;
-  const setCurrent = (value: number) => queryClient.setQueryData(['article', articleId], {...article, rate: value});
 
   function checkAuth() {
     if (!isAuthorized()) {

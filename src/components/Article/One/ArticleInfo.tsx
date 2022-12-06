@@ -11,13 +11,13 @@ import {Button, Link, Skeleton, Text, useColorModeValue} from "@chakra-ui/react"
 import {useArticleContext} from "../../../pages/Articles/One/ArticleSpace.Provider";
 
 const ArticleInfo = () => {
-  const {article, localization} = useArticleContext();
+  const {articleAccessor, localizationAccessor} = useArticleContext();
 
   const navigate = useNavigate();
   const whiteTextColor = useColorModeValue('whiteLight', 'whiteDark');
 
-  const contributors = useQuery(['contributors', localization.data!.articleId, localization.data!.languageCode],
-    () => getArticleContributors(localization.data!.contributors));
+  const contributors = useQuery(['contributors', localizationAccessor.data!.articleId, localizationAccessor.data!.languageCode],
+    () => getArticleContributors(localizationAccessor.data!.contributors));
 
   const getDomain = (link: string) => {
     const url = new URL(link);
@@ -30,11 +30,11 @@ const ArticleInfo = () => {
   return (
       <div className={cl.articleInfo}>
         {
-          !localization.isSuccess || !article.isSuccess ? <Skeleton height={100} className={cl.infoBlock}/> :
+          !localizationAccessor.isSuccess || !articleAccessor.isSuccess ? <Skeleton height={100} className={cl.infoBlock}/> :
             <FilledDiv className={cl.infoBlock}>
               <p className={cl.infoBlockTitle}>Переклади</p>
               <div className={cl.translates}>
-                {article.data.localizations?.map(localization =>
+                {articleAccessor.data.localizations?.map(localization =>
                   <Button
                     onClick={() => navigate(`/article/${localization.articleId}/${localization.languageCode}`)}
                     key={localization.languageCode}
@@ -53,7 +53,7 @@ const ArticleInfo = () => {
         }
 
         {
-          !localization.isSuccess ? <Skeleton height={100} className={cl.infoBlock}/> :
+          !localizationAccessor.isSuccess ? <Skeleton height={100} className={cl.infoBlock}/> :
             <FilledDiv className={cl.infoBlock}>
               <Text as={'p'} className={cl.infoBlockTitle}>Автори</Text>
               <div className={cl.contributors}>
@@ -80,8 +80,8 @@ const ArticleInfo = () => {
         }
 
         {
-          !article.isSuccess ? <Skeleton height={100} className={cl.infoBlock}/> :
-            article.data.originalArticleLink &&
+          !articleAccessor.isSuccess ? <Skeleton height={100} className={cl.infoBlock}/> :
+            articleAccessor.data.originalArticleLink &&
             <FilledDiv className={cl.infoBlock}>
               <Text as={'p'} className={cl.infoBlockTitle}>Перейти до оригіналу:</Text>
               <Button
@@ -94,9 +94,9 @@ const ArticleInfo = () => {
               >
                 <Link
                   color={whiteTextColor}
-                  href={article.data.originalArticleLink}
+                  href={articleAccessor.data.originalArticleLink}
                 >
-                  {getDomain(article.data.originalArticleLink)}
+                  {getDomain(articleAccessor.data.originalArticleLink)}
                 </Link>
               </Button>
             </FilledDiv>

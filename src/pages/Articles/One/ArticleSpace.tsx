@@ -10,13 +10,13 @@ import {LFC2} from "../../../components/Layout/LFC";
 import ArticleSpaceProvider, {useArticleContext} from "./ArticleSpace.Provider";
 
 const ArticleSpace: LFC2 = () => {
-  const {article, localization} = useArticleContext();
+  const {articleAccessor, localizationAccessor} = useArticleContext();
   const {id, code} = useParams();
 
   const processError = (e: ApiError | Error) => {
-    if (localization.isError) {
+    if (localizationAccessor.isError) {
 
-      switch (localization.error.statusCode) {
+      switch (localizationAccessor.error.statusCode) {
         case 404:
           return 'Дана стаття ще пишеться :)';
         case 403:
@@ -33,11 +33,11 @@ const ArticleSpace: LFC2 = () => {
     Center: {
       render: <Box width={'100%'} display={'flex'} flexDirection={'column'}>
         {
-          (!localization.isSuccess || !article.isSuccess)
+          (!localizationAccessor.isSuccess || !articleAccessor.isSuccess)
             ? <ArticleBodySkeleton/>
             : <ArticleBody/>
         }
-        {<CommentsWidget display={!(localization.isLoading || article.isLoading)} deps={[id, code]}/>}
+        {<CommentsWidget display={!(localizationAccessor.isLoading || articleAccessor.isLoading)} deps={[id, code]}/>}
       </Box>,
       config: {
         error: {
@@ -47,7 +47,7 @@ const ArticleSpace: LFC2 = () => {
       }
     },
     Right: {
-      render: (!localization.isSuccess || !article.isSuccess)
+      render: (!localizationAccessor.isSuccess || !articleAccessor.isSuccess)
         ? <Skeleton height={200}/>
         : <ArticleInfo/>,
       config: {error: {show: true, customMessage: 'Custom test'}}

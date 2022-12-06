@@ -9,17 +9,17 @@ import {useAppStore} from "../../../store/config";
 import IArticleResponse from "../../../types/api/Article/IArticleResponse";
 
 type ContextType = {
-  article: UseQueryResult<IArticleResponse, ApiError>,
+  articleAccessor: UseQueryResult<IArticleResponse, ApiError>,
   setArticle: (article: IArticleResponse) => void,
-  localization: UseQueryResult<IArticleLocalizationResponse, ApiError>,
+  localizationAccessor: UseQueryResult<IArticleLocalizationResponse, ApiError>,
   userActions: { isSaved: boolean, rate: RateVariants }
 }
 
 const InitialContextValue: ContextType = {
-  article: {} as UseQueryResult<IArticleResponse, ApiError>,
+  articleAccessor: {} as UseQueryResult<IArticleResponse, ApiError>,
   setArticle: () => {
   },
-  localization: {} as UseQueryResult<IArticleLocalizationResponse, ApiError>,
+  localizationAccessor: {} as UseQueryResult<IArticleLocalizationResponse, ApiError>,
   userActions: {
     isSaved: false,
     rate: 'none'
@@ -41,8 +41,8 @@ const ArticleSpaceProvider: FC<PropsWithChildren> = ({children}) => {
     rate: 'none'
   });
 
-  const article = useQuery<IArticleResponse, ApiError>(['article', id], () => getArticle(id!));
-  const localization = useQuery<IArticleLocalizationResponse, ApiError>(['articleLocalization', id, code], () => getLocalization(id!, code!),
+  const articleAccessor = useQuery<IArticleResponse, ApiError>(['article', id], () => getArticle(id!));
+  const localizationAccessor = useQuery<IArticleLocalizationResponse, ApiError>(['articleLocalization', id, code], () => getLocalization(id!, code!),
     {
       onSuccess: async () => {
         if (isLogin) {
@@ -54,14 +54,14 @@ const ArticleSpaceProvider: FC<PropsWithChildren> = ({children}) => {
 
   const setArticle = (article: IArticleResponse) => queryClient.setQueryData(['article', id], article);
 
-  const value = React.useMemo(
+  const value: ContextType = React.useMemo(
     () => ({
-      article,
+      articleAccessor,
       setArticle,
-      localization,
+      localizationAccessor,
       userActions
     }),
-    [article, setArticle, localization, userActions]
+    [articleAccessor, setArticle, localizationAccessor, userActions]
   );
 
   return (

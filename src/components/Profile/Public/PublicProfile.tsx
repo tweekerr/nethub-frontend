@@ -7,18 +7,19 @@ import SvgSelector from "../../UI/SvgSelector/SvgSelector";
 import {Button, Text} from "@chakra-ui/react";
 import FilledDiv from "../../UI/FilledDiv";
 import {useNavigate} from "react-router-dom";
+import {useProfileContext} from "../../../pages/Profile/ProfileSpace.Provider";
 
-interface IProfileProps {
-  user: IUserInfoResponse,
-  dashboard: IDashboardResponse
-}
-
-const PublicProfile: FC<IProfileProps> = ({dashboard, user}) => {
+const PublicProfile = () => {
   const navigate = useNavigate();
+
+  const {userAccessor, dashboardAccessor} = useProfileContext();
+
+  const user = userAccessor.data!;
+  const dashboard = dashboardAccessor.data!;
 
   return (
     <div className={cl.profileWrapper}>
-      <PublicDashboard dashboard={dashboard} user={user}/>
+      <PublicDashboard/>
       {dashboard.articlesCount !== 0
         ? <FilledDiv
           className={cl.profileButton}

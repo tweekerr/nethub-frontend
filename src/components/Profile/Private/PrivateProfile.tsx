@@ -1,4 +1,4 @@
-import React, {FC, useState} from 'react';
+import React, {useState} from 'react';
 import cl from '../Profile.module.sass'
 import PrivateDashboard from "./PrivateDashboard";
 import SvgSelector from "../../UI/SvgSelector/SvgSelector";
@@ -12,6 +12,7 @@ import FilledDiv from '../../UI/FilledDiv';
 import {Button, Text} from '@chakra-ui/react';
 import AnimateHeight from "react-animate-height";
 import {useAppStore} from "../../../store/config";
+import {useProfileContext} from "../../../pages/Profile/ProfileSpace.Provider";
 
 
 interface IProfileProps {
@@ -30,8 +31,11 @@ export type ProfileChangesType = 'profile' | 'photo' | 'username';
 type ProfileSettingsRef = React.ElementRef<typeof ProfileSettings>
 
 
-const PrivateProfile: FC<IProfileProps> = ({user, dashboard}) => {
+const PrivateProfile = () => {
   const navigate = useNavigate();
+
+  const {userAccessor} = useProfileContext();
+  const user = userAccessor.data!;
 
   const [request, setRequest] = useState<ExtendedRequest>({
     username: user.userName,
@@ -97,8 +101,6 @@ const PrivateProfile: FC<IProfileProps> = ({user, dashboard}) => {
   return (
     <div className={cl.profileWrapper}>
       <PrivateDashboard
-        user={user}
-        dashboard={dashboard}
         request={request}
         setRequest={setRequest}
         addChanges={handleAddChanges}

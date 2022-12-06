@@ -63,7 +63,8 @@ const ArticleShort: FC<IArticleItemProps> = ({localization, save, textBeforeTime
       </Link>
       <div className={cl.actions}>
         <ArticlesRateCounter
-          actualVote={localization.vote ?? 'none'} current={localization.rate}
+          actualVote={localization.vote ?? 'none'}
+          current={localization.rate}
           setCurrent={setRate} articleId={localization.articleId}
         />
         <ArticleSavingActions

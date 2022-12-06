@@ -11,6 +11,7 @@ interface IArticleThreadTitleProps {
 
 const ArticlesThreadTitle: FC<IArticleThreadTitleProps> =
   ({title, options, articlesLanguage, setArticlesLanguage,}) => {
+
     return (
       <Box className={cl.threadTitle}>
         <Text as={'h2'}>{title}</Text>

@@ -1,8 +1,6 @@
 import React, {FC, useState} from 'react';
-import IUserInfoResponse from "../../../types/api/User/IUserInfoResponse";
 import cl from '../Profile.module.sass'
 import SvgSelector from "../../UI/SvgSelector/SvgSelector";
-import IDashboardResponse from "../../../types/api/Dashboard/IDashboardResponse";
 import millify from "millify";
 import SetImageModal from "../SetImageModal";
 import {ExtendedRequest, ProfileChangesType} from "./PrivateProfile";
@@ -12,17 +10,21 @@ import DashboardImage from "../DashboardImage";
 import {getTimeFrom} from "../../../utils/timeHelper";
 import FilledDiv from "../../UI/FilledDiv";
 import {Button, Text} from '@chakra-ui/react';
+import {useProfileContext} from "../../../pages/Profile/ProfileSpace.Provider";
 
 
 interface IPrivateDashboardProps {
-  user: IUserInfoResponse,
-  dashboard: IDashboardResponse,
   addChanges: (change: ProfileChangesType) => void,
   request: ExtendedRequest,
   setRequest: (request: ExtendedRequest) => void,
 }
 
-const PrivateDashboard: FC<IPrivateDashboardProps> = ({user, dashboard, request, setRequest, addChanges}) => {
+const PrivateDashboard: FC<IPrivateDashboardProps> = ({request, setRequest, addChanges}) => {
+  const {userAccessor, dashboardAccessor} = useProfileContext();
+  const user = userAccessor.data!;
+  const dashboard = dashboardAccessor.data!;
+
+
   const [isModalOpened, setIsModalOpened] = useState(false);
   const [imageLink, setImageLink] = useState<string>('')
   const {enqueueError} = useCustomSnackbar();

@@ -11,7 +11,7 @@ import {DateTime} from "luxon";
 
 
 const Currency = () => {
-  const currencies = useQuery<ICurrencyResponse, string>("currency", () => infoApi.getCurrenciesRate(), {
+  const currencies = useQuery<ICurrencyResponse, string>('currency', () => infoApi.getCurrenciesRate(), {
     onSuccess: (result) => setDate(DateTime.fromISO(result.updated))
   });
   const blockColor = useColorModeValue('whiteLight', '#333439')

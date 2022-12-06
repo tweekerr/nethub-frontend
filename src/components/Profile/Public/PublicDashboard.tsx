@@ -1,20 +1,18 @@
-import React, {FC, useState} from 'react';
+import React, {useState} from 'react';
 import FilledDiv from "../../UI/FilledDiv";
 import cl from "../Profile.module.sass";
 import {getTimeFrom} from "../../../utils/timeHelper";
 import {Box, Image, Skeleton, Text, useColorModeValue} from "@chakra-ui/react";
 import SvgSelector from "../../UI/SvgSelector/SvgSelector";
-import IDashboardResponse from "../../../types/api/Dashboard/IDashboardResponse";
 import {createImageFromInitials} from "../../../utils/logoGenerator";
-import IUserInfoResponse from "../../../types/api/User/IUserInfoResponse";
 import millify from "millify";
+import {useProfileContext} from "../../../pages/Profile/ProfileSpace.Provider";
 
-interface IPublicDashboardProps {
-  dashboard: IDashboardResponse,
-  user: IUserInfoResponse,
-}
+const PublicDashboard = () => {
+  const {userAccessor, dashboardAccessor} = useProfileContext();
+  const user = userAccessor.data!;
+  const dashboard = dashboardAccessor.data!;
 
-const PublicDashboard: FC<IPublicDashboardProps> = ({dashboard, user}) => {
   const getImage = () => user.profilePhotoLink ?? createImageFromInitials(500, user.userName);
   const [image, setImage] = useState<string>(getImage());
   const handleImageError = () => {

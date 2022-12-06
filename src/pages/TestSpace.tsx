@@ -1,14 +1,21 @@
 import React from 'react';
-import Layout from "../components/Layout/Layout";
 import {Input} from "@chakra-ui/react";
-import {LFC} from "../components/Layout/LFC";
+import {LFC2} from "../components/Layout/LFC";
 
-const TestSpace: LFC = () =>
-  <>
-    <Input
-      isInvalid
-      errorBorderColor='red.300'
-    />
-  </>;
+const TestSpace: LFC2 = () => {
+
+  return {
+    Center: {
+      render: <>
+        <Input
+          isInvalid
+          errorBorderColor='red.300'
+        />
+      </>
+    },
+    ContextProvider: React.Fragment
+  }
+}
+
 
 export default TestSpace;
