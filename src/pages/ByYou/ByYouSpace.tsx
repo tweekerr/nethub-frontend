@@ -10,10 +10,6 @@ const ByYouSpace = () => {
       name: 'Статті',
       component: <SavedArticles/>
     },
-    {
-      name: 'Блог',
-      component: <ArticlesThreadSpace/>
-    }
   ]
 
   return (

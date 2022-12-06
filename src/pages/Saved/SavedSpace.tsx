@@ -14,10 +14,6 @@ const SavedSpace: LFC2 = () => {
     {
       name: 'Статті',
       component: <SavedArticles/>
-    },
-    {
-      name: 'Блог',
-      component: <ArticlesThreadSpace/>
     }
   ]
 

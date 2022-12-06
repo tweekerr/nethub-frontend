@@ -39,7 +39,7 @@ const Body: FC<Omit<ILayoutProps, 'showHeader' | 'showFooter'>> =
         >
           <Box id='titles' ref={titlesRef} className={cl.bodyWrapper}>
             <Box className={cl.left}>
-              {left.title ?? null}
+              {left?.title ?? null}
             </Box>
             <Box className={cl.center}>
               {center?.title ?? null}

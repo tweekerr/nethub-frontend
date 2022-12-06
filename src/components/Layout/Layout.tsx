@@ -18,7 +18,7 @@ export interface ISideBarConfig extends ISectionConfig {
 }
 
 export interface ILayoutProps {
-  left: { title?: ReactNode, render: JSX.Element | null, config?: ISideBarConfig },
+  left?: { title?: ReactNode, render: JSX.Element | null, config?: ISideBarConfig },
   center?: { title?: ReactNode, render: JSX.Element | null, config?: ISectionConfig },
   right?: { title?: ReactNode, render: JSX.Element | null, config?: ISectionConfig }
   hf?: { header?: boolean, footer?: boolean }

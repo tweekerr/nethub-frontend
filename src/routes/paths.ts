@@ -15,11 +15,11 @@ interface IPath {
 }
 
 export const paths: IPath[] = [
-  // {
-  //   path: '/',
-  //   Component: ArticlesThreadSpace,
-  //   authorized: false
-  // },
+  {
+    path: '/',
+    Component: ArticlesThreadSpace,
+    authorized: false
+  },
   {
     path: '/login',
     Component: AuthSpace,

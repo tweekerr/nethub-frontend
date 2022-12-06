@@ -1,6 +1,5 @@
 import React, {createContext, FC, PropsWithChildren, useContext, useMemo} from 'react';
 import {useQuery, UseQueryResult} from "react-query";
-import IExtendedArticle from "../../types/IExtendedArticle";
 import {ApiError} from "../../types/ApiError";
 import IUserInfoResponse from "../../types/api/User/IUserInfoResponse";
 import {getUserDashboard, getUserInfo} from "./ProfileSpace.functions";
