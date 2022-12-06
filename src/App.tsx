@@ -3,12 +3,13 @@ import 'moment/locale/en-gb';
 import React, {useEffect, useState} from 'react';
 import {switchLocal} from "./utils/localization";
 import AppRouter from './components/AppRouter';
-import './i18n'
+// import './i18n'
 import {SnackbarProvider} from 'notistack';
 import {check} from "./App.functions";
 import {QueryClient, QueryClientProvider} from 'react-query';
 import {ReactQueryDevtools} from "react-query/devtools";
 import {useAppStore} from "./store/config";
+import {BrowserRouter} from "react-router-dom";
 
 function App() {
   const language = useAppStore(state => state.language);
@@ -32,7 +33,7 @@ function App() {
       },
     }
   }));
-  const isTest = process.env.REACT_APP_IS_DEVELOPMENT === 'true'
+  const isTest = import.meta.env.VITE_IS_DEVELOPMENT === 'true'
 
   return (
     <React.StrictMode>
@@ -41,7 +42,9 @@ function App() {
           maxSnack={5} autoHideDuration={3000} preventDuplicate
           anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
         >
-          <AppRouter/>
+          <BrowserRouter>
+            <AppRouter/>
+          </BrowserRouter>
         </SnackbarProvider>
         {
           isTest && <ReactQueryDevtools initialIsOpen={false}/>

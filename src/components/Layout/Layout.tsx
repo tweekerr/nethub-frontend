@@ -17,18 +17,16 @@ export interface ISideBarConfig extends ISectionConfig {
   showSidebar?: boolean
 }
 
-export interface ILayoutProps extends PropsWithChildren {
-  sideBar?: ISideBarConfig,
-  rightBar?: ISectionConfig,
-  title?: ReactNode,
-  error?: ErrorConfig
+export interface ILayoutProps {
+  left: { title?: ReactNode, render: JSX.Element | null, config?: ISideBarConfig },
+  center?: { title?: ReactNode, render: JSX.Element | null, config?: ISectionConfig },
+  right?: { title?: ReactNode, render: JSX.Element | null, config?: ISectionConfig }
   hf?: { header?: boolean, footer?: boolean }
 }
 
 const Layout: FC<ILayoutProps> =
   ({
-     children, sideBar, rightBar,
-     title, error, hf
+     center, left, right, hf
    }) => {
 
     return (
@@ -36,13 +34,10 @@ const Layout: FC<ILayoutProps> =
         <Flag/>
         {(hf?.header ?? true) ? <Header/> : null}
         <Body
-          sideBar={sideBar}
-          rightBar={rightBar}
-          title={title}
-          error={error}
-        >
-          {children}
-        </Body>
+          left={left}
+          center={center}
+          right={right}
+        />
 
         {(hf?.footer ?? true) ? <Footer/> : null}
       </Box>

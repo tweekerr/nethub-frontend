@@ -9,7 +9,7 @@ import ErrorBoundary from "./ErrorBoundary";
 
 
 const Body: FC<Omit<ILayoutProps, 'showHeader' | 'showFooter'>> =
-  ({children, sideBar, rightBar, title, error}) => {
+  ({left, center, right}) => {
 
     function getInitialHeight() {
       const storedHeight = localStorage.getItem('mainTitlesHeight');
@@ -23,7 +23,7 @@ const Body: FC<Omit<ILayoutProps, 'showHeader' | 'showFooter'>> =
 
     useLayoutEffect(() => {
       const titlesHeight = titlesRef.current?.clientHeight;
-      if (children !== undefined) {
+      if (center?.render !== undefined) {
         localStorage.setItem('mainTitlesHeight', titlesHeight!.toString());
         setTitleHeight(titlesHeight!);
       }
@@ -39,13 +39,13 @@ const Body: FC<Omit<ILayoutProps, 'showHeader' | 'showFooter'>> =
         >
           <Box id='titles' ref={titlesRef} className={cl.bodyWrapper}>
             <Box className={cl.left}>
-              {sideBar?.title ?? null}
+              {left.title ?? null}
             </Box>
             <Box className={cl.center}>
-              {title ?? null}
+              {center?.title ?? null}
             </Box>
             <Box className={cl.right}>
-              {rightBar?.title ?? null}
+              {right?.title ?? null}
             </Box>
           </Box>
         </AnimateHeight>
@@ -54,9 +54,9 @@ const Body: FC<Omit<ILayoutProps, 'showHeader' | 'showFooter'>> =
 
           {/*left-bar*/}
           <BarWrapper className={cl.left}>
-            <ErrorBoundary config={sideBar?.error}>
-              {(sideBar?.showSidebar ?? true)
-                ? (sideBar?.children ?? <Menu/>)
+            <ErrorBoundary config={left?.config?.error}>
+              {(left?.config?.showSidebar ?? true)
+                ? (left?.render ?? <Menu/>)
                 : null
               }
             </ErrorBoundary>
@@ -64,15 +64,15 @@ const Body: FC<Omit<ILayoutProps, 'showHeader' | 'showFooter'>> =
 
           {/*body-content*/}
           <Box className={cl.center}>
-            <ErrorBoundary config={error}>
-              {children}
+            <ErrorBoundary config={center?.config?.error}>
+              {center?.render}
             </ErrorBoundary>
           </Box>
 
           {/*sidebar*/}
           <BarWrapper className={cl.right}>
-            <ErrorBoundary config={rightBar?.error}>
-              {rightBar?.children ?? null}
+            <ErrorBoundary config={right?.config?.error}>
+              {right?.render ?? null}
             </ErrorBoundary>
           </BarWrapper>
 

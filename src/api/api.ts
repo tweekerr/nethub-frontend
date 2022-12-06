@@ -4,7 +4,6 @@ import ISsoRequest from "../types/api/Sso/ISsoRequest";
 import ICheckEmailResponse from "../types/api/CheckEmail/ICheckEmailRequest";
 import {ProviderType} from "../types/ProviderType";
 import ICheckUsernameResponse from "../types/api/CheckUsername/ICheckUsernameResponse";
-import {APIError} from "../react-app-env";
 import {JWTStorage} from "../utils/localStorageProvider";
 import IArticleResponse from "../types/api/Article/IArticleResponse";
 import IArticleLocalizationResponse from "../types/api/Article/IArticleLocalizationResponse";
@@ -22,7 +21,9 @@ import {ApiError} from "../types/ApiError";
 
 export const _api = axios.create({
   //TODO: must be general link
-  baseURL: process.env.REACT_APP_IS_DEVELOPMENT === 'true' ? process.env.REACT_APP_TEST_BACK_POINT : process.env.REACT_APP_GENERAL_BACK_POINT,
+  baseURL: import.meta.env.VITE_IS_DEVELOPMENT === 'true'
+    ? import.meta.env.VITE_TEST_BACK_POINT
+    : import.meta.env.VITE_GENERAL_BACK_POINT,
   withCredentials: true
 });
 
@@ -171,7 +172,7 @@ export const userApi = {
       const response: AxiosResponse<IAuthResult> = await _api.post('user/refresh-tokens', {refreshToken: JWTStorage.getRefreshToken()});
       JWTStorage.setTokensData(response.data)
       return true;
-    } catch (error: APIError | any) {
+    } catch (error) {
       return false;
     }
   },

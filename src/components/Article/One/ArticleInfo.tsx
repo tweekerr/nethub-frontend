@@ -1,8 +1,6 @@
-import React, {FC} from 'react';
+import React from 'react';
 import SvgSelector from "../../UI/SvgSelector/SvgSelector";
 import cl from './ArticleInfo.module.sass'
-import IArticleLocalizationResponse from "../../../types/api/Article/IArticleLocalizationResponse";
-import IArticleResponse from "../../../types/api/Article/IArticleResponse";
 import {createImageFromInitials} from "../../../utils/logoGenerator";
 import {getArticleContributors} from "../../../pages/Articles/One/ArticleSpace.functions";
 import {useNavigate} from "react-router-dom";
@@ -10,21 +8,16 @@ import {useQuery} from "react-query";
 import ContributorsSkeleton from "./ContributorsSkeleton";
 import FilledDiv from '../../UI/FilledDiv';
 import {Button, Link, Skeleton, Text, useColorModeValue} from "@chakra-ui/react";
+import {useArticleContext} from "../../../pages/Articles/One/ArticleSpace.Provider";
 
-interface IArticleInfoProps {
-  article: IArticleResponse,
-  localization: IArticleLocalizationResponse,
-  isError: boolean,
-  isLoading: boolean,
-}
-
-const ArticleInfo: FC<IArticleInfoProps> = ({article, localization, isError, isLoading}) => {
+const ArticleInfo = () => {
+  const {article, localization} = useArticleContext();
 
   const navigate = useNavigate();
   const whiteTextColor = useColorModeValue('whiteLight', 'whiteDark');
 
-  const contributors = useQuery(['contributors', localization.articleId, localization.languageCode],
-    () => getArticleContributors(localization.contributors));
+  const contributors = useQuery(['contributors', localization.data!.articleId, localization.data!.languageCode],
+    () => getArticleContributors(localization.data!.contributors));
 
   const getDomain = (link: string) => {
     const url = new URL(link);
@@ -35,14 +28,13 @@ const ArticleInfo: FC<IArticleInfoProps> = ({article, localization, isError, isL
   const divBg = useColorModeValue('purpleLight', 'purpleDark');
 
   return (
-    isError ? <></> :
       <div className={cl.articleInfo}>
         {
-          isLoading ? <Skeleton height={100} className={cl.infoBlock}/> :
+          !localization.isSuccess || !article.isSuccess ? <Skeleton height={100} className={cl.infoBlock}/> :
             <FilledDiv className={cl.infoBlock}>
               <p className={cl.infoBlockTitle}>Переклади</p>
               <div className={cl.translates}>
-                {article.localizations?.map(localization =>
+                {article.data.localizations?.map(localization =>
                   <Button
                     onClick={() => navigate(`/article/${localization.articleId}/${localization.languageCode}`)}
                     key={localization.languageCode}
@@ -61,7 +53,7 @@ const ArticleInfo: FC<IArticleInfoProps> = ({article, localization, isError, isL
         }
 
         {
-          isLoading ? <Skeleton height={100} className={cl.infoBlock}/> :
+          !localization.isSuccess ? <Skeleton height={100} className={cl.infoBlock}/> :
             <FilledDiv className={cl.infoBlock}>
               <Text as={'p'} className={cl.infoBlockTitle}>Автори</Text>
               <div className={cl.contributors}>
@@ -88,8 +80,8 @@ const ArticleInfo: FC<IArticleInfoProps> = ({article, localization, isError, isL
         }
 
         {
-          isLoading ? <Skeleton height={100} className={cl.infoBlock}/> :
-            article.originalArticleLink &&
+          !article.isSuccess ? <Skeleton height={100} className={cl.infoBlock}/> :
+            article.data.originalArticleLink &&
             <FilledDiv className={cl.infoBlock}>
               <Text as={'p'} className={cl.infoBlockTitle}>Перейти до оригіналу:</Text>
               <Button
@@ -102,9 +94,9 @@ const ArticleInfo: FC<IArticleInfoProps> = ({article, localization, isError, isL
               >
                 <Link
                   color={whiteTextColor}
-                  href={article.originalArticleLink}
+                  href={article.data.originalArticleLink}
                 >
-                  {getDomain(article.originalArticleLink)}
+                  {getDomain(article.data.originalArticleLink)}
                 </Link>
               </Button>
             </FilledDiv>

@@ -6,34 +6,35 @@ import SavedSpace from "../pages/Saved/SavedSpace";
 import ProfileSpace from "../pages/Profile/ProfileSpace";
 import ContributorArticlesSpace from "../pages/Articles/Contributor/ContributorArticlesSpace";
 import TestSpace from "../pages/TestSpace";
+import {LFC, LFC2} from "../components/Layout/LFC";
 
 interface IPath {
   path: string,
-  Component: () => JSX.Element,
+  Component: LFC2,
   authorized: boolean
 }
 
 export const paths: IPath[] = [
-  {
-    path: '/',
-    Component: ArticlesThreadSpace,
-    authorized: false
-  },
+  // {
+  //   path: '/',
+  //   Component: ArticlesThreadSpace,
+  //   authorized: false
+  // },
   {
     path: '/login',
     Component: AuthSpace,
     authorized: false
   },
-  {
-    path: '/articles/add',
-    Component: ArticleCreatingSpace,
-    authorized: true,
-  },
-  {
-    path: '/articles/:id/add-localization',
-    Component: ArticleCreatingSpace,
-    authorized: true
-  },
+  // {
+  //   path: '/articles/add',
+  //   Component: ArticleCreatingSpace,
+  //   authorized: true,
+  // },
+  // {
+  //   path: '/articles/:id/add-localization',
+  //   Component: ArticleCreatingSpace,
+  //   authorized: true
+  // },
   {
     path: '/article/:id/:code',
     Component: ArticleSpace,

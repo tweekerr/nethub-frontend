@@ -24,12 +24,10 @@ class ErrorBoundary extends Component<Props, State> {
     isError: false,
   };
 
-  private isTest: boolean = process.env.REACT_APP_IS_DEVELOPMENT === 'false'
+  private isTest: boolean = import.meta.env.REACT_APP_IS_DEVELOPMENT === 'false'
 
   public static getDerivedStateFromError(_: Error): State {
     // Update state so the next render will show the fallback UI.
-
-
     return {isError: true, error: _};
   }
 

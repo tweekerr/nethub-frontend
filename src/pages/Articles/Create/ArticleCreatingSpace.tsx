@@ -13,10 +13,11 @@ import {useNavigate, useParams} from "react-router-dom";
 import {articlesApi} from "../../../api/api";
 import {useMutation, useQuery} from 'react-query';
 import {getArticleValidators} from "./ArticleCreatingSpace.functions";
+import {LFC} from "../../../components/Layout/LFC";
 
 type CreateArticleFormRef = React.ElementRef<typeof CreateArticleForm>
 
-const ArticleCreatingSpace = () => {
+const ArticleCreatingSpace: LFC = () => {
   const {t} = useTranslation();
 
   const defaultState = () => {

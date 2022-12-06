@@ -11,8 +11,9 @@ import Currency from "../../../components/Currency/Currency";
 import {Text} from "@chakra-ui/react";
 import {articlesApi} from "../../../api/api";
 import {useAppStore} from "../../../store/config";
+import {LFC} from "../../../components/Layout/LFC";
 
-const ArticlesThreadSpace = () => {
+const ArticlesThreadSpace: LFC = () => {
   const [articlesLanguage, setArticlesLanguage] = useState<string>(localStorage.getItem('articlesLanguage') ?? UkrainianLanguage);
   const {t} = useTranslation();
   const languages = [{title: 'UA', value: 'ua'}, {title: 'EN', value: 'en'}]

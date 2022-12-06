@@ -1,14 +1,15 @@
 import React from 'react';
-import Layout from "../../components/Layout/Layout";
 import Login from "../../components/Auth/Login";
 import {Box, Text} from "@chakra-ui/react";
+import {LFC2} from "../../components/Layout/LFC";
 
-  export const AuthSpace = () => {
 
-  return (
-    <Layout
-      sideBar={{showSidebar: false}}
-      title={<Box display={"flex"}>
+export const AuthSpace: LFC2 = () => {
+
+  return {
+    Left: {render: <></>, config: {showSidebar: false}},
+    Center: {
+      render: <Login/>, title: <Box display={"flex"}>
         <Text
           mb={2}
           fontWeight={700}
@@ -22,9 +23,8 @@ import {Box, Text} from "@chakra-ui/react";
         >
           NetHub!
         </Text>
-      </Box>}
-    >
-      <Login/>
-    </Layout>
-  );
-};
+      </Box>
+    },
+    ContextProvider: React.Fragment
+  };
+}
