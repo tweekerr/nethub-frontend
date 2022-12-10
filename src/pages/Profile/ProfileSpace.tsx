@@ -13,7 +13,7 @@ const ProfileSpace: LFC2 = () => {
 
   return {
     Center: {
-      render: !userAccessor.isSuccess || !dashboardAccessor.isSuccess
+      Render: !userAccessor.isSuccess || !dashboardAccessor.isSuccess
         ? <Skeleton height={200}/>
         : id
           ? <PublicProfile/>

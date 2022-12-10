@@ -24,7 +24,7 @@ const ContributorArticlesSpace: LFC2 = () => {
 
   return {
     Center: {
-      render: !contributorArticlesAccessor
+      Render: !contributorArticlesAccessor
         ? <ArticlesThreadSpaceSkeleton/>
         : <ArticlesThread
           articles={contributorArticlesAccessor.data!} setArticles={setContributorArticles} byUser={true}

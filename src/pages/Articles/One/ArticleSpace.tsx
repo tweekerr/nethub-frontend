@@ -31,7 +31,7 @@ const ArticleSpace: LFC2 = () => {
 
   return {
     Center: {
-      render: <Box width={'100%'} display={'flex'} flexDirection={'column'}>
+      Render: <Box width={'100%'} display={'flex'} flexDirection={'column'}>
         {
           (!localizationAccessor.isSuccess || !articleAccessor.isSuccess)
             ? <ArticleBodySkeleton/>

@@ -1,15 +1,23 @@
-import React, {FC, useLayoutEffect, useRef, useState} from 'react';
+import React, {FC, ReactElement, useLayoutEffect, useRef, useState} from 'react';
 import Menu from "./Menu/Menu";
-import {ILayoutProps} from "./Layout";
 import BarWrapper from "./BarWrapper";
 import cl from './Layout.module.sass'
 import {Box} from "@chakra-ui/react";
 import AnimateHeight from 'react-animate-height';
 import ErrorBoundary from "./ErrorBoundary";
+import {ISectionConfig, ISideBarConfig} from "./Layout";
 
 
-const Body: FC<Omit<ILayoutProps, 'showHeader' | 'showFooter'>> =
-  ({left, center, right}) => {
+export interface IBodyProps {
+  Left?: ReactElement,
+  Center: ReactElement,
+  Right: ReactElement,
+  Titles?: {left?: ReactElement, center?: ReactElement, right?: ReactElement},
+  Config?: { Left?: ISideBarConfig, Center?: ISectionConfig, Right?: ISectionConfig}
+}
+
+const Body: FC<IBodyProps> =
+  ({Left, Center, Right, Titles, Config}) => {
 
     function getInitialHeight() {
       const storedHeight = localStorage.getItem('mainTitlesHeight');
@@ -23,7 +31,7 @@ const Body: FC<Omit<ILayoutProps, 'showHeader' | 'showFooter'>> =
 
     useLayoutEffect(() => {
       const titlesHeight = titlesRef.current?.clientHeight;
-      if (center?.render !== undefined) {
+      if (Center !== undefined) {
         localStorage.setItem('mainTitlesHeight', titlesHeight!.toString());
         setTitleHeight(titlesHeight!);
       }
@@ -39,13 +47,13 @@ const Body: FC<Omit<ILayoutProps, 'showHeader' | 'showFooter'>> =
         >
           <Box id='titles' ref={titlesRef} className={cl.bodyWrapper}>
             <Box className={cl.left}>
-              {left?.title ?? null}
+              {Titles?.left ?? null}
             </Box>
             <Box className={cl.center}>
-              {center?.title ?? null}
+              {Titles?.center ?? null}
             </Box>
             <Box className={cl.right}>
-              {right?.title ?? null}
+              {Titles?.right ?? null}
             </Box>
           </Box>
         </AnimateHeight>
@@ -54,9 +62,9 @@ const Body: FC<Omit<ILayoutProps, 'showHeader' | 'showFooter'>> =
 
           {/*left-bar*/}
           <BarWrapper className={cl.left}>
-            <ErrorBoundary config={left?.config?.error}>
-              {(left?.config?.showSidebar ?? true)
-                ? (left?.render ?? <Menu/>)
+            <ErrorBoundary show={Config?.Left?.showError}>
+              {(Config?.Left?.showSidebar ?? true)
+                ? (Left ?? <Menu/>)
                 : null
               }
             </ErrorBoundary>
@@ -64,15 +72,15 @@ const Body: FC<Omit<ILayoutProps, 'showHeader' | 'showFooter'>> =
 
           {/*body-content*/}
           <Box className={cl.center}>
-            <ErrorBoundary config={center?.config?.error}>
-              {center?.render}
+            <ErrorBoundary show={Config?.Center?.showError}>
+              {Center}
             </ErrorBoundary>
           </Box>
 
           {/*sidebar*/}
           <BarWrapper className={cl.right}>
-            <ErrorBoundary config={right?.config?.error}>
-              {right?.render ?? null}
+            <ErrorBoundary show={Config?.Right?.showError}>
+              {Right}
             </ErrorBoundary>
           </BarWrapper>
 

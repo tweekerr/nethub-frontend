@@ -6,7 +6,7 @@ const TestSpace: LFC2 = () => {
 
   return {
     Center: {
-      render: <>
+      Render: <>
         <Input
           isInvalid
           errorBorderColor='red.300'

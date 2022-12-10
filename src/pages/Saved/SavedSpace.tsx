@@ -19,7 +19,7 @@ const SavedSpace: LFC2 = () => {
 
   return {
     Center: {
-      render: <UserLibrary
+      Render: <UserLibrary
         items={items}
         radioGroupConfig={{
           name: 'saved',

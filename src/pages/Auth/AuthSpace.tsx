@@ -9,7 +9,7 @@ export const AuthSpace: LFC2 = () => {
   return {
     Left: {render: <></>, config: {showSidebar: false}},
     Center: {
-      render: <Login/>, title: <Box display={"flex"}>
+      Render: <Login/>, title: <Box display={"flex"}>
         <Text
           mb={2}
           fontWeight={700}

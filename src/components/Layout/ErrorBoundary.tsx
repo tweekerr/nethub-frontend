@@ -1,17 +1,10 @@
-import React, {Component, ReactNode} from 'react';
+import React, {Component, PropsWithChildren, ReactNode} from 'react';
 import ErrorBlock from "./ErrorBlock";
-import {ApiError} from "../../types/ApiError";
 
-export type ErrorConfig = {
-  show?: boolean,
-  customMessage?: string,
-  showThrewMessage?: boolean
-  processError?: (e: Error | ApiError) => string
-}
-
-interface Props {
+interface Props extends PropsWithChildren {
   children?: ReactNode;
-  config?: ErrorConfig
+  show?: boolean,
+  main?: boolean
 }
 
 interface State {
@@ -34,15 +27,10 @@ class ErrorBoundary extends Component<Props, State> {
   render() {
 
     if (this.state.isError) {
-      return this.props.config?.show ?
-        (this.props.config?.showThrewMessage ?? this.isTest)
-          ? <ErrorBlock>{this.state.error?.message}</ErrorBlock>
-          : this.props.config?.customMessage
-            ? <ErrorBlock>{this.props.config.customMessage}</ErrorBlock>
-            : !!this.props.config.processError
-              ? <ErrorBlock>{this.props.config.processError(this.state.error!)}</ErrorBlock>
-              : <ErrorBlock/>
-        : <></>
+      if (this.props.main){
+        //redirect to problems page
+      }
+      return this.props.show ? <ErrorBlock>{this.state.error?.message}</ErrorBlock> : <ErrorBlock/>;
     }
 
 

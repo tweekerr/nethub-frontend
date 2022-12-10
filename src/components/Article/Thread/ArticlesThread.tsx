@@ -5,6 +5,8 @@ import {articlesApi} from "../../../api/api";
 import IExtendedArticle from "../../../types/IExtendedArticle";
 import {useQueryClient} from "react-query";
 import ErrorBlock from "../../Layout/ErrorBlock";
+import {Box, Button, Input} from "@chakra-ui/react";
+import {useArticlesThreadContext} from "../../../pages/Articles/Thread/ArticlesThreadSpaceProvider";
 
 interface IArticlesThreadProps {
   articles: IExtendedArticle[],
@@ -15,6 +17,7 @@ interface IArticlesThreadProps {
 const ArticlesThread: FC<IArticlesThreadProps> = ({articles, setArticles, byUser}) => {
 
   const queryClient = useQueryClient();
+
 
   const handleSaving = (localization: IExtendedArticle) => async () => {
     await articlesApi.toggleSavingLocalization(localization.articleId, localization.languageCode);

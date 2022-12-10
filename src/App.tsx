@@ -29,7 +29,8 @@ function App() {
     defaultOptions: {
       queries: {
         retry: 1,
-        staleTime: 50000
+        staleTime: 50000,
+        useErrorBoundary: true
       },
     }
   }));

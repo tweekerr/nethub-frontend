@@ -18,7 +18,6 @@ export type LFC2 = () => {
   ContextProvider: FC<PropsWithChildren>
 }
 
-
 export interface ISectionConfig {
   error?: ErrorConfig
   authorized?: boolean
