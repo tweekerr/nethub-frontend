@@ -1,6 +1,6 @@
 import {Box, Button, Skeleton} from '@chakra-ui/react';
 import React from 'react';
-import {useArticlesThreadContext} from "./ArticlesThreadSpaceProvider";
+import {useArticlesThreadContext} from "./ArticlesThreadSpace.Provider";
 
 const ArticlesThreadSpaceSkeleton = () => {
 

@@ -7,11 +7,9 @@ import {ArticleStorage} from "../../../utils/localStorageProvider";
 import FilledDiv from "../../UI/FilledDiv";
 import {Box} from "@chakra-ui/react";
 import AddContributorsBlock from "./AddContributorsBlock";
+import {useArticleCreatingContext} from "../../../pages/Articles/Create/ArticleCreatingSpace.Provider";
 
 interface IMainArticleProps {
-  article: ILocalization,
-  setArticleValue: (key: string) => (value: any) => void,
-  setArticle: (article: ILocalization) => void,
   errors: IArticleFormErrors,
 }
 
@@ -22,7 +20,9 @@ interface IMainArticleHandle {
 type TinyRef = React.ElementRef<typeof TinyInput>;
 
 const CreateArticleForm: ForwardRefRenderFunction<IMainArticleHandle, IMainArticleProps> =
-  ({article, setArticleValue, setArticle, errors}, ref) => {
+  ({errors}, ref) => {
+
+    const {article, setArticle, setArticleValue} = useArticleCreatingContext();
 
     const tinyRef = useRef<TinyRef>(null)
 

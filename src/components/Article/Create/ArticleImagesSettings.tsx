@@ -1,15 +1,14 @@
 import React, {FC} from 'react';
 import classes from './ArticleCreating.module.sass'
+import {useArticleCreatingContext} from "../../../pages/Articles/Create/ArticleCreatingSpace.Provider";
 
-interface IArticleImagesSettings {
-  images: string[]
-}
+const ArticleImagesSettings: FC = () => {
 
-const ArticleImagesSettings: FC<IArticleImagesSettings> = ({images}) => {
+  const {images} = useArticleCreatingContext();
 
   return (
     <div className={classes.images}>
-      {images.map(src =>
+      {images!.data!.map(src =>
         <img key={src} onClick={() => console.log(src)} src={src} alt={'damaged'}/>
       )}
     </div>

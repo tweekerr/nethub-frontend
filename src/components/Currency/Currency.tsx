@@ -9,7 +9,7 @@ import {Text, Skeleton, useColorMode, useColorModeValue, Box, Button, ChakraProv
 import ICurrencyResponse from "../../types/api/Currency/ICurrencyResponse";
 import {DateTime} from "luxon";
 import {ApiError} from "../../types/ApiError";
-import {useArticlesThreadContext} from "../../pages/Articles/Thread/ArticlesThreadSpaceProvider";
+import {useArticlesThreadContext} from "../../pages/Articles/Thread/ArticlesThreadSpace.Provider";
 import theme from "../../constants/themes";
 
 

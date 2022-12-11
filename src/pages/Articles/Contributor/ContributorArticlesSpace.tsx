@@ -4,10 +4,12 @@ import ArticlesThreadSpaceSkeleton from "../Thread/ArticlesThreadSpaceSkeleton";
 import Currency from "../../../components/Currency/Currency";
 import {Skeleton, Text} from "@chakra-ui/react";
 import ArticlesThreadTitle from "../../../components/Article/Thread/ArticlesThreadTitle";
-import {LFC2} from "../../../components/Layout/LFC";
 import ContributorArticlesSpaceProvider, {useContributorArticlesContext} from "./ContributorArticlesSpace.Provider";
+import Layout, {Page} from "../../../components/Layout/Layout";
+import ErrorBlock from "../../../components/Layout/ErrorBlock";
+import {ErrorsHandler} from "../../../utils/ErrorsHandler";
 
-const ContributorArticlesSpace: LFC2 = () => {
+const ContributorArticlesSpace: Page = () => {
   const {
     languages,
     articlesLanguage,
@@ -22,28 +24,32 @@ const ContributorArticlesSpace: LFC2 = () => {
     ? `Статті, написані ${contributorAccessor.data.userName}`
     : <Skeleton height={'auto'}>height</Skeleton>
 
-  return {
-    Center: {
-      Render: !contributorArticlesAccessor
-        ? <ArticlesThreadSpaceSkeleton/>
-        : <ArticlesThread
-          articles={contributorArticlesAccessor.data!} setArticles={setContributorArticles} byUser={true}
-        />,
-      title: <ArticlesThreadTitle
-        title={title}
-        articlesLanguage={articlesLanguage}
-        setArticlesLanguage={setArticlesLanguage}
-        options={languages}
-      />,
-      config: {error: {show: true}}
-    },
-    Right: {
-      render: <Currency/>,
-      title: <Text as={'h2'}>Курс</Text>,
-      config: {error: {show: true, customMessage: 'Помилка'}}
-    },
-    ContextProvider: ContributorArticlesSpaceProvider
-  };
+  const titles = {
+    Center: <ArticlesThreadTitle
+      title={title}
+      articlesLanguage={articlesLanguage}
+      setArticlesLanguage={setArticlesLanguage}
+      options={languages}
+    />,
+    Right: <Text as={'h2'}>Курс</Text>
+  }
+
+  return <Layout Titles={titles}>
+    {
+      contributorArticlesAccessor.isError
+        ? <ErrorBlock>{ErrorsHandler.default(contributorArticlesAccessor.error.statusCode)}</ErrorBlock>
+        : !contributorArticlesAccessor.isSuccess
+          ? <ArticlesThreadSpaceSkeleton/>
+          : <ArticlesThread
+            articles={contributorArticlesAccessor.data!}
+            setArticles={setContributorArticles}
+            byUser={true}
+          />
+    }
+    <Currency/>
+  </Layout>
 }
+
+ContributorArticlesSpace.Provider = ContributorArticlesSpaceProvider;
 
 export default ContributorArticlesSpace;

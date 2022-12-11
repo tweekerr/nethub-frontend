@@ -4,7 +4,7 @@ import {Box, Text} from "@chakra-ui/react";
 import Layout, {Page} from "../../components/Layout/Layout";
 
 
-export const AuthSpace: Page = () => {
+const AuthSpace: Page = () => {
   const config = {Left: {showSidebar: false}}
 
   const titles = {
@@ -31,3 +31,5 @@ export const AuthSpace: Page = () => {
 };
 
 AuthSpace.Provider = React.Fragment;
+
+export default AuthSpace;

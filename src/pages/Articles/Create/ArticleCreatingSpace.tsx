@@ -1,52 +1,34 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef} from 'react';
 import ArticleSettings from '../../../components/Article/Create/ArticleSettings';
 import Layout, {Page} from "../../../components/Layout/Layout";
 import CreateArticleForm from "../../../components/Article/Create/CreateArticleForm";
-import ILocalization, {IArticleFormErrors} from "../../../types/ILocalization";
+import {IArticleFormErrors} from "../../../types/ILocalization";
 import {regexTest} from "../../../utils/validators";
 import {urlRegex} from "../../../utils/regex";
 import {useTranslation} from "react-i18next";
 import useValidator from "../../../hooks/useValidator";
 import useCustomSnackbar from "../../../hooks/useCustomSnackbar";
 import {ArticleStorage} from "../../../utils/localStorageProvider";
-import {useNavigate, useParams} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {articlesApi} from "../../../api/api";
-import {useMutation, useQuery} from 'react-query';
+import {useMutation} from 'react-query';
 import {getArticleValidators} from "./ArticleCreatingSpace.functions";
-import {LFC} from "../../../components/Layout/LFC";
-import ArticleCreatingSpaceProvider from "./ArticleCreatingSpace.Provider";
+import ArticleCreatingSpaceProvider, {useArticleCreatingContext} from "./ArticleCreatingSpace.Provider";
 
 type CreateArticleFormRef = React.ElementRef<typeof CreateArticleForm>
 
 const ArticleCreatingSpace: Page = () => {
   const {t} = useTranslation();
 
-  const defaultState = () => {
-    return {
-      title: ArticleStorage.getTitle() ?? '',
-      description: ArticleStorage.getDescription() ?? '',
-      html: ArticleStorage.getHtml() ?? '',
-      // tags: ArticleStorage.getTags() ? JSON.parse(ArticleStorage.getTags()!) : [] as string[],
-      tags: ArticleStorage.getTags() ? JSON.parse(ArticleStorage.getTags()!) : ['test1', 'test2', 'test3'],
-    } as ILocalization
-  };
+  const {article, setArticle, defaultArticleState} = useArticleCreatingContext();
 
-  const {id} = useParams();
-  const images = useQuery('articleImages', () => articlesApi.getArticleImages(), {enabled: !!id});
   const createMutation = useMutation('createArticle', () => createArticle());
   const navigate = useNavigate();
-
-  const [article, setArticle] = useState<ILocalization>(defaultState)
 
   const {subscribeValidator, unsubscribeValidator, validateAll, errors, setErrors} = useValidator<IArticleFormErrors>();
   const {enqueueSuccess, enqueueError, enqueueSnackBar} = useCustomSnackbar('info');
   const articleCreationRef = useRef<CreateArticleFormRef>(null);
 
-  const setArticleValue = (key: string) => (value: any) => {
-    setArticle((prev) => {
-      return {...prev, [key]: value}
-    })
-  }
 
   const setTagsError = (flag: boolean) => {
     setErrors(prev => {
@@ -88,7 +70,7 @@ const ArticleCreatingSpace: Page = () => {
 
       await articlesApi.createLocalization(articleId!, 'ua', article)
       ArticleStorage.clearArticleData();
-      setArticle(defaultState);
+      setArticle(defaultArticleState);
     } catch (e: any) {
       enqueueError('Помилка збереження статті');
       return;
@@ -106,23 +88,18 @@ const ArticleCreatingSpace: Page = () => {
   return (
     <Layout Titles={titles}>
       <CreateArticleForm
-        article={article}
-        setArticleValue={setArticleValue}
-        setArticle={setArticle}
         errors={errors}
         ref={articleCreationRef}
       />
       <ArticleSettings
-        article={article}
-        setArticle={setArticle}
         errors={errors}
         setError={setTagsError}
         createArticle={createMutation.mutateAsync}
-        images={images.data ?? []}
       />
     </Layout>
   );
 }
 
+ArticleCreatingSpace.Provider = ArticleCreatingSpaceProvider;
 
 export default ArticleCreatingSpace;

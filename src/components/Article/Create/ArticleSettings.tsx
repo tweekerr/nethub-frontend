@@ -2,22 +2,22 @@ import React, {FC} from 'react';
 import classes from './ArticleCreating.module.sass';
 import ArticleTagsSettings from "./ArticleTagsSettings";
 import TitleInput from "../../UI/TitleInput/TitleInput";
-import ILocalization, {IArticleFormErrors} from "../../../types/ILocalization";
+import {IArticleFormErrors} from "../../../types/ILocalization";
 import ArticleImagesSettings from "./ArticleImagesSettings";
 import {ArticleStorage} from "../../../utils/localStorageProvider";
 import FilledDiv from '../../UI/FilledDiv';
 import {Button, Text} from "@chakra-ui/react";
+import {useArticleCreatingContext} from "../../../pages/Articles/Create/ArticleCreatingSpace.Provider";
 
 interface IArticleSettingsProps {
-  article: ILocalization,
-  setArticle: (article: ILocalization) => void,
   createArticle: () => Promise<void>,
   errors: IArticleFormErrors,
   setError: (flag: boolean) => void;
-  images: string[]
 }
 
-const ArticleSettings: FC<IArticleSettingsProps> = ({article, setArticle, createArticle, errors, setError, images}) => {
+const ArticleSettings: FC<IArticleSettingsProps> = ({createArticle, errors, setError}) => {
+
+  const {article, setArticle, images} = useArticleCreatingContext();
 
   const handleSetLink = (event: React.ChangeEvent<HTMLInputElement>) => {
     setArticle({...article, originalLink: event.target.value});
@@ -39,7 +39,6 @@ const ArticleSettings: FC<IArticleSettingsProps> = ({article, setArticle, create
       <FilledDiv>
         <Text as={'p'} className={classes.title}>Теги по темам</Text>
         <ArticleTagsSettings
-          tags={article.tags}
           addToAllTags={handleSetTags}
           deleteTag={handleDeleteTag}
           error={errors.tags}
@@ -60,10 +59,10 @@ const ArticleSettings: FC<IArticleSettingsProps> = ({article, setArticle, create
           посилання на
           оригінал</Text>
       </FilledDiv>
-      {images.length > 0 &&
+      {images?.data !== undefined && images.data.length > 0 &&
         <FilledDiv className={classes.settingsItem}>
           <Text as={'p'} className={classes.title}>Пропоновані зображення</Text>
-          <ArticleImagesSettings images={images}/>
+          <ArticleImagesSettings/>
           <Text as={'p'} className={classes.specification}>*натисність, щоб скопіювати посилання на фото</Text>
         </FilledDiv>
       }

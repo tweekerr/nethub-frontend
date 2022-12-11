@@ -14,22 +14,6 @@ const ArticleSpace: Page = () => {
   const {articleAccessor, localizationAccessor} = useArticleContext();
   const {id, code} = useParams();
 
-  // const processError = (e: ApiError | Error) => {
-  //   if (localizationAccessor.isError) {
-  //
-  //     switch (localizationAccessor.error.statusCode) {
-  //       case 404:
-  //         return 'Дана стаття ще пишеться :)';
-  //       case 403:
-  //         return 'Ви повинні бути вкладником, щоб мати доступ до цієї статті'
-  //       default:
-  //         return e.message;
-  //     }
-  //   }
-  //
-  //   return e.message
-  // }
-
   const config = {
     Center: {
       showError: true,

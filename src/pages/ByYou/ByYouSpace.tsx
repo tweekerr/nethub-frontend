@@ -1,10 +1,9 @@
 import React from 'react';
-import Layout from "../../components/Layout/Layout";
+import Layout, {Page} from "../../components/Layout/Layout";
 import {ILibraryItem} from "../../components/Library/UserLibrary";
 import SavedArticles from "../../components/Article/Saved/SavedArticles";
-import ArticlesThreadSpace from "../Articles/Thread/ArticlesThreadSpace";
 
-const ByYouSpace = () => {
+const ByYouSpace: Page = () => {
   const items: ILibraryItem[] = [
     {
       name: 'Статті',
@@ -15,10 +14,12 @@ const ByYouSpace = () => {
   return (
     <Layout>
       {/*<UserLibrary items={items} title={<p>Hello World!</p>}>*/}
-
+    <></>
       {/*</UserLibrary>*/}
     </Layout>
   );
 };
+
+ByYouSpace.Provider = React.Fragment;
 
 export default ByYouSpace;

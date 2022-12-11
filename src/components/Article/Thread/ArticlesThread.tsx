@@ -6,7 +6,7 @@ import IExtendedArticle from "../../../types/IExtendedArticle";
 import {useQueryClient} from "react-query";
 import ErrorBlock from "../../Layout/ErrorBlock";
 import {Box, Button, ChakraProvider, Input} from "@chakra-ui/react";
-import {useArticlesThreadContext} from "../../../pages/Articles/Thread/ArticlesThreadSpaceProvider";
+import {useArticlesThreadContext} from "../../../pages/Articles/Thread/ArticlesThreadSpace.Provider";
 import themes from "../../../constants/themes";
 import theme from "../../../constants/themes";
 
