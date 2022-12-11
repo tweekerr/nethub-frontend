@@ -1,4 +1,4 @@
-import axios, {AxiosResponse} from 'axios';
+import axios, {AxiosError, AxiosResponse} from 'axios';
 import IAuthResult from "../types/api/Refresh/IAuthResult";
 import ISsoRequest from "../types/api/Sso/ISsoRequest";
 import ICheckEmailResponse from "../types/api/CheckEmail/ICheckEmailRequest";
@@ -39,15 +39,14 @@ _api.interceptors.response.use(
   (config) => {
     return config;
   },
-  async (error) => {
-    const originalRequest = error.config;
+  async (error: AxiosError & {_isRetry: boolean}) => {
 
     if (
-      error.response.status === 401 &&
+      error.response?.status === 401 &&
       error.config &&
-      !error.config._isRetry
+      !error._isRetry
     ) {
-      originalRequest._isRetry = true;
+      error._isRetry = true;
       try {
         const response = await axios.post(
           `${
@@ -60,13 +59,13 @@ _api.interceptors.response.use(
           {headers: {'Content-Type': 'application/json'}}
         );
         localStorage.setItem('token', response.data.accessToken);
-        return _api.request(originalRequest);
+        return _api.request(error.config);
       } catch (e) {
         localStorage.removeItem('token');
       }
     }
 
-    throw new ApiError(error.message, error.response.status);
+    throw new ApiError(error.message, error.response?.status);
   }
 );
 
@@ -116,7 +115,7 @@ export const articlesApi = {
     return response.data;
   },
   getLocalization: async (id: string, code: string): Promise<IArticleLocalizationResponse> => {
-    const response: AxiosResponse<IArticleLocalizationResponse> = await _api.get(`articles/${id}/${code}`);
+    const response: AxiosResponse<IArticleLocalizationResponse> = await _api.get(`https://localhost:7002/v1/articles/${id}/${code}`);
     return response.data;
   },
   isArticleSavedByUser: async (id: string, code: string): Promise<boolean> => {

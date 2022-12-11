@@ -15,21 +15,30 @@ export interface ISideBarConfig extends ISectionConfig {
 }
 
 export interface IMainConfig {
-  header?: {show?: boolean, custom?: ReactElement}
-  footer?: {show?: boolean, custom?: ReactElement}
+  header?: { show?: boolean, custom?: ReactElement }
+  footer?: { show?: boolean, custom?: ReactElement }
 }
 
-export interface ILayoutProps extends PropsWithChildren{
-  children: [ReactElement, ReactElement, ReactElement] | [ReactElement, ReactElement],
-  Config?: { Left?: ISideBarConfig, Center?: ISectionConfig, Right?: ISectionConfig, Main?: IMainConfig}
-  Titles?: {left?: ReactElement, center?: ReactElement, right?: ReactElement}
+export interface ILayoutProps extends PropsWithChildren {
+  children: [ReactElement, ReactElement, ReactElement] | [ReactElement, ReactElement] | ReactElement,
+  Config?: { Left?: ISideBarConfig, Center?: ISectionConfig, Right?: ISectionConfig, Main?: IMainConfig }
+  Titles?: { Left?: ReactElement, Center?: ReactElement, Right?: ReactElement }
 }
 
 const Layout: FC<ILayoutProps> =
   ({children, Config, Titles}) => {
-    const left = children.length === 3 ? children[0] : undefined;
-    const center = children.length === 3 ? children[1] : children[0];
-    const right = children.length === 3 ? children[2] : children[1];
+    let left;
+    let center;
+    let right;
+
+    if (Array.isArray(children)) {
+      left = children.length === 3 ? children[0] : undefined;
+      center = children.length === 3 ? children[1] : children[0];
+      right = children.length === 3 ? children[2] : children.length === 2 ? children[1] : undefined;
+    } else {
+      center = children;
+    }
+
 
     return (
       <Box className={cl.mainBody} minH={'100%'}>

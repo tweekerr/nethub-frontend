@@ -7,6 +7,7 @@ import {ApiError} from "../../../types/ApiError";
 import {RateVariants} from "../../../components/Article/Shared/ArticlesRateCounter";
 import {useAppStore} from "../../../store/config";
 import IArticleResponse from "../../../types/api/Article/IArticleResponse";
+import {AxiosError, AxiosResponse} from "axios";
 
 type ContextType = {
   articleAccessor: UseQueryResult<IArticleResponse, ApiError>,

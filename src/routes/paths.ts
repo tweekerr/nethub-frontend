@@ -1,5 +1,8 @@
 import ArticlesThreadSpace from '../pages/Articles/Thread/ArticlesThreadSpace';
 import {Page} from "../components/Layout/Layout";
+import {AuthSpace} from "../pages/Auth/AuthSpace";
+import ArticleSpace from "../pages/Articles/One/ArticleSpace";
+import ArticleCreatingSpace from '../pages/Articles/Create/ArticleCreatingSpace';
 
 interface IPath {
   path: string,
@@ -13,26 +16,26 @@ export const paths: IPath[] = [
     Component: ArticlesThreadSpace,
     authorized: false,
   },
-  // {
-  //   path: '/login',
-  //   Component: AuthSpace,
-  //   authorized: false
-  // },
-  // {
-  //   path: '/articles/add',
-  //   Component: ArticleCreatingSpace,
-  //   authorized: true,
-  // },
+  {
+    path: '/login',
+    Component: AuthSpace,
+    authorized: false
+  },
+  {
+    path: '/articles/add',
+    Component: ArticleCreatingSpace,
+    authorized: true,
+  },
   // {
   //   path: '/articles/:id/add-localization',
   //   Component: ArticleCreatingSpace,
   //   authorized: true
   // },
-  // {
-  //   path: '/article/:id/:code',
-  //   Component: ArticleSpace,
-  //   authorized: false
-  // },
+  {
+    path: '/article/:id/:code',
+    Component: ArticleSpace,
+    authorized: false
+  },
   // {
   //   path: '/saved',
   //   Component: SavedSpace,

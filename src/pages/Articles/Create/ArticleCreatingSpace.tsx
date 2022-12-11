@@ -1,6 +1,6 @@
 import React, {useRef, useState} from 'react';
 import ArticleSettings from '../../../components/Article/Create/ArticleSettings';
-import Layout from "../../../components/Layout/Layout";
+import Layout, {Page} from "../../../components/Layout/Layout";
 import CreateArticleForm from "../../../components/Article/Create/CreateArticleForm";
 import ILocalization, {IArticleFormErrors} from "../../../types/ILocalization";
 import {regexTest} from "../../../utils/validators";
@@ -14,10 +14,11 @@ import {articlesApi} from "../../../api/api";
 import {useMutation, useQuery} from 'react-query';
 import {getArticleValidators} from "./ArticleCreatingSpace.functions";
 import {LFC} from "../../../components/Layout/LFC";
+import ArticleCreatingSpaceProvider from "./ArticleCreatingSpace.Provider";
 
 type CreateArticleFormRef = React.ElementRef<typeof CreateArticleForm>
 
-const ArticleCreatingSpace: LFC = () => {
+const ArticleCreatingSpace: Page = () => {
   const {t} = useTranslation();
 
   const defaultState = () => {
@@ -97,23 +98,13 @@ const ArticleCreatingSpace: LFC = () => {
     navigate('/article/' + articleId + '/ua');
   };
 
-  const rightBar = {
-    title: <h2>Налаштування</h2>,
-    children: <ArticleSettings
-      article={article}
-      setArticle={setArticle}
-      errors={errors}
-      setError={setTagsError}
-      createArticle={createMutation.mutateAsync}
-      images={images.data ?? []}
-    />
-  }
+  const titles = {
+    Center: <h2>{t('article.create.mainSettings')}</h2>,
+    Right: <h2>Налаштування</h2>
+  };
 
   return (
-    <Layout
-      title={<h2>{t('article.create.mainSettings')}</h2>}
-      rightBar={rightBar}
-    >
+    <Layout Titles={titles}>
       <CreateArticleForm
         article={article}
         setArticleValue={setArticleValue}
@@ -121,7 +112,17 @@ const ArticleCreatingSpace: LFC = () => {
         errors={errors}
         ref={articleCreationRef}
       />
+      <ArticleSettings
+        article={article}
+        setArticle={setArticle}
+        errors={errors}
+        setError={setTagsError}
+        createArticle={createMutation.mutateAsync}
+        images={images.data ?? []}
+      />
     </Layout>
   );
 }
+
+
 export default ArticleCreatingSpace;

@@ -26,8 +26,15 @@ const AuthorizedHoc = ({children, redirectTo = '/login'}: IAuthorizedProps) => {
     setIsLogin(false);
   }
 
+  const config = {
+    Left: {showSidebar: false}
+  }
+
+
   if (isLogin === null)
-    return (<Layout sideBar={{showSidebar: false}}/>)
+    return <Layout Config={config}>
+      <></>
+    </Layout>
 
 
   return isLogin ? children : <Navigate to={redirectTo}/>;

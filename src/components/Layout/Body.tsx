@@ -11,8 +11,8 @@ import {ISectionConfig, ISideBarConfig} from "./Layout";
 export interface IBodyProps {
   Left?: ReactElement,
   Center: ReactElement,
-  Right: ReactElement,
-  Titles?: {left?: ReactElement, center?: ReactElement, right?: ReactElement},
+  Right?: ReactElement,
+  Titles?: {Left?: ReactElement, Center?: ReactElement, Right?: ReactElement},
   Config?: { Left?: ISideBarConfig, Center?: ISectionConfig, Right?: ISectionConfig}
 }
 
@@ -47,13 +47,13 @@ const Body: FC<IBodyProps> =
         >
           <Box id='titles' ref={titlesRef} className={cl.bodyWrapper}>
             <Box className={cl.left}>
-              {Titles?.left ?? null}
+              {Titles?.Left ?? null}
             </Box>
             <Box className={cl.center}>
-              {Titles?.center ?? null}
+              {Titles?.Center ?? null}
             </Box>
             <Box className={cl.right}>
-              {Titles?.right ?? null}
+              {Titles?.Right ?? null}
             </Box>
           </Box>
         </AnimateHeight>

@@ -10,6 +10,8 @@ import {QueryClient, QueryClientProvider} from 'react-query';
 import {ReactQueryDevtools} from "react-query/devtools";
 import {useAppStore} from "./store/config";
 import {BrowserRouter} from "react-router-dom";
+import theme from "./constants/themes";
+import {ChakraProvider} from "@chakra-ui/react";
 
 function App() {
   const language = useAppStore(state => state.language);
@@ -29,8 +31,7 @@ function App() {
     defaultOptions: {
       queries: {
         retry: 1,
-        staleTime: 50000,
-        useErrorBoundary: true
+        staleTime: 50000
       },
     }
   }));
@@ -44,7 +45,9 @@ function App() {
           anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
         >
           <BrowserRouter>
-            <AppRouter/>
+            <ChakraProvider theme={theme}>
+              <AppRouter/>
+            </ChakraProvider>
           </BrowserRouter>
         </SnackbarProvider>
         {

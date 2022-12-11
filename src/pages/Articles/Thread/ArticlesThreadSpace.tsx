@@ -20,13 +20,13 @@ const ArticlesThreadSpace: Page = () => {
   } = useArticlesThreadContext();
 
   const titles = {
-    center: <ArticlesThreadTitle
+    Center: <ArticlesThreadTitle
       title={'Стрічка'}
       articlesLanguage={articlesLanguage}
       setArticlesLanguage={setArticlesLanguage}
       options={languages}
     />,
-    right: <Text as={'h2'}>Курс</Text>
+    Right: <Text as={'h2'}>Курс</Text>
   }
 
 
