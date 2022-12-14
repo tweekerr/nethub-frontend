@@ -22,7 +22,12 @@ function App() {
     switchLocal(language);
     (async () => await check())().then((data) => {
       if (data)
-        login({username: data.username, profilePhotoLink: data.image, firstName: data.firstname, id: data.sid})
+        login({
+          username: data.username,
+          profilePhotoLink: data.image,
+          firstName: data.firstname,
+          id: data.sid
+        })
     })
 
   }, []);
@@ -38,21 +43,21 @@ function App() {
   const isTest = import.meta.env.VITE_IS_DEVELOPMENT === 'true'
 
   return (
-    <QueryClientProvider client={client}>
-      <SnackbarProvider
-        maxSnack={5} autoHideDuration={3000} preventDuplicate
-        anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
-      >
-        <ChakraProvider theme={theme}>
+    <ChakraProvider theme={theme}>
+      <QueryClientProvider client={client}>
+        <SnackbarProvider
+          maxSnack={5} autoHideDuration={3000} preventDuplicate
+          anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
+        >
           <BrowserRouter>
             <AppRouter/>
           </BrowserRouter>
-        </ChakraProvider>
-      </SnackbarProvider>
-      {
-        isTest && <ReactQueryDevtools initialIsOpen={false}/>
-      }
-    </QueryClientProvider>
+        </SnackbarProvider>
+        {
+          isTest && <ReactQueryDevtools initialIsOpen={false}/>
+        }
+      </QueryClientProvider>
+    </ChakraProvider>
   );
 }
 

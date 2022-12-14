@@ -114,9 +114,8 @@ const colors = {
   warning: '#FEA613'
 };
 
-const config: ThemeConfig = {
-  initialColorMode: 'dark',
-  useSystemColorMode: true
+const config = {
+  initialColorMode: localStorage.getItem('chakra-ui-color-mode') || 'dark',
 };
 
 
