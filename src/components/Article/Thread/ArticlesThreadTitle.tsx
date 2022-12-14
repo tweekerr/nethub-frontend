@@ -17,6 +17,7 @@ const ArticlesThreadTitle: FC<IArticleThreadTitleProps> =
         <Text as={'h2'}>{title}</Text>
 
         <Select
+          border={'1px solid'}
           borderColor={'gray.200'}
           width={'fit-content'} defaultValue={articlesLanguage}
           onChange={(e) => {

@@ -104,7 +104,6 @@ const components = {
   Switch: {
     baseStyle: (props: StyleFunctionProps) => ({
       track: {
-        // bg: '',
         _checked: {
           bg: mode('#896DC8', '#835ADF')(props)
         }
