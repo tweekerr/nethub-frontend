@@ -7,11 +7,12 @@ import ArticlesThreadSpaceProvider, {useArticlesThreadContext} from "./ArticlesT
 import ArticlesThreadSpaceSkeleton from "./ArticlesThreadSpaceSkeleton";
 import ArticlesThread from "../../../components/Article/Thread/ArticlesThread";
 import Layout, {Page} from "../../../components/Layout/Layout";
-import ErrorBlock from "../../../components/Layout/ErrorBlock";
+import ErrorBlock from '../../../components/Layout/ErrorBlock';
 import {ErrorsHandler} from "../../../utils/ErrorsHandler";
 
 const ArticlesThreadSpace: Page = () => {
   const {t} = useTranslation();
+
 
   const {
     languages,

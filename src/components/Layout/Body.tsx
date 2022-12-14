@@ -6,14 +6,15 @@ import {Box} from "@chakra-ui/react";
 import AnimateHeight from 'react-animate-height';
 import ErrorBoundary from "./ErrorBoundary";
 import {ISectionConfig, ISideBarConfig} from "./Layout";
+import TitleEmpty from "./TitleEmpty";
 
 
 export interface IBodyProps {
   Left?: ReactElement,
   Center: ReactElement,
   Right?: ReactElement,
-  Titles?: {Left?: ReactElement, Center?: ReactElement, Right?: ReactElement},
-  Config?: { Left?: ISideBarConfig, Center?: ISectionConfig, Right?: ISectionConfig}
+  Titles?: { Left?: ReactElement, Center?: ReactElement, Right?: ReactElement },
+  Config?: { Left?: ISideBarConfig, Center?: ISectionConfig, Right?: ISectionConfig }
 }
 
 const Body: FC<IBodyProps> =
@@ -31,62 +32,62 @@ const Body: FC<IBodyProps> =
 
     useLayoutEffect(() => {
       const titlesHeight = titlesRef.current?.clientHeight;
-      if (Center !== undefined) {
+
+      if (Titles?.Center?.type !== TitleEmpty) {
         localStorage.setItem('mainTitlesHeight', titlesHeight!.toString());
         setTitleHeight(titlesHeight!);
       }
-    }, [])
+    }, [Titles?.Center])
 
 
-    return (<Box flex={'1 1 auto'}>
-        {/*titles*/}
-        <AnimateHeight
-          duration={700}
-          height={titlesHeight}
-          style={{marginTop: '7.5px', marginBottom: '7.5px'}}
-        >
-          <Box id='titles' ref={titlesRef} className={cl.bodyWrapper}>
-            <Box className={cl.left}>
-              {Titles?.Left ?? null}
-            </Box>
-            <Box className={cl.center}>
-              {Titles?.Center ?? null}
-            </Box>
-            <Box className={cl.right}>
-              {Titles?.Right ?? null}
-            </Box>
+    return <Box flex={'1 1 auto'}>
+      {/*titles*/}
+      <AnimateHeight
+        duration={700}
+        height={titlesHeight}
+        style={{marginTop: '7.5px', marginBottom: '7.5px'}}
+      >
+        <Box id='titles' ref={titlesRef} className={cl.bodyWrapper}>
+          <Box className={cl.left}>
+            {Titles?.Left ?? null}
           </Box>
-        </AnimateHeight>
-
-        <Box className={cl.bodyWrapper}>
-
-          {/*left-bar*/}
-          <BarWrapper className={cl.left}>
-            <ErrorBoundary show={Config?.Left?.showError}>
-              {(Config?.Left?.showSidebar ?? true)
-                ? (Left ?? <Menu/>)
-                : null
-              }
-            </ErrorBoundary>
-          </BarWrapper>
-
-          {/*body-content*/}
           <Box className={cl.center}>
-            <ErrorBoundary show={Config?.Center?.showError}>
-              {Center}
-            </ErrorBoundary>
+            {Titles?.Center ?? null}
           </Box>
-
-          {/*sidebar*/}
-          <BarWrapper className={cl.right}>
-            <ErrorBoundary show={Config?.Right?.showError}>
-              {Right}
-            </ErrorBoundary>
-          </BarWrapper>
-
+          <Box className={cl.right}>
+            {Titles?.Right ?? null}
+          </Box>
         </Box>
+      </AnimateHeight>
+
+      <Box className={cl.bodyWrapper}>
+
+        {/*left-bar*/}
+        <BarWrapper className={cl.left}>
+          <ErrorBoundary show={Config?.Left?.showError}>
+            {(Config?.Left?.showSidebar ?? true)
+              ? (Left ?? <Menu/>)
+              : null
+            }
+          </ErrorBoundary>
+        </BarWrapper>
+
+        {/*body-content*/}
+        <Box className={cl.center}>
+          <ErrorBoundary show={Config?.Center?.showError}>
+            {Center}
+          </ErrorBoundary>
+        </Box>
+
+        {/*sidebar*/}
+        <BarWrapper className={cl.right}>
+          <ErrorBoundary show={Config?.Right?.showError}>
+            {Right}
+          </ErrorBoundary>
+        </BarWrapper>
+
       </Box>
-    )
+    </Box>
   };
 
 export default Body;

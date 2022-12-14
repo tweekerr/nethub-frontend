@@ -88,8 +88,6 @@ export const articlesApi = {
       .then((res) => res.data);
   },
   getArticles: async (code: string) => {
-    console.log('thread')
-
     const result: AxiosResponse<IExtendedArticle[]> =
       await _api.get(`articles/${code}/get-thread?page=1&pageSize=20&Filters=languageCode` + Operator.Equals + code
         + ',contributorRole' + Operator.Equals + 'Author')

@@ -20,7 +20,6 @@ const ArticlesThread: FC<IArticlesThreadProps> = ({articles, setArticles, byUser
 
   const queryClient = useQueryClient();
 
-
   const handleSaving = (localization: IExtendedArticle) => async () => {
     await articlesApi.toggleSavingLocalization(localization.articleId, localization.languageCode);
     await queryClient.invalidateQueries('savedArticles');

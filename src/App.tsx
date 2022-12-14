@@ -38,23 +38,21 @@ function App() {
   const isTest = import.meta.env.VITE_IS_DEVELOPMENT === 'true'
 
   return (
-    <React.StrictMode>
-      <QueryClientProvider client={client}>
-        <SnackbarProvider
-          maxSnack={5} autoHideDuration={3000} preventDuplicate
-          anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
-        >
+    <QueryClientProvider client={client}>
+      <SnackbarProvider
+        maxSnack={5} autoHideDuration={3000} preventDuplicate
+        anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
+      >
+        <ChakraProvider theme={theme}>
           <BrowserRouter>
-            <ChakraProvider theme={theme}>
-              <AppRouter/>
-            </ChakraProvider>
+            <AppRouter/>
           </BrowserRouter>
-        </SnackbarProvider>
-        {
-          isTest && <ReactQueryDevtools initialIsOpen={false}/>
-        }
-      </QueryClientProvider>
-    </React.StrictMode>
+        </ChakraProvider>
+      </SnackbarProvider>
+      {
+        isTest && <ReactQueryDevtools initialIsOpen={false}/>
+      }
+    </QueryClientProvider>
   );
 }
 

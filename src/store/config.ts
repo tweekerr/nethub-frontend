@@ -1,8 +1,8 @@
 import create from 'zustand';
 import Localizations from "../constants/localizations";
 import {JWTStorage} from "../utils/localStorageProvider";
-import {ILanguage} from "../react-app-env";
 import {IReduxUser} from "../types/IReduxUser";
+import {ILanguage} from "../vite-env";
 
 interface IStoreInitialState {
   isLogin: boolean | null,

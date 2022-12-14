@@ -1,6 +1,7 @@
 import React from 'react';
 import {Input} from "@chakra-ui/react";
 import Layout, {Page} from "../components/Layout/Layout";
+import Currency from "../components/Currency/Currency";
 
 const TestSpace: Page = () => {
 
@@ -11,6 +12,7 @@ const TestSpace: Page = () => {
         errorBorderColor='red.300'
       />
     </>
+    <Currency/>
   </Layout>
 }
 

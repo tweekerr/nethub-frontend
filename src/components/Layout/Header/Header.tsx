@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import SvgSelector from '../../UI/SvgSelector/SvgSelector';
 import cl from './Header.module.sass'
 import layoutClasses from '../Layout.module.sass'
@@ -27,6 +27,9 @@ const Header: React.FC = () => {
   const [searchValue, setSearchValue] = React.useState<string>('');
   const headerBackgroundColor = useColorModeValue("#FFFFFF", '#323232')
 
+  const isSwitched = useMemo(() => colorMode !== 'light', [colorMode]);
+
+  console.log('ColorMode: ' + colorMode + ', IsSwitched:' + isSwitched)
 
   return (
     <header className={cl.header} style={{backgroundColor: headerBackgroundColor}}>
@@ -59,7 +62,7 @@ const Header: React.FC = () => {
 
           </Button>
           {/*<Switch id="email-alerts" />*/}
-          <Switch colorScheme={"#8359DF"} onChange={toggleColorMode} defaultChecked={colorMode !== 'light'} size='md'/>
+          <Switch onChange={toggleColorMode} defaultChecked={isSwitched} size='md'/>
         </Box>
       </Box>
       <Box className={layoutClasses.right}>

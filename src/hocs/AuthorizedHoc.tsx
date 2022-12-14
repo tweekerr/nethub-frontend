@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {Navigate} from "react-router-dom";
 import Layout from "../components/Layout/Layout";
 import {isAuthorized} from "../utils/JwtHelper";
+import TitleEmpty from "../components/Layout/TitleEmpty";
+import {useQuery} from "react-query";
 
 interface IAuthorizedProps {
   children: JSX.Element,
@@ -9,35 +11,7 @@ interface IAuthorizedProps {
 }
 
 
-const AuthorizedHoc = ({children, redirectTo = '/login'}: IAuthorizedProps) => {
-  const [isLogin, setIsLogin] = useState<boolean | null>(null);
-
-  useEffect(() => {
-    (async () => {
-      await check();
-    })();
-  }, [])
-
-  async function check() {
-    if (isAuthorized()) {
-      setIsLogin(true);
-      return;
-    }
-    setIsLogin(false);
-  }
-
-  const config = {
-    Left: {showSidebar: false}
-  }
-
-
-  if (isLogin === null)
-    return <Layout Config={config}>
-      <></>
-    </Layout>
-
-
-  return isLogin ? children : <Navigate to={redirectTo}/>;
-}
+const AuthorizedHoc = ({children, redirectTo = '/login'}: IAuthorizedProps) =>
+  !!isAuthorized() ? children : <Navigate to={redirectTo}/>;
 
 export default AuthorizedHoc;
