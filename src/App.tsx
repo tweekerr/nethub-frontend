@@ -3,12 +3,15 @@ import 'moment/locale/en-gb';
 import React, {useEffect, useState} from 'react';
 import {switchLocal} from "./utils/localization";
 import AppRouter from './components/AppRouter';
-import './i18n'
+// import './i18n'
 import {SnackbarProvider} from 'notistack';
 import {check} from "./App.functions";
 import {QueryClient, QueryClientProvider} from 'react-query';
 import {ReactQueryDevtools} from "react-query/devtools";
 import {useAppStore} from "./store/config";
+import {BrowserRouter} from "react-router-dom";
+import theme from "./constants/themes";
+import {ChakraProvider} from "@chakra-ui/react";
 
 function App() {
   const language = useAppStore(state => state.language);
@@ -19,7 +22,12 @@ function App() {
     switchLocal(language);
     (async () => await check())().then((data) => {
       if (data)
-        login({username: data.username, profilePhotoLink: data.image, firstName: data.firstname})
+        login({
+          username: data.username,
+          profilePhotoLink: data.image,
+          firstName: data.firstname,
+          id: data.sid
+        })
     })
 
   }, []);
@@ -32,20 +40,24 @@ function App() {
       },
     }
   }));
-  const isTest = process.env.REACT_APP_IS_DEVELOPMENT === 'true'
+  const isTest = import.meta.env.VITE_IS_DEVELOPMENT === 'true'
 
   return (
-    <QueryClientProvider client={client}>
-      <SnackbarProvider
-        maxSnack={3} autoHideDuration={3000} preventDuplicate
-        anchorOrigin={{horizontal: 'right', vertical: 'top'}}
-      >
-        <AppRouter/>
-      </SnackbarProvider>
-      {
-        isTest && <ReactQueryDevtools initialIsOpen={false}/>
-      }
-    </QueryClientProvider>
+    <ChakraProvider theme={theme}>
+      <QueryClientProvider client={client}>
+        <SnackbarProvider
+          maxSnack={5} autoHideDuration={3000} preventDuplicate
+          anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
+        >
+          <BrowserRouter>
+            <AppRouter/>
+          </BrowserRouter>
+        </SnackbarProvider>
+        {
+          isTest && <ReactQueryDevtools initialIsOpen={false}/>
+        }
+      </QueryClientProvider>
+    </ChakraProvider>
   );
 }
 

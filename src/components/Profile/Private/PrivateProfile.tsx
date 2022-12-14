@@ -1,17 +1,18 @@
-import React, {FC, useState} from 'react';
-import cl from './Profile.module.sass'
+import React, {useState} from 'react';
+import cl from '../Profile.module.sass'
 import PrivateDashboard from "./PrivateDashboard";
-import SvgSelector from "../UI/SvgSelector/SvgSelector";
-import IUserInfoResponse from "../../types/api/User/IUserInfoResponse";
-import IDashboardResponse from "../../types/api/Dashboard/IDashboardResponse";
+import SvgSelector from "../../UI/SvgSelector/SvgSelector";
+import IUserInfoResponse from "../../../types/api/User/IUserInfoResponse";
+import IDashboardResponse from "../../../types/api/Dashboard/IDashboardResponse";
 import {useNavigate} from "react-router-dom";
-import ProfileSettings from "./ProfileSettings";
-import IUpdateProfileRequest from "../../types/api/Profile/IUpdateProfileRequest";
-import {userApi} from "../../api/api";
-import FilledDiv from '../UI/FilledDiv';
+import ProfileSettings from "../ProfileSettings";
+import IUpdateProfileRequest from "../../../types/api/Profile/IUpdateProfileRequest";
+import {userApi} from "../../../api/api";
+import FilledDiv from '../../UI/FilledDiv';
 import {Button, Text} from '@chakra-ui/react';
 import AnimateHeight from "react-animate-height";
-import {useAppStore} from "../../store/config";
+import {useAppStore} from "../../../store/config";
+import {useProfileContext} from "../../../pages/Profile/ProfileSpace.Provider";
 
 
 interface IProfileProps {
@@ -30,8 +31,11 @@ export type ProfileChangesType = 'profile' | 'photo' | 'username';
 type ProfileSettingsRef = React.ElementRef<typeof ProfileSettings>
 
 
-const Profile: FC<IProfileProps> = ({user, dashboard}) => {
+const PrivateProfile = () => {
   const navigate = useNavigate();
+
+  const {userAccessor} = useProfileContext();
+  const user = userAccessor.data!;
 
   const [request, setRequest] = useState<ExtendedRequest>({
     username: user.userName,
@@ -82,6 +86,7 @@ const Profile: FC<IProfileProps> = ({user, dashboard}) => {
     const newUserName = changes.includes('username') ? request.username : reduxUser.username;
 
     updateProfileAction({
+      ...reduxUser,
       firstName: newFirstName,
       username: newUserName,
       profilePhotoLink: newProfileImage === '' ? reduxUser.profilePhotoLink : newProfileImage
@@ -96,8 +101,6 @@ const Profile: FC<IProfileProps> = ({user, dashboard}) => {
   return (
     <div className={cl.profileWrapper}>
       <PrivateDashboard
-        user={user}
-        dashboard={dashboard}
         request={request}
         setRequest={setRequest}
         addChanges={handleAddChanges}
@@ -170,4 +173,4 @@ const Profile: FC<IProfileProps> = ({user, dashboard}) => {
   );
 };
 
-export default Profile;
+export default PrivateProfile;

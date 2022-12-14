@@ -1,21 +1,24 @@
 import ArticlesThreadSpace from '../pages/Articles/Thread/ArticlesThreadSpace';
-import {AuthSpace} from "../pages/Auth/AuthSpace";
-import ArticleCreatingSpace from "../pages/Articles/Create/ArticleCreatingSpace";
+import {Page} from "../components/Layout/Layout";
 import ArticleSpace from "../pages/Articles/One/ArticleSpace";
+import ArticleCreatingSpace from '../pages/Articles/Create/ArticleCreatingSpace';
 import SavedSpace from "../pages/Saved/SavedSpace";
 import ProfileSpace from "../pages/Profile/ProfileSpace";
+import ContributorArticlesSpace from "../pages/Articles/Contributor/ContributorArticlesSpace";
+import TestSpace from "../pages/TestSpace";
+import AuthSpace from "../pages/Auth/AuthSpace";
 
 interface IPath {
   path: string,
-  Component: () => JSX.Element,
-  authorized: boolean
+  Component: Page,
+  authorized: boolean,
 }
 
 export const paths: IPath[] = [
   {
     path: '/',
     Component: ArticlesThreadSpace,
-    authorized: false
+    authorized: false,
   },
   {
     path: '/login',
@@ -23,7 +26,7 @@ export const paths: IPath[] = [
     authorized: false
   },
   {
-    path: '/articles',
+    path: '/articles/add',
     Component: ArticleCreatingSpace,
     authorized: true,
   },
@@ -46,5 +49,20 @@ export const paths: IPath[] = [
     path: '/profile',
     Component: ProfileSpace,
     authorized: true
+  },
+  {
+    path: '/profile/:id',
+    Component: ProfileSpace,
+    authorized: false
+  },
+  {
+    path: '/articles/by/:contributorId',
+    Component: ContributorArticlesSpace,
+    authorized: false
+  },
+  {
+    path: '/test',
+    Component: TestSpace,
+    authorized: false
   }
 ]

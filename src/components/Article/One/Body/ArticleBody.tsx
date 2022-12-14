@@ -1,91 +1,110 @@
-import React, {FC} from 'react';
+import React from 'react';
 import cl from './ArticleBody.module.sass';
-import IArticleLocalizationResponse from "../../../../types/api/Article/IArticleLocalizationResponse";
 import {getArticleContributors, getAuthor} from "../../../../pages/Articles/One/ArticleSpace.functions";
 import {articlesApi} from "../../../../api/api";
-import ArticlesRateCounter, {RateVariants} from "../../Shared/ArticlesRateCounter";
+import ArticlesRateCounter from "../../Shared/ArticlesRateCounter";
 import ArticleSavingActions from "../../Shared/ArticleSavingActions";
 import {DateToRelativeCalendar} from "../../../../utils/dateHelper";
 import {useQuery} from "react-query";
 import FilledDiv from "../../../UI/FilledDiv";
-import {Button, Skeleton, Text, useColorModeValue} from "@chakra-ui/react";
+import {Badge, Box, Button, Skeleton, Text, useColorModeValue} from "@chakra-ui/react";
+import {useArticleContext} from "../../../../pages/Articles/One/ArticleSpace.Provider";
 
-interface IArticleBodyProps {
-  localization: IArticleLocalizationResponse,
-  tags: string[],
-  userActions: { isSaved: boolean, rate: RateVariants }
-  rate: { current: number, setCurrent: (value: number) => void }
-}
-
-const ArticleBody: FC<IArticleBodyProps> = ({localization, tags, userActions, rate}) => {
+const ArticleBody = () => {
+  const {articleAccessor, setArticle, localizationAccessor, userActions} = useArticleContext();
 
   async function handleSave() {
-    await articlesApi.toggleSavingLocalization(localization.articleId, localization.languageCode);
+    await articlesApi.toggleSavingLocalization(localizationAccessor.data!.articleId, localizationAccessor.data!.languageCode);
   }
 
-  const contributors = useQuery(['contributors', localization.articleId, localization.languageCode], () => getArticleContributors(localization.contributors), {staleTime: 50000});
+  function handleSetRate(value: number) {
+    setArticle({...articleAccessor.data!, rate: value});
+  }
+
+  const contributors = useQuery(['contributors', localizationAccessor.data!.articleId, localizationAccessor.data!.languageCode],
+    () => getArticleContributors(localizationAccessor.data!.contributors), {staleTime: 50000});
+
+  const variant = 'preview';
+  const viewsBlockBg = useColorModeValue('whiteLight', 'whiteDark');
 
   return (
-    <FilledDiv className={cl.articleWrapper}>
-      <div className={cl.articleTitle}>
-        <Text as={'p'} fontWeight={'bold'} fontSize={18}>{localization.title}</Text>
-      </div>
-
-      <div className={cl.articleDescription}>
-        <Text>{localization.description}</Text>
-      </div>
-
-      <hr className={cl.line}/>
-
-      <div className={cl.articleBody} dangerouslySetInnerHTML={{__html: localization.html}}/>
-
-      <div className={cl.articleTags}>
-        {tags.map(tag =>
-          <Button
-            key={tag}
-            className={cl.tag}
-            maxH={30}
-            borderRadius={'10px'}
-            width={'fit-content'}
-          >#{tag}
-          </Button>)
-        }
-      </div>
-
-      <div className={cl.actions}>
-        <div className={cl.actionsLeft}>
-          <ArticlesRateCounter
-            current={rate.current} setCurrent={rate.setCurrent} actualVote={userActions.rate}
-            articleId={localization.articleId}
-          />
-          <FilledDiv bg={useColorModeValue('whiteLight', 'whiteDark')} className={cl.views} padding={'7px 19px'}>
-            <Text as={'b'} color={'black'} className={cl.viewsCount}>{localization.views}</Text>
-            <Text as={'p'} color={'black'}>переглядів</Text>
-          </FilledDiv>
-        </div>
-        <ArticleSavingActions
-          isSavedDefault={userActions.isSaved}
-          onSave={handleSave}
-        />
-      </div>
-
-      <div className={cl.creationInfo}>
-        <div className={cl.author}>
-          <p>Автор:
-            {contributors.isLoading ? <Skeleton width={'100px'} height={15}/> :
-              <a>{getAuthor(localization.contributors, contributors.data!)?.userName}</a>
-            }
-          </p>
-        </div>
-        <div className={cl.dates}>
-          <div className={cl.created}>Створено: {DateToRelativeCalendar(localization.created)}</div>
+    (!localizationAccessor.isSuccess || !articleAccessor.isSuccess)
+      ? <Skeleton height={200}/>
+      : <FilledDiv className={cl.articleWrapper}>
+        <Box className={cl.articleTitle} display={'flex'} alignItems={'center'}>
+          <Text as={'p'} fontWeight={'bold'} fontSize={18}>{localizationAccessor.data.title}</Text>
           {
-            localization.updated &&
-            <div className={cl.updated}>Оновлено: {DateToRelativeCalendar(localization.updated)}</div>
+            (() => {
+
+              switch (variant) {
+                // case 'default':
+                //   return null;
+                case 'preview':
+                  return <Badge ml={2} variant='outline' colorScheme='yellow'>
+                    Preview
+                  </Badge>;
+              }
+            })()
+          }
+        </Box>
+
+        <div className={cl.articleDescription}>
+          <Text>{localizationAccessor.data.description}</Text>
+        </div>
+
+        <hr className={cl.line}/>
+
+        <div className={cl.articleBody} dangerouslySetInnerHTML={{__html: localizationAccessor.data.html}}/>
+
+        <div className={cl.articleTags}>
+          {articleAccessor.data.tags.map(tag =>
+            <Button
+              key={tag}
+              className={cl.tag}
+              maxH={30}
+              borderRadius={'10px'}
+              width={'fit-content'}
+            >#{tag}
+            </Button>)
           }
         </div>
-      </div>
-    </FilledDiv>
+
+        <div className={cl.actions}>
+          <div className={cl.actionsLeft}>
+            <ArticlesRateCounter
+              articleId={articleAccessor.data.id}
+              current={articleAccessor.data.rate}
+              setCurrent={handleSetRate}
+              actualVote={userActions.rate}
+            />
+            <FilledDiv bg={viewsBlockBg} className={cl.views} padding={'7px 19px'}>
+              <Text as={'b'} color={'black'} className={cl.viewsCount}>{localizationAccessor.data.views}</Text>
+              <Text as={'p'} color={'black'}>переглядів</Text>
+            </FilledDiv>
+          </div>
+          <ArticleSavingActions
+            isSavedDefault={userActions.isSaved}
+            onSave={handleSave}
+          />
+        </div>
+
+        <div className={cl.creationInfo}>
+          <div className={cl.author}>
+            <p>Автор:
+              {contributors.isLoading ? <Skeleton width={'100px'} height={15}/> :
+                <a>{getAuthor(localizationAccessor.data.contributors, contributors.data!)?.userName}</a>
+              }
+            </p>
+          </div>
+          <div className={cl.dates}>
+            <div className={cl.created}>Створено: {DateToRelativeCalendar(localizationAccessor.data.created)}</div>
+            {
+              localizationAccessor.data.updated &&
+             <div className={cl.updated}>Оновлено: {DateToRelativeCalendar(localizationAccessor.data.updated)}</div>
+            }
+          </div>
+        </div>
+      </FilledDiv>
   );
 };
 

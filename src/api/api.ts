@@ -1,14 +1,13 @@
-import axios, {AxiosResponse} from 'axios';
+import axios, {AxiosError, AxiosResponse} from 'axios';
 import IAuthResult from "../types/api/Refresh/IAuthResult";
 import ISsoRequest from "../types/api/Sso/ISsoRequest";
 import ICheckEmailResponse from "../types/api/CheckEmail/ICheckEmailRequest";
 import {ProviderType} from "../types/ProviderType";
 import ICheckUsernameResponse from "../types/api/CheckUsername/ICheckUsernameResponse";
-import {APIError} from "../react-app-env";
-import {ArticleStorage, JWTStorage} from "../utils/localStorageProvider";
+import {JWTStorage} from "../utils/localStorageProvider";
 import IArticleResponse from "../types/api/Article/IArticleResponse";
 import IArticleLocalizationResponse from "../types/api/Article/IArticleLocalizationResponse";
-import IUserInfoResponse from "../types/api/User/IUserInfoResponse";
+import IUserInfoResponse, {IPrivateUserInfoResponse} from "../types/api/User/IUserInfoResponse";
 import qs from 'qs';
 import {RateVariants} from "../components/Article/Shared/ArticlesRateCounter";
 import IDashboardResponse from "../types/api/Dashboard/IDashboardResponse";
@@ -17,10 +16,14 @@ import INewsResponse from "../types/api/News/INewsResponse";
 import IUpdateProfileRequest from "../types/api/Profile/IUpdateProfileRequest";
 import ICurrencyResponse from "../types/api/Currency/ICurrencyResponse";
 import {IReduxUser} from "../types/IReduxUser";
+import {Operator} from "../types/Operators";
+import {ApiError} from "../types/ApiError";
 
 export const _api = axios.create({
   //TODO: must be general link
-  baseURL: process.env.REACT_APP_IS_DEVELOPMENT === 'true' ? process.env.REACT_APP_TEST_BACK_POINT : process.env.REACT_APP_GENERAL_BACK_POINT,
+  baseURL: import.meta.env.VITE_IS_DEVELOPMENT === 'true'
+    ? import.meta.env.VITE_TEST_BACK_POINT
+    : import.meta.env.VITE_GENERAL_BACK_POINT,
   withCredentials: true
 });
 
@@ -36,15 +39,14 @@ _api.interceptors.response.use(
   (config) => {
     return config;
   },
-  async (error) => {
-    const originalRequest = error.config;
+  async (error: AxiosError & {_isRetry: boolean}) => {
 
     if (
-      error.response.status === 401 &&
+      error.response?.status === 401 &&
       error.config &&
-      !error.config._isRetry
+      !error._isRetry
     ) {
-      originalRequest._isRetry = true;
+      error._isRetry = true;
       try {
         const response = await axios.post(
           `${
@@ -56,25 +58,24 @@ _api.interceptors.response.use(
           },
           {headers: {'Content-Type': 'application/json'}}
         );
-        console.log('response', response);
         localStorage.setItem('token', response.data.accessToken);
-        return _api.request(originalRequest);
+        return _api.request(error.config);
       } catch (e) {
         localStorage.removeItem('token');
-        console.log('НЕ АВТОРИЗОВАНИЙ');
       }
     }
-    throw error;
+
+    throw new ApiError(error.message, error.response?.status);
   }
 );
 
 export const articlesApi = {
-  createArticle: async () => {
+  createArticle: async (title: string, tags: string[], originalArticleLink?: string) => {
     const result: AxiosResponse<IArticleResponse> = await _api
       .post('/articles', {
-        name: ArticleStorage.getTitle()!,
-        tags: JSON.parse(ArticleStorage.getTags()!),
-        originalArticleLink: ArticleStorage.getLink() ? ArticleStorage.getLink() : null,
+        name: title,
+        tags,
+        originalArticleLink: originalArticleLink,
       });
     return result.data;
   },
@@ -87,9 +88,18 @@ export const articlesApi = {
       .then((res) => res.data);
   },
   getArticles: async (code: string) => {
-    const result: AxiosResponse<IExtendedArticle[]> = await _api.get(`articles/${code}/get-thread?page=1&perPage=20`)
-    return result.data
+    const result: AxiosResponse<IExtendedArticle[]> =
+      await _api.get(`articles/${code}/get-thread?page=1&pageSize=20&Filters=languageCode` + Operator.Equals + code
+        + ',contributorRole' + Operator.Equals + 'Author')
+    return result.data;
   },
+  getUserArticles: async (id: string | number, code: string) => {
+    const result: AxiosResponse<IExtendedArticle[]> =
+      await _api.get(`articles/${code}/get-thread?page=1&pageSize=20&Filters=languageCode` + Operator.Equals + code
+        + ',contributorId' + Operator.Equals + id);
+    return result.data;
+  },
+
   getNews: async () => {
     const response: AxiosResponse<INewsResponse[]> = await _api.get('/news?Page=1&PerPage=3');
     return response.data;
@@ -103,7 +113,7 @@ export const articlesApi = {
     return response.data;
   },
   getLocalization: async (id: string, code: string): Promise<IArticleLocalizationResponse> => {
-    const response: AxiosResponse<IArticleLocalizationResponse> = await _api.get(`articles/${id}/${code}`);
+    const response: AxiosResponse<IArticleLocalizationResponse> = await _api.get(`https://localhost:7002/v1/articles/${id}/${code}`);
     return response.data;
   },
   isArticleSavedByUser: async (id: string, code: string): Promise<boolean> => {
@@ -127,7 +137,7 @@ export const articlesApi = {
 }
 
 export const userApi = {
-  getUsersInfo: async (ids: number[]) => {
+  getUsersInfo: async (ids: number[] | string[]) => {
     const result: AxiosResponse<IUserInfoResponse[]> = await _api.get('/user/users-info', {
       params: {
         Ids: ids
@@ -138,17 +148,15 @@ export const userApi = {
     })
     return result.data;
   },
-  getUserDashboard: async (userId: number): Promise<IDashboardResponse> => {
+  getUserDashboard: async (userId: string): Promise<IDashboardResponse> => {
     const result: AxiosResponse<IDashboardResponse> = await _api.get(`user/${userId}/dashboard`)
     return result.data
   },
   authenticate: async (request: ISsoRequest): Promise<IReduxUser> => {
     const response: AxiosResponse<IAuthResult> = await _api.post('/user/sso', request);
-    const {profilePhotoLink, username, firstName} = response.data;
     JWTStorage.setTokensData(response.data);
 
-    console.log('response', response.data)
-    return {username, profilePhotoLink, firstName}
+    return response.data;
   },
   checkIfExists: async (key: string, provider: ProviderType): Promise<ICheckEmailResponse> => {
     const response: AxiosResponse<ICheckEmailResponse> = await _api.post('/user/check-user-exists', {key, provider})
@@ -163,7 +171,7 @@ export const userApi = {
       const response: AxiosResponse<IAuthResult> = await _api.post('user/refresh-tokens', {refreshToken: JWTStorage.getRefreshToken()});
       JWTStorage.setTokensData(response.data)
       return true;
-    } catch (error: APIError | any) {
+    } catch (error) {
       return false;
     }
   },
@@ -203,6 +211,13 @@ export const userApi = {
 export const infoApi = {
   getCurrenciesRate: async () => {
     const response: AxiosResponse<ICurrencyResponse> = await _api.get('/currency');
+    return response.data;
+  }
+}
+
+export const searchApi = {
+  searchUsersByUsername: async (searchValue: string) => {
+    const response: AxiosResponse<IPrivateUserInfoResponse[]> = await _api.get('/search/users?username=' + searchValue);
     return response.data;
   }
 }

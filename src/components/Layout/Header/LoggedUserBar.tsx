@@ -23,16 +23,18 @@ const LoggedUserBar: FC = () => {
 
     return (
       <div className={classes.loggedBar}>
-        <div className={classes.avatarBlock}>
+        <div className={classes.avatarBlock} onClick={() => navigate(`/profile/${user.id}`)}>
           <Avatar
             size={'md'}
             maxW={40}
             maxH={40}
             src={image}
             onError={() => setImage(createImageFromInitials(500, user.username))}
+            _hover={{cursor: 'pointer'}}
           />
           <Text
             as={'b'}
+            _hover={{cursor: 'pointer'}}
           >
             {user.username}
           </Text>

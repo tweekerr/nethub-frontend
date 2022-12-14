@@ -5,10 +5,11 @@ import TinyInput from "./TinyInput";
 import ILocalization, {IArticleFormErrors} from "../../../types/ILocalization";
 import {ArticleStorage} from "../../../utils/localStorageProvider";
 import FilledDiv from "../../UI/FilledDiv";
+import {Box} from "@chakra-ui/react";
+import AddContributorsBlock from "./AddContributorsBlock";
+import {useArticleCreatingContext} from "../../../pages/Articles/Create/ArticleCreatingSpace.Provider";
 
 interface IMainArticleProps {
-  article: ILocalization,
-  setArticleValue: (key: string) => (value: any) => void,
   errors: IArticleFormErrors,
 }
 
@@ -19,7 +20,9 @@ interface IMainArticleHandle {
 type TinyRef = React.ElementRef<typeof TinyInput>;
 
 const CreateArticleForm: ForwardRefRenderFunction<IMainArticleHandle, IMainArticleProps> =
-  ({article, setArticleValue, errors}, ref) => {
+  ({errors}, ref) => {
+
+    const {article, setArticle, setArticleValue} = useArticleCreatingContext();
 
     const tinyRef = useRef<TinyRef>(null)
 
@@ -44,7 +47,7 @@ const CreateArticleForm: ForwardRefRenderFunction<IMainArticleHandle, IMainArtic
     }), [tinyRef]);
 
     return (
-      <div className={classes.createArticle}>
+      <Box className={classes.createArticle}>
         <FilledDiv className={classes.mainArticleParams}>
           <TitleInput
             isInvalid={errors.title}
@@ -58,19 +61,20 @@ const CreateArticleForm: ForwardRefRenderFunction<IMainArticleHandle, IMainArtic
             isInvalid={errors.description}
             value={article.description}
             onChange={handleUpdateDescription}
-            title={'Заголовок статті'}
-            placeholder={'Заголовок вашої статті'}
+            title={'Короткий опис статті'}
+            placeholder={'Короткий опис вашої статті'}
             width={'100%'}
           />
           <TinyInput
             isInvalid={errors.html}
             data={article.html}
             setData={handleUpdateHtml}
-            editorTitle={'Текст статті'}
+            editorTitle={'Тіло статті'}
             ref={tinyRef}
           />
         </FilledDiv>
-      </div>
+        <AddContributorsBlock article={article} setArticle={setArticle}/>
+      </Box>
     );
   };
 

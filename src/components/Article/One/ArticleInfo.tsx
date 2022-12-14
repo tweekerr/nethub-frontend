@@ -1,30 +1,23 @@
-import React, {FC} from 'react';
+import React from 'react';
 import SvgSelector from "../../UI/SvgSelector/SvgSelector";
 import cl from './ArticleInfo.module.sass'
-import IArticleLocalizationResponse from "../../../types/api/Article/IArticleLocalizationResponse";
-import IArticleResponse from "../../../types/api/Article/IArticleResponse";
 import {createImageFromInitials} from "../../../utils/logoGenerator";
-import {getArticleContributors, getContributorRole} from "../../../pages/Articles/One/ArticleSpace.functions";
+import {getArticleContributors} from "../../../pages/Articles/One/ArticleSpace.functions";
 import {useNavigate} from "react-router-dom";
 import {useQuery} from "react-query";
 import ContributorsSkeleton from "./ContributorsSkeleton";
 import FilledDiv from '../../UI/FilledDiv';
 import {Button, Link, Skeleton, Text, useColorModeValue} from "@chakra-ui/react";
+import {useArticleContext} from "../../../pages/Articles/One/ArticleSpace.Provider";
 
-interface IArticleInfoProps {
-  article: IArticleResponse,
-  localization: IArticleLocalizationResponse,
-  isError: boolean,
-  isLoading: boolean,
-}
-
-const ArticleInfo: FC<IArticleInfoProps> = ({article, localization, isError, isLoading}) => {
+const ArticleInfo = () => {
+  const {articleAccessor, localizationAccessor} = useArticleContext();
 
   const navigate = useNavigate();
   const whiteTextColor = useColorModeValue('whiteLight', 'whiteDark');
 
-  const contributors = useQuery(['contributors', localization.articleId, localization.languageCode],
-    () => getArticleContributors(localization.contributors), {staleTime: 50000});
+  const contributors = useQuery(['contributors', localizationAccessor.data!.articleId, localizationAccessor.data!.languageCode],
+    () => getArticleContributors(localizationAccessor.data!.contributors));
 
   const getDomain = (link: string) => {
     const url = new URL(link);
@@ -35,14 +28,13 @@ const ArticleInfo: FC<IArticleInfoProps> = ({article, localization, isError, isL
   const divBg = useColorModeValue('purpleLight', 'purpleDark');
 
   return (
-    isError ? <></> :
       <div className={cl.articleInfo}>
         {
-          isLoading ? <Skeleton height={100} className={cl.infoBlock}/> :
+          !localizationAccessor.isSuccess || !articleAccessor.isSuccess ? <Skeleton height={100} className={cl.infoBlock}/> :
             <FilledDiv className={cl.infoBlock}>
               <p className={cl.infoBlockTitle}>Переклади</p>
               <div className={cl.translates}>
-                {article.localizations?.map(localization =>
+                {articleAccessor.data.localizations?.map(localization =>
                   <Button
                     onClick={() => navigate(`/article/${localization.articleId}/${localization.languageCode}`)}
                     key={localization.languageCode}
@@ -61,25 +53,26 @@ const ArticleInfo: FC<IArticleInfoProps> = ({article, localization, isError, isL
         }
 
         {
-          isLoading ? <Skeleton height={100} className={cl.infoBlock}/> :
+          !localizationAccessor.isSuccess ? <Skeleton height={100} className={cl.infoBlock}/> :
             <FilledDiv className={cl.infoBlock}>
               <Text as={'p'} className={cl.infoBlockTitle}>Автори</Text>
               <div className={cl.contributors}>
-                {contributors.isLoading ? <ContributorsSkeleton/> : contributors.data!.map(author =>
+                {contributors.isLoading ? <ContributorsSkeleton/> : contributors.data!.map(contributor =>
                   <Button
-                    key={author.id}
+                    key={contributor.id}
                     className={cl.contributor}
                     width={'fit-content'}
                     bg={divBg}
                     borderRadius={'10px'}
                     padding={'6px 15px'}
                     color={whiteTextColor}
+                    onClick={() => navigate('/profile/' + contributor.id)}
                   >
                     <div className={cl.role}>
-                      <Text as={'p'}>{getContributorRole(localization.contributors, author.id)}</Text>
-                      <Text as={'p'}>{author.userName}</Text>
+                      <Text as={'p'}>{contributor.role}</Text>
+                      <Text as={'p'}>{contributor.userName}</Text>
                     </div>
-                    <img src={author.profilePhotoLink ?? createImageFromInitials(25, author.userName)} alt={'damaged'}/>
+                    <img src={contributor.profilePhotoLink ?? createImageFromInitials(25, contributor.userName)} alt={'damaged'}/>
                   </Button>
                 )}
               </div>
@@ -87,8 +80,8 @@ const ArticleInfo: FC<IArticleInfoProps> = ({article, localization, isError, isL
         }
 
         {
-          isLoading ? <Skeleton height={100} className={cl.infoBlock}/> :
-            article.originalArticleLink &&
+          !articleAccessor.isSuccess ? <Skeleton height={100} className={cl.infoBlock}/> :
+            articleAccessor.data.originalArticleLink &&
             <FilledDiv className={cl.infoBlock}>
               <Text as={'p'} className={cl.infoBlockTitle}>Перейти до оригіналу:</Text>
               <Button
@@ -101,9 +94,9 @@ const ArticleInfo: FC<IArticleInfoProps> = ({article, localization, isError, isL
               >
                 <Link
                   color={whiteTextColor}
-                  href={article.originalArticleLink}
+                  href={articleAccessor.data.originalArticleLink}
                 >
-                  {getDomain(article.originalArticleLink)}
+                  {getDomain(articleAccessor.data.originalArticleLink)}
                 </Link>
               </Button>
             </FilledDiv>

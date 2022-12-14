@@ -4,14 +4,19 @@ import ArticleShort from '../Shared/ArticleShort';
 import {articlesApi} from "../../../api/api";
 import IExtendedArticle from "../../../types/IExtendedArticle";
 import {useQueryClient} from "react-query";
-import {Skeleton} from "@chakra-ui/react";
+import ErrorBlock from "../../Layout/ErrorBlock";
+import {Box, Button, ChakraProvider, Input} from "@chakra-ui/react";
+import {useArticlesThreadContext} from "../../../pages/Articles/Thread/ArticlesThreadSpace.Provider";
+import themes from "../../../constants/themes";
+import theme from "../../../constants/themes";
 
 interface IArticlesThreadProps {
   articles: IExtendedArticle[],
   setArticles: (articles: IExtendedArticle[]) => void
+  byUser?: boolean
 }
 
-const ArticlesThread: FC<IArticlesThreadProps> = ({articles, setArticles}) => {
+const ArticlesThread: FC<IArticlesThreadProps> = ({articles, setArticles, byUser}) => {
 
   const queryClient = useQueryClient();
 
@@ -28,18 +33,26 @@ const ArticlesThread: FC<IArticlesThreadProps> = ({articles, setArticles}) => {
 
 
   return (
-    <div className={classes.thread}>
-      {articles.length > 0 ?
-        articles.map((item) => (
-          <ArticleShort
-            key={item.localizationId}
-            localization={item}
-            setRate={handleSetRate(item)}
-            save={{actual: item.isSaved ?? false, handle: handleSaving(item)}}
-            timeShow={'published'}
-          />
-        )) : <Skeleton height={'100px'}/>}
-    </div>
+      <div className={classes.thread}>
+        {articles.length > 0
+          ? articles.map((item) => (
+            <ArticleShort
+              key={item.localizationId}
+              localization={item}
+              setRate={handleSetRate(item)}
+              save={{actual: item.isSaved ?? false, handle: handleSaving(item)}}
+              timeShow={'published'}
+            />
+          ))
+          : <ErrorBlock>
+            {
+              (byUser ?? false)
+                ? 'Користувач ще не написав жодної статті'
+                : 'На платформі ще немає статтей'
+            }
+          </ErrorBlock>
+        }
+      </div>
   );
 };
 

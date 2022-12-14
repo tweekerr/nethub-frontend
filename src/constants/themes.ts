@@ -1,4 +1,4 @@
-import {extendTheme, StyleFunctionProps, ThemeConfig} from "@chakra-ui/react";
+import {extendTheme, StyleFunctionProps} from "@chakra-ui/react";
 import {mode} from '@chakra-ui/theme-tools';
 import {FilledDivConfig} from "../components/UI/FilledDiv";
 
@@ -31,20 +31,24 @@ const components = {
     baseStyle: (props: StyleFunctionProps) => ({
       field: {
         color: '#757575',
-        bg: mode('#FFFFFF', "#EFEFEF")(props),
+        bg: mode('#FFFFFF', '#EFEFEF')(props),
         border: '1px solid',
         borderColor: mode('gray.200', '#EFEFEF')(props),
         _placeholder: {
           color: mode('#B1BAC5', '#757575')(props)
+        },
+        _invalid: {
+          border: '2px solid',
+          borderColor: mode('error', 'error')(props),
         }
       }
     }),
     variants: (props: StyleFunctionProps) => ({
       outline: {
         field: {
-          bg: mode('#FFFFFF', "#EFEFEF")(props),
-        }
-      }
+          bg: mode('#FFFFFF', '#EFEFEF')(props),
+        },
+      },
     })
   },
   Button: {
@@ -70,7 +74,42 @@ const components = {
       }
     }),
   },
+  Text: {
+    baseStyle: {
+      wordWrap: 'none'
+    }
+  },
   FilledDiv: FilledDivConfig,
+  Select: {
+    baseStyle: (props: StyleFunctionProps) => ({
+      field: {
+        background: mode('#FFFFFF', '#EFEFEF')(props),
+        color: '#1F2023',
+      },
+      icon: {
+        color: '#1F2023'
+      },
+    }),
+    variants: (props: StyleFunctionProps) => ({
+      filled: {
+        _hover: {
+          background: mode('#FFFFFF', '#EFEFEF')(props)
+        }
+      }
+    }),
+    defaultProps: {
+      variant: 'filled'
+    }
+  },
+  Switch: {
+    baseStyle: (props: StyleFunctionProps) => ({
+      track: {
+        _checked: {
+          bg: mode('#896DC8', '#835ADF')(props)
+        }
+      }
+    })
+  }
 };
 
 const colors = {
@@ -79,11 +118,13 @@ const colors = {
   purpleDark: '#835ADF',
   whiteLight: '#FFFFFF',
   whiteDark: '#EFEFEF',
+  error: '#DF2638',
+  success: '#09A552',
+  warning: '#FEA613'
 };
 
-const config: ThemeConfig = {
-  initialColorMode: 'dark',
-  useSystemColorMode: true
+const config = {
+  initialColorMode: localStorage.getItem('chakra-ui-color-mode') || 'dark',
 };
 
 

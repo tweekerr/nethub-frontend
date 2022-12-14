@@ -1,52 +1,62 @@
-import React, {FC, PropsWithChildren, ReactNode} from 'react';
+import React, {FC, PropsWithChildren, ReactElement, useMemo, useRef} from 'react';
 import Header from './Header/Header';
 import Body from "./Body";
 import Flag from "./Flag";
 import {Box} from "@chakra-ui/react";
 import Footer from "./Footer/Footer";
 import cl from './Layout.module.sass';
-import {ErrorConfig} from "./ErrorBoundary";
 
 export interface ISectionConfig {
-  title?: ReactNode
-  children?: ReactNode,
-  error?: ErrorConfig
+  showError?: boolean
 }
 
 export interface ISideBarConfig extends ISectionConfig {
   showSidebar?: boolean
 }
 
+export interface IMainConfig {
+  header?: { show?: boolean, custom?: ReactElement }
+  footer?: { show?: boolean, custom?: ReactElement }
+}
+
 export interface ILayoutProps extends PropsWithChildren {
-  sideBar?: ISideBarConfig,
-  rightBar?: ISectionConfig,
-  title?: ReactNode,
-  error?: ErrorConfig
-  hf?: { header?: boolean, footer?: boolean }
+  children: [ReactElement, ReactElement, ReactElement] | [ReactElement, ReactElement] | ReactElement,
+  Config?: { Left?: ISideBarConfig, Center?: ISectionConfig, Right?: ISectionConfig, Main?: IMainConfig }
+  Titles?: { Left?: ReactElement, Center?: ReactElement, Right?: ReactElement }
 }
 
 const Layout: FC<ILayoutProps> =
-  ({
-     children, sideBar, rightBar,
-     title, error, hf
-   }) => {
+  ({children, Config, Titles}) => {
+    let left;
+    let center;
+    let right;
+
+    if (Array.isArray(children)) {
+      left = children.length === 3 ? children[0] : undefined;
+      center = children.length === 3 ? children[1] : children[0];
+      right = children.length === 3 ? children[2] : children.length === 2 ? children[1] : undefined;
+    } else {
+      center = children;
+    }
+
 
     return (
       <Box className={cl.mainBody} minH={'100%'}>
         <Flag/>
-        {(hf?.header ?? true) ? <Header/> : null}
+        {(Config?.Main?.header?.show ?? true) ? <Header/> : null}
         <Body
-          sideBar={sideBar}
-          rightBar={rightBar}
-          title={title}
-          error={error}
-        >
-          {children}
-        </Body>
+          Left={left}
+          Center={center}
+          Right={right}
+          Titles={Titles}
+          Config={Config}
+        />
 
-        {(hf?.footer ?? true) ? <Footer/> : null}
+        {(Config?.Main?.footer?.show ?? true) ? <Footer/> : null}
       </Box>
     );
   };
+
+export type Page = FC & { Provider: FC<PropsWithChildren> }
 
 export default Layout;

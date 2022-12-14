@@ -38,16 +38,20 @@ export const secondGroup: IMenuItem[] = [
     itemName: 'Підписки',
     link: '/subscriptions',
     isActive: false
-
   }];
 
 export const thirdGroup: IMenuItem[] = [
 
   {
     svgId: 'Profile',
-    itemName: 'Профіль',
+    itemName: 'Налаштування',
     link: '/profile',
     isActive: true
-
+  },
+  {
+    svgId: 'Settings',
+    itemName: 'Тестова сторінка',
+    link: '/test',
+    isActive: true
   }
 ];

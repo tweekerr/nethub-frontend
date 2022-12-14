@@ -1,15 +1,19 @@
 import React from 'react';
 import {Box, Button, Text, useColorModeValue} from "@chakra-ui/react";
 import cl from './NotFoundSpace.module.sass';
-import Layout from "../components/Layout/Layout";
+import Layout, {Page} from "../components/Layout/Layout";
 import SvgSelector from "../components/UI/SvgSelector/SvgSelector";
 import ErrorBlock from "../components/Layout/ErrorBlock";
 
-const NotFoundSpace = () => {
+const NotFoundSpace: Page = () => {
   const textColor = useColorModeValue('whiteLight', 'whiteDark');
 
-  return (
-    <Layout sideBar={{showSidebar: false}}>
+  const config = {
+    Left: {showSidebar: false}
+  }
+
+  return <Layout Config={config}>
+    <>
       <ErrorBlock
         className={cl.notFoundBlock} pt={'90px'} pb={'90px'}
       >
@@ -53,8 +57,10 @@ const NotFoundSpace = () => {
           </Text>
         </Button>
       </Box>
-    </Layout>
-  );
+    </>
+  </Layout>;
 };
+
+NotFoundSpace.Provider = React.Fragment;
 
 export default NotFoundSpace;

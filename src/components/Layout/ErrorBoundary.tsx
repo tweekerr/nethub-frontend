@@ -1,15 +1,10 @@
-import React, {Component, ReactNode} from 'react';
+import React, {Component, PropsWithChildren, ReactNode} from 'react';
 import ErrorBlock from "./ErrorBlock";
 
-export type ErrorConfig = {
-  show?: boolean,
-  customMessage?: string,
-  showThrewMessage?: boolean
-}
-
-interface Props {
+interface Props extends PropsWithChildren {
   children?: ReactNode;
-  config?: ErrorConfig
+  show?: boolean,
+  main?: boolean
 }
 
 interface State {
@@ -22,24 +17,22 @@ class ErrorBoundary extends Component<Props, State> {
     isError: false,
   };
 
-  private isTest: boolean = process.env.REACT_APP_IS_DEVELOPMENT === 'true'
+  private isTest: boolean = import.meta.env.REACT_APP_IS_DEVELOPMENT === 'false'
 
   public static getDerivedStateFromError(_: Error): State {
     // Update state so the next render will show the fallback UI.
     return {isError: true, error: _};
   }
 
-
   render() {
+
     if (this.state.isError) {
-      return this.props.config?.show ?
-        (this.props.config?.showThrewMessage ?? this.isTest)
-          ? <ErrorBlock>{this.state.error?.message}</ErrorBlock>
-          : this.props.config?.customMessage
-            ? <ErrorBlock>{this.props.config.customMessage}</ErrorBlock>
-            : <ErrorBlock/>
-        : <></>
+      if (this.props.main){
+        //redirect to problems page
+      }
+      return this.props.show ? <ErrorBlock>{this.state.error?.message}</ErrorBlock> : <ErrorBlock/>;
     }
+
 
     return this.props.children;
   }

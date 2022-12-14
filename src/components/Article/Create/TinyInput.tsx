@@ -4,6 +4,7 @@ import {Editor as TinyEditor} from 'tinymce';
 import classes from './ArticleCreating.module.sass';
 import {articlesApi} from "../../../api/api";
 import {tinyConfig} from "../../../utils/constants";
+import ILocalization from "../../../types/ILocalization";
 
 interface ITinyInputProps {
   data: string;
@@ -13,17 +14,18 @@ interface ITinyInputProps {
 }
 
 interface ITinyInputHandle {
-  saveImages: (id: string | null) => Promise<string>;
+  saveImages: (article: ILocalization, id?: string) => Promise<string>;
 }
 
 const TinyInput: ForwardRefRenderFunction<ITinyInputHandle, ITinyInputProps> =
   ({data, setData, editorTitle, isInvalid}, ref) => {
     const editorRef = useRef<TinyEditor | null>(null);
 
-    const saveImageCallback = useCallback(async (id: string | null) => {
-      if (!id) id = (await articlesApi.createArticle()).id.toString();
+    const saveImageCallback = useCallback(async (article: ILocalization, id?: string) => {
+      if (!id) id = (await articlesApi.createArticle(article.title, article.tags, article.originalLink)).id.toString();
       sessionStorage.setItem('articleId', id!);
       await editorRef.current!.uploadImages();
+      sessionStorage.removeItem('articleId');
 
       const newData = editorRef.current!.getContent();
       setData(newData);
@@ -32,8 +34,8 @@ const TinyInput: ForwardRefRenderFunction<ITinyInputHandle, ITinyInputProps> =
     }, []);
 
     useImperativeHandle(ref, () => ({
-      async saveImages(id: string | null) {
-        return await saveImageCallback(id)
+      async saveImages(article: ILocalization, id?: string) {
+        return await saveImageCallback(article, id)
       }
     }), [saveImageCallback]);
 
@@ -44,7 +46,6 @@ const TinyInput: ForwardRefRenderFunction<ITinyInputHandle, ITinyInputProps> =
       const fd = new FormData();
       fd.append('file', blobInfo.blob());
       const {location} = await articlesApi.addImagesToArticle(id, fd);
-      sessionStorage.removeItem('articleId');
 
       return location;
     };
@@ -73,7 +74,6 @@ const TinyInput: ForwardRefRenderFunction<ITinyInputHandle, ITinyInputProps> =
             }}
           />
         </div>
-        {/*<button onClick={saveImageCallback}>Log editor content</button>*/}
       </div>
     );
   };

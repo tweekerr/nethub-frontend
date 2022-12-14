@@ -10,3 +10,9 @@ export default interface IUserInfoResponse {
   description: string,
   registered: string
 }
+
+export interface IPrivateUserInfoResponse {
+  id: number,
+  userName: string,
+  profilePhotoLink?: string
+}

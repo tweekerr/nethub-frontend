@@ -1,28 +1,30 @@
 import React, {FC, useState} from 'react';
-import IUserInfoResponse from "../../types/api/User/IUserInfoResponse";
-import cl from './Profile.module.sass'
-import SvgSelector from "../UI/SvgSelector/SvgSelector";
-import IDashboardResponse from "../../types/api/Dashboard/IDashboardResponse";
+import cl from '../Profile.module.sass'
+import SvgSelector from "../../UI/SvgSelector/SvgSelector";
 import millify from "millify";
-import SetImageModal from "./SetImageModal";
-import {ExtendedRequest, ProfileChangesType} from "./Profile";
-import {allowedImagesTypes} from "../../constants/dnd";
-import useCustomSnackbar from "../../hooks/useCustomSnackbar";
-import DashboardImage from "./DashboardImage";
-import {getTimeFrom} from "../../utils/timeHelper";
-import FilledDiv from "../UI/FilledDiv";
+import SetImageModal from "../SetImageModal";
+import {ExtendedRequest, ProfileChangesType} from "./PrivateProfile";
+import {allowedImagesTypes} from "../../../constants/dnd";
+import useCustomSnackbar from "../../../hooks/useCustomSnackbar";
+import DashboardImage from "../DashboardImage";
+import {getTimeFrom} from "../../../utils/timeHelper";
+import FilledDiv from "../../UI/FilledDiv";
 import {Button, Text} from '@chakra-ui/react';
+import {useProfileContext} from "../../../pages/Profile/ProfileSpace.Provider";
 
 
 interface IPrivateDashboardProps {
-  user: IUserInfoResponse,
-  dashboard: IDashboardResponse,
   addChanges: (change: ProfileChangesType) => void,
   request: ExtendedRequest,
   setRequest: (request: ExtendedRequest) => void,
 }
 
-const PrivateDashboard: FC<IPrivateDashboardProps> = ({user, dashboard, request, setRequest, addChanges}) => {
+const PrivateDashboard: FC<IPrivateDashboardProps> = ({request, setRequest, addChanges}) => {
+  const {userAccessor, dashboardAccessor} = useProfileContext();
+  const user = userAccessor.data!;
+  const dashboard = dashboardAccessor.data!;
+
+
   const [isModalOpened, setIsModalOpened] = useState(false);
   const [imageLink, setImageLink] = useState<string>('')
   const {enqueueError} = useCustomSnackbar();
@@ -86,7 +88,7 @@ const PrivateDashboard: FC<IPrivateDashboardProps> = ({user, dashboard, request,
           <div className={cl.filledDashboard}>
             <div style={{width: articlesViews().length > 4 ? '50%' : '40%'}} className={cl.dashboardInfoBlock}>
               <Text as={'p'}>
-                Опубліковано:
+                Написано:
               </Text>
               <div>
                 <Text as={'p'}>{articlesCount()}</Text>

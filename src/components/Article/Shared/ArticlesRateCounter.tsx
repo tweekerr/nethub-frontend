@@ -7,23 +7,20 @@ import {isAuthorized} from "../../../utils/JwtHelper";
 import FilledDiv from '../../UI/FilledDiv';
 import {useColorModeValue} from "@chakra-ui/react";
 
-interface IRateCounterProps {
-  articleId: number,
-  current: number,
-  setCurrent: (value: number) => void;
-  actualVote: 'up' | 'down' | 'none',
-}
-
 export type RateVariants = 'up' | 'down' | 'none';
 
-const ArticlesRateCounter: FC<IRateCounterProps> = ({
-                                                      articleId,
-                                                      current,
-                                                      actualVote,
-                                                      setCurrent
-                                                    }) => {
-  const [counterState, setCounterState] = useState<'up' | 'down' | 'none'>(actualVote)
+interface IArticleRateCounterProps {
+  actualVote:RateVariants,
+  current: number,
+  setCurrent: (value: number) => void,
+  articleId: number
+}
+
+
+const ArticlesRateCounter: FC<IArticleRateCounterProps> = ({actualVote, current, setCurrent, articleId}) => {
+  const [counterState, setCounterState] = useState<RateVariants>(actualVote)
   const {enqueueError} = useCustomSnackbar();
+
 
   function checkAuth() {
     if (!isAuthorized()) {
