@@ -29,8 +29,6 @@ const Header: React.FC = () => {
 
   const isSwitched = useMemo(() => colorMode !== 'light', [colorMode]);
 
-  console.log('ColorMode: ' + colorMode + ', IsSwitched:' + isSwitched)
-
   return (
     <header className={cl.header} style={{backgroundColor: headerBackgroundColor}}>
       <Box className={layoutClasses.left}>

@@ -1,4 +1,4 @@
-import {extendTheme, StyleFunctionProps, ThemeConfig} from "@chakra-ui/react";
+import {extendTheme, StyleFunctionProps} from "@chakra-ui/react";
 import {mode} from '@chakra-ui/theme-tools';
 import {FilledDivConfig} from "../components/UI/FilledDiv";
 
@@ -32,8 +32,8 @@ const components = {
       field: {
         color: '#757575',
         bg: mode('#FFFFFF', '#EFEFEF')(props),
-        // border: '1px solid',
-        // borderColor: mode('gray.200', '#EFEFEF')(props),
+        border: '1px solid',
+        borderColor: mode('gray.200', '#EFEFEF')(props),
         _placeholder: {
           color: mode('#B1BAC5', '#757575')(props)
         },
@@ -100,6 +100,16 @@ const components = {
     defaultProps: {
       variant: 'filled'
     }
+  },
+  Switch: {
+    baseStyle: (props: StyleFunctionProps) => ({
+      track: {
+        // bg: '',
+        _checked: {
+          bg: mode('#896DC8', '#835ADF')(props)
+        }
+      }
+    })
   }
 };
 
