@@ -3,15 +3,18 @@ import UserLibrary, {ILibraryItem} from "../../components/Library/UserLibrary";
 import SvgSelector from "../../components/UI/SvgSelector/SvgSelector";
 import SavedArticles from "../../components/Article/Saved/SavedArticles";
 import cl from './SavedSpace.module.sass';
-import {Text} from "@chakra-ui/react";
+import {Text, useColorModeValue} from "@chakra-ui/react";
 import SavedSpaceProvider, {useSavedArticlesContext} from "./SavedSpace.Provider";
 import Layout, {Page} from "../../components/Layout/Layout";
 import ErrorBlock from "../../components/Layout/ErrorBlock";
 import {ErrorsHandler} from "../../utils/ErrorsHandler";
+import Currency from "../../components/Currency/Currency";
 
 const SavedSpace: Page = () => {
 
   const {savedArticles} = useSavedArticlesContext();
+  const className = useColorModeValue(cl.black, cl.white);
+
 
   const items: ILibraryItem[] = [
     {
@@ -20,6 +23,10 @@ const SavedSpace: Page = () => {
         savedArticles.isError
           ? <ErrorBlock>{ErrorsHandler.default(savedArticles.error.statusCode)}</ErrorBlock>
           : <SavedArticles/>
+    },
+    {
+      name: 'Курс валют',
+      component: <Currency/>
     }
   ]
 
@@ -31,7 +38,7 @@ const SavedSpace: Page = () => {
       alignItems={'center'}
     >
       Збережено вами
-      <SvgSelector id={'SavedOutlinedFilled'} className={cl.titleIcon}/>
+      <SvgSelector id={'SavedOutlinedFilled'} className={`${cl.titleIcon} ${className}`}/>
     </Text>
   }
 

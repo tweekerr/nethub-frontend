@@ -17,7 +17,7 @@ const IconButton: FC<IIconButtonProps> = ({iconId, onClick, filledIconId, defaul
 
   useEffect(() => {
     setIsActive(defaultState ?? false)
-  }, [])
+  }, [defaultState])
 
   const {enqueueError} = useCustomSnackbar();
 
