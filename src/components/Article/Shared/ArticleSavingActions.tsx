@@ -3,8 +3,7 @@ import cl from "./ArticleSavingActions.module.sass";
 import IconButton from "../../UI/IconButton/IconButton";
 import useCustomSnackbar from "../../../hooks/useCustomSnackbar";
 import {useQueryClient} from "react-query";
-import FilledDiv from '../../UI/FilledDiv';
-import {useColorModeValue} from "@chakra-ui/react";
+import Actions from "../../UI/Action/Actions";
 
 interface ISavingActionsProps {
   isSavedDefault: boolean,
@@ -30,21 +29,15 @@ const ArticleSavingActions: FC<ISavingActionsProps> = ({isSavedDefault, onSave, 
       .catch(() => enqueueError('Помилка копіювання'))
   }
 
-  const blockColor = useColorModeValue('#FFFFFF', '#EFEFEF');
 
   return (
-    <FilledDiv
-      onClick={(e) => e.stopPropagation()} background={'white'} className={cl.actionsRight}
-      padding={'4px 13px'}
-      width={'fit-content'}
-      bg={blockColor}
-    >
+    <Actions className={cl.actionsRight}>
       <IconButton iconId={'ExternalLink'} checkAuth={false} onClick={copyToClipboard}/>
       <IconButton
         iconId={'SavedOutlined'} filledIconId={'SavedOutlinedFilled'} defaultState={isSavedDefault}
         onClick={handleOnSave}
       />
-    </FilledDiv>
+    </Actions>
   );
 };
 

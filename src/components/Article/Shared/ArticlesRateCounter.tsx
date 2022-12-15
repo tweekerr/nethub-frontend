@@ -5,7 +5,8 @@ import {articlesApi} from "../../../api/api";
 import useCustomSnackbar from "../../../hooks/useCustomSnackbar";
 import {isAuthorized} from "../../../utils/JwtHelper";
 import FilledDiv from '../../UI/FilledDiv';
-import {useColorModeValue} from "@chakra-ui/react";
+import {Text, useColorModeValue} from "@chakra-ui/react";
+import Actions from "../../UI/Action/Actions";
 
 export type RateVariants = 'up' | 'down' | 'none';
 
@@ -81,25 +82,16 @@ const ArticlesRateCounter: FC<IArticleRateCounterProps> = ({actualVote, current,
     }
   }
 
-  const blockColor = useColorModeValue('#FFFFFF', '#EFEFEF');
-
   return (
-    <FilledDiv
-      onClick={(e) => e.stopPropagation()}
-      background={'white'}
-      padding={'7px 9px'}
-      className={cl.rating}
-      width={'fit-content'}
-      bg={blockColor}
-    >
+    <Actions className={cl.rating}>
       <div onClick={handleDownVote}>
         <SvgSelector id={'ArrowDown'} className={counterState === 'down' ? cl.ratingDown : ''}/>
       </div>
-      <p className={cl.ratingCount} style={{color: ratingCountColor()}}>{current}</p>
+      <Text as={'p'} className={cl.ratingCount} style={{color: ratingCountColor()}}>{current}</Text>
       <div onClick={handleUpVote}>
         <SvgSelector id={'ArrowUp'} className={counterState === 'up' ? cl.ratingUp : ''}/>
       </div>
-    </FilledDiv>
+    </Actions>
   );
 };
 

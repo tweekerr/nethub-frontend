@@ -1,0 +1,1 @@
+export type ContentStatus = 'draft' | 'pending' | 'published' | 'banned';

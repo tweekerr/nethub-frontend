@@ -1,7 +1,6 @@
 import React from 'react';
 import cl from './SavedArticles.module.sass'
 import './transitions.css'
-import ArticleShort from "../Shared/ArticleShort";
 import SavedArticlesSkeleton from "./SavedArticlesSkeleton";
 import {articlesApi} from "../../../api/api";
 import {CSSTransition, TransitionGroup} from 'react-transition-group';
@@ -9,6 +8,7 @@ import IExtendedArticle from "../../../types/IExtendedArticle";
 import {useSavedArticlesContext} from "../../../pages/Saved/SavedSpace.Provider";
 import {useQueryClient} from "react-query";
 import ErrorBlock from "../../Layout/ErrorBlock";
+import ArticleShort from "../Shared/ArticleShort";
 
 const SavedArticles = () => {
   const {savedArticles, setSavedArticles} = useSavedArticlesContext();
@@ -45,8 +45,7 @@ const SavedArticles = () => {
                   actual: true,
                   handle: async () => await removeFromSavedHandle(article.articleId, article.languageCode)
                 }}
-                timeShow={'saved'}
-                textBeforeTime={'збережено'}
+                time={{before: 'збережено', show: 'saved'}}
               />
             </CSSTransition>
           )}
