@@ -1,4 +1,4 @@
-import {TinyConfig} from "../react-app-env";
+import {TinyConfig} from "../vite-env";
 
 export const tinyConfig: TinyConfig = {
   plugins: [

@@ -1,4 +1,4 @@
-import {ILanguage} from "../react-app-env";
+import {ILanguage} from "../vite-env";
 
 export default class Localizations {
   static Ukrainian: ILanguage = 'uk';

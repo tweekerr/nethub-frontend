@@ -92,6 +92,7 @@ class Validator<TErrorType> {
     }
 
     this._setErrors(localErrors);
+    //@ts-ignore
     return {isSuccess: Object.values(localErrors).every(e => e === false), errors: localErrorMessages};
   }
 }
