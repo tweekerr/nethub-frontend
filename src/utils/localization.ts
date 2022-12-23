@@ -1,6 +1,6 @@
-import {ILanguage} from "../react-app-env";
 import Localizations from "../constants/localizations";
 import moment from "moment/moment";
+import { ILanguage } from "../vite-env";
 
 export const switchLocal = (language: ILanguage) => {
   switch (language) {
