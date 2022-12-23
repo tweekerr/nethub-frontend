@@ -81,7 +81,8 @@ const ArticleCreatingSpace: Page = () => {
   };
 
   const titles = {
-    Center: <h2>{t('article.create.mainSettings')}</h2>,
+    // Center: <h2>{t('article.create.mainSettings')}</h2>,
+    Center: <h2>Створення статті</h2>,
     Right: <h2>Налаштування</h2>
   };
 

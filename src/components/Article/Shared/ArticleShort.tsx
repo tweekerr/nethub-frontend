@@ -6,35 +6,47 @@ import cl from "./ArticleShort.module.sass";
 import FilledDiv from '../../UI/FilledDiv';
 import {useNavigate} from "react-router-dom";
 import {Text, useColorModeValue} from "@chakra-ui/react";
+import {RateVariants} from "./ArticlesRateCounter";
 
 interface IArticleItemProps {
   localization: IExtendedArticle,
-  setRate: (value: number) => void,
+  setLocalization: (localization: IExtendedArticle) => void,
   save: { actual: boolean, handle: () => Promise<void> },
   time?: { before?: string, show?: 'default' | 'saved' },
+  afterCounterRequest: () => Promise<void>,
   footerVariant?: 'default' | 'created'
 }
 
-const ArticleShort: FC<IArticleItemProps> = ({localization,setRate, save, time, footerVariant}) => {
-  const navigate = useNavigate();
+const ArticleShort: FC<IArticleItemProps> =
+  ({localization, setLocalization, save, time, afterCounterRequest, footerVariant}) => {
+    const navigate = useNavigate();
 
-  return (
-    <FilledDiv
-      className={cl.articleItem}
-      onClick={() => navigate(`/article/${localization.articleId}/${localization.languageCode}`)}
-      cursor={'pointer'}
-    >
-      <ArticleShortHeader localization={localization} time={time}/>
-      {/*<ArticleShortContent/>*/}
-      <Text
-        as={'p'} className={cl.description}
-        color={useColorModeValue('#4F5B67', '#EFEFEF')}
+    function updateCounter(rate: number, vote?: RateVariants) {
+      setLocalization({...localization, rate, vote});
+    }
+
+    return (
+      <FilledDiv
+        className={cl.articleItem}
+        onClick={() => navigate(`/article/${localization.articleId}/${localization.languageCode}`)}
+        cursor={'pointer'}
       >
-        {localization.description}
-      </Text>
-      <ArticleShortFooter localization={localization} save={save} setRate={setRate} variant={footerVariant}/>
-    </FilledDiv>
-  );
-};
+        <ArticleShortHeader localization={localization} time={time}/>
+        <Text
+          as={'p'} className={cl.description}
+          color={useColorModeValue('#4F5B67', '#EFEFEF')}
+        >
+          {localization.description}
+        </Text>
+        <ArticleShortFooter
+          localization={localization}
+          save={save}
+          variant={footerVariant}
+          updateCounter={updateCounter}
+          afterCounterRequest={afterCounterRequest}
+        />
+      </FilledDiv>
+    );
+  };
 
 export default ArticleShort;

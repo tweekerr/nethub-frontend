@@ -1,11 +1,12 @@
 import {ContentStatus} from "./ContentStatus";
+import {RateVariants} from "../components/Article/Shared/ArticlesRateCounter";
 
 export default interface IExtendedArticle {
   // [key: string]: any,
   userId?: number,
   isSaved?: boolean,
   savedDate?: string,
-  vote?: 'up' | 'down' | 'none',
+  vote?: RateVariants
   title: string,
   description: string,
   html: string,

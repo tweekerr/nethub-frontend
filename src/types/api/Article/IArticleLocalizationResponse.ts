@@ -8,8 +8,13 @@ export default interface IArticleLocalizationResponse {
   status: 'draft' | 'pending' | 'published' | 'banned',
   created: string,
   updated?: string,
+  published?: string,
+  banned?: string,
   views: number,
-  rate: number
+  rate: number,
+  isSaved: boolean,
+  savedDate?: string,
+  vote?: 'up' | 'down'
 }
 
 export interface IContributor {

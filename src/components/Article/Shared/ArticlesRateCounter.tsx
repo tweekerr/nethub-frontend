@@ -1,95 +1,107 @@
-import React, {FC, useState} from 'react';
+import React, {FC} from 'react';
 import SvgSelector from "../../UI/SvgSelector/SvgSelector";
 import cl from './ArticleRateCounter.module.sass';
 import {articlesApi} from "../../../api/api";
 import useCustomSnackbar from "../../../hooks/useCustomSnackbar";
 import {isAuthorized} from "../../../utils/JwtHelper";
-import FilledDiv from '../../UI/FilledDiv';
-import {Text, useColorModeValue} from "@chakra-ui/react";
+import {Text} from "@chakra-ui/react";
 import Actions from "../../UI/Action/Actions";
 
-export type RateVariants = 'up' | 'down' | 'none';
+export type RateVariants = 'up' | 'down';
 
 interface IArticleRateCounterProps {
-  actualVote:RateVariants,
-  current: number,
-  setCurrent: (value: number) => void,
+  vote?: RateVariants,
+  rate: number,
+  updateCounter: (rate: number, vote?: RateVariants) => void,
+  afterRequest: () => Promise<void>,
   articleId: number
 }
 
 
-const ArticlesRateCounter: FC<IArticleRateCounterProps> = ({actualVote, current, setCurrent, articleId}) => {
-  const [counterState, setCounterState] = useState<RateVariants>(actualVote)
+const ArticlesRateCounter: FC<IArticleRateCounterProps> = ({vote, rate, updateCounter, afterRequest, articleId}) => {
   const {enqueueError} = useCustomSnackbar();
 
 
   function checkAuth() {
     if (!isAuthorized()) {
       enqueueError('Будь ласка, авторизуйтесь')
-      return;
+      return false;
     }
+    return true;
   }
 
-  const ratingCountColor = () => current === 0 ? 'black' : current > 0 ? '#09A552' : '#DF2638';
+  const ratingCountColor = () => rate === 0 ? 'black' : rate > 0 ? '#09A552' : '#DF2638';
+
 
   async function handleUpVote(e: React.MouseEvent) {
+
     e.stopPropagation()
-    checkAuth()
+    if (!checkAuth()) return;
 
-    if (counterState === 'up')
-      setCounterState('none');
+    const prevState = vote;
+    const newState: {rate: number, vote?: RateVariants} = {rate: 0, vote: undefined};
+
+    if (prevState === 'up')
+      newState.vote = undefined;
     else
-      setCounterState('up');
+      newState.vote = 'up'
 
-    if (counterState === 'none') {
-      setCurrent(current + 1);
-      await articlesApi.setRate(articleId, 'up');
+
+    if (prevState === undefined) {
+      newState.rate = rate + 1;
     }
 
-    if (counterState === 'down') {
-      setCurrent(current + 2);
-      await articlesApi.setRate(articleId, 'up');
+    if (prevState === 'down') {
+      newState.rate = rate + 2;
     }
 
-    if (counterState === 'up') {
-      setCurrent(current - 1);
-      await articlesApi.setRate(articleId, 'none');
+    if (prevState === 'up') {
+      newState.rate = rate - 1;
     }
+
+    updateCounter(newState.rate, newState.vote);
+    await afterRequest();
+    await articlesApi.setRate(articleId, 'up');
   }
 
   async function handleDownVote(e: React.MouseEvent) {
     e.stopPropagation()
-    checkAuth()
+    if (!checkAuth()) return;
 
-    if (counterState === 'down')
-      setCounterState('none');
+    const prevState = vote;
+    const newState: {rate: number, vote?: RateVariants} = {rate: 0, vote: undefined};
+
+    if (prevState === 'down')
+      newState.vote = undefined;
     else
-      setCounterState('down');
+      newState.vote = 'down';
 
-    if (counterState === 'none') {
-      setCurrent(current - 1);
-      await articlesApi.setRate(articleId, 'down');
+
+    if (prevState === undefined) {
+      newState.rate = rate - 1;
     }
 
-    if (counterState === 'down') {
-      setCurrent(current + 1);
-      await articlesApi.setRate(articleId, 'none');
+    if (prevState === 'down') {
+      newState.rate = rate + 1;
     }
 
-    if (counterState === 'up') {
-      setCurrent(current - 2);
-      await articlesApi.setRate(articleId, 'down');
+    if (prevState === 'up') {
+      newState.rate = rate - 2;
     }
+
+    updateCounter(newState.rate, newState.vote);
+    await afterRequest();
+    await articlesApi.setRate(articleId, 'down');
   }
 
   return (
     <Actions className={cl.rating}>
       <div onClick={handleDownVote}>
-        <SvgSelector id={'ArrowDown'} className={counterState === 'down' ? cl.ratingDown : ''}/>
+        <SvgSelector id={'ArrowDown'} className={vote === 'down' ? cl.ratingDown : ''}/>
       </div>
-      <Text as={'p'} className={cl.ratingCount} style={{color: ratingCountColor()}}>{current}</Text>
+      <Text as={'p'} className={cl.ratingCount} style={{color: ratingCountColor()}}>{rate}</Text>
       <div onClick={handleUpVote}>
-        <SvgSelector id={'ArrowUp'} className={counterState === 'up' ? cl.ratingUp : ''}/>
+        <SvgSelector id={'ArrowUp'} className={vote === 'up' ? cl.ratingUp : ''}/>
       </div>
     </Actions>
   );

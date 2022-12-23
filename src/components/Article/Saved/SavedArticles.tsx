@@ -9,22 +9,25 @@ import {useSavedArticlesContext} from "../../../pages/Saved/SavedSpace.Provider"
 import {useQueryClient} from "react-query";
 import ErrorBlock from "../../Layout/ErrorBlock";
 import ArticleShort from "../Shared/ArticleShort";
+import {QueryClientConstants} from "../../../constants/queryClientConstants";
 
 const SavedArticles = () => {
   const {savedArticles, setSavedArticles} = useSavedArticlesContext();
   const queryClient = useQueryClient();
 
-  const handleSetRate = (localization: IExtendedArticle) => (value: number) => {
-    const articleIndex = savedArticles.data!.indexOf(localization);
-    const result = savedArticles.data!.map((a, index) => index === articleIndex ? {...a, rate: value} : a);
-    setSavedArticles(result);
+  async function handleSetArticle(localization: IExtendedArticle) {
+    setSavedArticles(savedArticles.data!.map((a) => a.localizationId === localization.localizationId ? localization : a));
   }
 
   async function removeFromSavedHandle(id: number, code: string) {
     await articlesApi.toggleSavingLocalization(id, code);
     const savedArticleIndex = savedArticles.data!.findIndex(a => a.articleId === id && a.languageCode === code);
     setSavedArticles(savedArticles.data!.filter((a, index) => index !== savedArticleIndex));
-    await queryClient.invalidateQueries('articles');
+  }
+
+  const afterCounterRequest = (article: IExtendedArticle) => async function () {
+    await queryClient.invalidateQueries(QueryClientConstants.articles);
+    await queryClient.invalidateQueries([QueryClientConstants.articleLocalization, article.articleId, article.languageCode])
   }
 
   return (
@@ -40,7 +43,8 @@ const SavedArticles = () => {
             >
               <ArticleShort
                 localization={article}
-                setRate={handleSetRate(article)}
+                setLocalization={handleSetArticle}
+                afterCounterRequest={afterCounterRequest(article)}
                 save={{
                   actual: true,
                   handle: async () => await removeFromSavedHandle(article.articleId, article.languageCode)

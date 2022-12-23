@@ -4,6 +4,7 @@ import IconButton from "../../UI/IconButton/IconButton";
 import useCustomSnackbar from "../../../hooks/useCustomSnackbar";
 import {useQueryClient} from "react-query";
 import Actions from "../../UI/Action/Actions";
+import {QueryClientConstants} from "../../../constants/queryClientConstants";
 
 interface ISavingActionsProps {
   isSavedDefault: boolean,
@@ -19,7 +20,7 @@ const ArticleSavingActions: FC<ISavingActionsProps> = ({isSavedDefault, onSave, 
   async function handleOnSave(e: React.MouseEvent) {
     e.stopPropagation()
     await onSave();
-    await queryClient.invalidateQueries('articles');
+    await queryClient.invalidateQueries(QueryClientConstants.articles);
   }
 
   function copyToClipboard(e: React.MouseEvent) {
@@ -34,7 +35,9 @@ const ArticleSavingActions: FC<ISavingActionsProps> = ({isSavedDefault, onSave, 
     <Actions className={cl.actionsRight}>
       <IconButton iconId={'ExternalLink'} checkAuth={false} onClick={copyToClipboard}/>
       <IconButton
-        iconId={'SavedOutlined'} filledIconId={'SavedOutlinedFilled'} defaultState={isSavedDefault}
+        iconId={'SavedOutlined'}
+        filledIconId={'SavedOutlinedFilled'}
+        defaultState={isSavedDefault}
         onClick={handleOnSave}
       />
     </Actions>
