@@ -132,7 +132,7 @@ export const articlesApi = {
     return result.data;
   },
   setRate: async (id: string | number, rate: RateVariants) => {
-    await _api.get(`articles/${id}/rate?rating=${rate}`);
+    await _api.get(`articles/${id}/rate?vote=${rate}`);
   }
 }
 

@@ -45,12 +45,11 @@ $enableDevNet: false
   display: flex
   flex-direction: column
 
-.left, .center, .right
+.left, .center, .right, .smallerRight, .smallerRight
   > h2
     font-weight: 700
     font-size: 32px
     line-height: 150%
-    //margin-bottom: 10px
 
 
 .flag
@@ -75,3 +74,31 @@ $enableDevNet: false
   min-height: 100%
   display: flex
   flex-direction: column
+
+
+//=====================================================
+//<=1000px
+
+.smallerLeft
+  margin: 0 $defaultMargin
+  width: 60%
+  display: flex
+  flex-direction: column
+  align-content: center
+
+.smallerRight
+  margin: 0 $defaultMargin
+  width: 30%
+  display: flex
+  flex-direction: column
+  align-content: center
+
+//=====================================================
+//<=1000px
+
+.theSmallestCenter
+  width: 92%
+  margin: 0 $defaultMargin
+  display: flex
+  flex-direction: column
+  align-content: center

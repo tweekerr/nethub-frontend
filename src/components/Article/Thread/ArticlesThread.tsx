@@ -5,6 +5,7 @@ import IExtendedArticle from "../../../types/IExtendedArticle";
 import {useQueryClient} from "react-query";
 import ErrorBlock from "../../Layout/ErrorBlock";
 import ArticleShort from "../Shared/ArticleShort";
+import {QueryClientConstants} from "../../../constants/queryClientConstants";
 
 interface IArticlesThreadProps {
   articles: IExtendedArticle[],
@@ -18,15 +19,21 @@ const ArticlesThread: FC<IArticlesThreadProps> = ({articles, setArticles, byUser
 
   const handleSaving = (localization: IExtendedArticle) => async () => {
     await articlesApi.toggleSavingLocalization(localization.articleId, localization.languageCode);
-    await queryClient.invalidateQueries('savedArticles');
     setArticles(articles.map((a) => a.localizationId === localization.localizationId
       ? {...a, isSaved: !a.isSaved} : a));
+    await queryClient.invalidateQueries(QueryClientConstants.savedArticles);
+    await queryClient.invalidateQueries([QueryClientConstants.articleLocalization, localization.articleId, localization.languageCode]);
   }
 
-  const handleSetRate = (localization: IExtendedArticle) => (value: number) => {
-    setArticles(articles.map((a) => a.localizationId === localization.localizationId ? {...a, rate: value} : a));
+  const handleSetLocalization = (localization: IExtendedArticle) => {
+    setArticles(articles.map((a) => a.localizationId === localization.localizationId ? localization : a));
   }
 
+  const afterRequest = (item: IExtendedArticle) => async function () {
+    await queryClient.invalidateQueries(QueryClientConstants.savedArticles);
+    await queryClient.invalidateQueries([QueryClientConstants.articleLocalization, item.articleId, item.languageCode]);
+    await queryClient.invalidateQueries([QueryClientConstants.article, item.articleId]);
+  }
 
   return (
     <div className={classes.thread}>
@@ -35,8 +42,9 @@ const ArticlesThread: FC<IArticlesThreadProps> = ({articles, setArticles, byUser
           <ArticleShort
             key={item.localizationId}
             localization={item}
-            setRate={handleSetRate(item)}
+            setLocalization={handleSetLocalization}
             save={{actual: item.isSaved ?? false, handle: handleSaving(item)}}
+            afterCounterRequest={afterRequest(item)}
           />
         ))
         : <ErrorBlock>

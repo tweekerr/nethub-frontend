@@ -59,7 +59,7 @@ const ArticleInfo = () => {
               <div className={cl.contributors}>
                 {contributors.isLoading ? <ContributorsSkeleton/> : contributors.data!.map(contributor =>
                   <Button
-                    key={contributor.id}
+                    key={contributor.id + contributor.role}
                     className={cl.contributor}
                     width={'fit-content'}
                     bg={divBg}
@@ -69,8 +69,8 @@ const ArticleInfo = () => {
                     onClick={() => navigate('/profile/' + contributor.id)}
                   >
                     <div className={cl.role}>
-                      <Text as={'p'}>{contributor.role}</Text>
-                      <Text as={'p'}>{contributor.userName}</Text>
+                      <Text as={'p'} color={whiteTextColor}>{contributor.role}</Text>
+                      <Text as={'p'} color={whiteTextColor}>{contributor.userName}</Text>
                     </div>
                     <img src={contributor.profilePhotoLink ?? createImageFromInitials(25, contributor.userName)} alt={'damaged'}/>
                   </Button>
@@ -83,7 +83,7 @@ const ArticleInfo = () => {
           !articleAccessor.isSuccess ? <Skeleton height={100} className={cl.infoBlock}/> :
             articleAccessor.data.originalArticleLink &&
             <FilledDiv className={cl.infoBlock}>
-              <Text as={'p'} className={cl.infoBlockTitle}>Перейти до оригіналу:</Text>
+              <Text as={'p'} className={cl.infoBlockTitle} color={whiteTextColor}>Перейти до оригіналу:</Text>
               <Button
                 background={'#896DC8'}
                 borderRadius={'10px'}

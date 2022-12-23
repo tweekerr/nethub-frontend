@@ -18,16 +18,16 @@ import {
 } from "@chakra-ui/react";
 import {SearchIcon} from "@chakra-ui/icons";
 import {useAppStore} from "../../../store/config";
+import ThemeSwitcher from "../../UI/Theme/ThemeSwitcher";
 
 const Header: React.FC = () => {
 
-  const {toggleColorMode, colorMode} = useColorMode();
+  const {colorMode} = useColorMode();
   const isLogin = useAppStore(state => state.isLogin);
   const navigate = useNavigate();
   const [searchValue, setSearchValue] = React.useState<string>('');
   const headerBackgroundColor = useColorModeValue("#FFFFFF", '#323232')
 
-  const isSwitched = useMemo(() => colorMode !== 'light', [colorMode]);
 
   return (
     <header className={cl.header} style={{backgroundColor: headerBackgroundColor}}>
@@ -39,7 +39,7 @@ const Header: React.FC = () => {
       <Box className={layoutClasses.center} style={{justifyContent: 'center'}}>
         <Box className={cl.headerCenter}>
 
-          <InputGroup width={'70%'}>
+          <InputGroup width={'55%'}>
             <InputLeftElement
               pointerEvents='none'
               children={<SearchIcon color={useColorModeValue('#B1BAC5', '#757575')}/>}
@@ -52,15 +52,12 @@ const Header: React.FC = () => {
             />
           </InputGroup>
 
-          <Button
-            onClick={() => navigate('/article/20037/ua')}
-          >
+          <Button p={'11px 34px'} onClick={() => navigate('/article/20037/ua')}>
             Створити
             <SvgSelector id={'DriveFileRenameOutlineIcon'}/>
-
           </Button>
           {/*<Switch id="email-alerts" />*/}
-          <Switch onChange={toggleColorMode} defaultChecked={isSwitched} size='md'/>
+          <ThemeSwitcher/>
         </Box>
       </Box>
       <Box className={layoutClasses.right}>

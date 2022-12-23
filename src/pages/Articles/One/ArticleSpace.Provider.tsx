@@ -8,12 +8,14 @@ import {RateVariants} from "../../../components/Article/Shared/ArticlesRateCount
 import {useAppStore} from "../../../store/config";
 import IArticleResponse from "../../../types/api/Article/IArticleResponse";
 import {AxiosError, AxiosResponse} from "axios";
+import IExtendedArticle from "../../../types/IExtendedArticle";
+import {QueryClientConstants} from "../../../constants/queryClientConstants";
 
 type ContextType = {
   articleAccessor: UseQueryResult<IArticleResponse, ApiError>,
   setArticle: (article: IArticleResponse) => void,
   localizationAccessor: UseQueryResult<IArticleLocalizationResponse, ApiError>,
-  userActions: { isSaved: boolean, rate: RateVariants }
+  setLocalization: (localization: IArticleLocalizationResponse) => void
 }
 
 const InitialContextValue: ContextType = {
@@ -21,9 +23,7 @@ const InitialContextValue: ContextType = {
   setArticle: () => {
   },
   localizationAccessor: {} as UseQueryResult<IArticleLocalizationResponse, ApiError>,
-  userActions: {
-    isSaved: false,
-    rate: 'none'
+  setLocalization: () => {
   }
 };
 
@@ -32,37 +32,25 @@ const ArticleContext = React.createContext<ContextType>(InitialContextValue);
 export const useArticleContext = (): ContextType => React.useContext(ArticleContext);
 
 const ArticleSpaceProvider: FC<PropsWithChildren> = ({children}) => {
-  const isLogin = useAppStore(state => state.isLogin);
   const queryClient = useQueryClient();
 
-
   const {id, code} = useParams();
-  const [userActions, setUserActions] = useState<{ isSaved: boolean, rate: RateVariants }>({
-    isSaved: false,
-    rate: 'none'
-  });
 
-  const articleAccessor = useQuery<IArticleResponse, ApiError>(['article', id], () => getArticle(id!));
-  const localizationAccessor = useQuery<IArticleLocalizationResponse, ApiError>(['articleLocalization', id, code], () => getLocalization(id!, code!),
-    {
-      onSuccess: async () => {
-        if (isLogin) {
-          setUserActions(await getArticleActions(id!, code!))
-        }
-      }
-    });
+  const articleAccessor = useQuery<IArticleResponse, ApiError>([QueryClientConstants.article, Number(id)], () => getArticle(id!));
+  const localizationAccessor = useQuery<IArticleLocalizationResponse, ApiError>([QueryClientConstants.articleLocalization, Number(id), code], () => getLocalization(id!, code!));
 
 
-  const setArticle = (article: IArticleResponse) => queryClient.setQueryData(['article', id], article);
+  const setArticle = (article: IArticleResponse) => queryClient.setQueryData([QueryClientConstants.article, Number(id)], article);
+  const setLocalization = (localization: IArticleLocalizationResponse) => queryClient.setQueryData([QueryClientConstants.articleLocalization, Number(id), code], localization);
 
   const value: ContextType = React.useMemo(
     () => ({
       articleAccessor,
       setArticle,
       localizationAccessor,
-      userActions
+      setLocalization
     }),
-    [articleAccessor, setArticle, localizationAccessor, userActions]
+    [articleAccessor, setArticle, localizationAccessor, setLocalization]
   );
 
   return (
