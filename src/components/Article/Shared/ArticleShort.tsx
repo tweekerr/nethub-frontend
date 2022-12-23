@@ -1,78 +1,38 @@
 import React, {FC} from 'react';
-import ArticlesRateCounter from "./ArticlesRateCounter";
-import ArticleSavingActions from "./ArticleSavingActions";
-import {useNavigate} from "react-router-dom";
 import IExtendedArticle from "../../../types/IExtendedArticle";
+import ArticleShortHeader from "./Related/ArticleShortHeader";
+import ArticleShortFooter from "./Related/ArticleShortFooter";
 import cl from "./ArticleShort.module.sass";
-import {DateTime} from "luxon";
 import FilledDiv from '../../UI/FilledDiv';
-import {Link, Text, useColorModeValue} from "@chakra-ui/react";
-
+import {useNavigate} from "react-router-dom";
+import {Text, useColorModeValue} from "@chakra-ui/react";
 
 interface IArticleItemProps {
   localization: IExtendedArticle,
   setRate: (value: number) => void,
   save: { actual: boolean, handle: () => Promise<void> },
-  textBeforeTime?: string
-  timeShow: 'published' | 'saved' | 'created'
+  time?: { before?: string, show?: 'default' | 'saved' },
+  footerVariant?: 'default' | 'created'
 }
 
-const ArticleShort: FC<IArticleItemProps> = ({localization, save, textBeforeTime, setRate, timeShow}) => {
+const ArticleShort: FC<IArticleItemProps> = ({localization,setRate, save, time, footerVariant}) => {
   const navigate = useNavigate();
-
-  const getTimeAgo = () => {
-    switch (timeShow) {
-      case "published":
-        return DateTime.fromISO(localization.created).toRelativeCalendar();
-      case "saved":
-        return DateTime.fromISO(localization.savedDate!).toRelativeCalendar();
-      case "created":
-        return 'created'
-    }
-  }
-
 
   return (
     <FilledDiv
       className={cl.articleItem}
       onClick={() => navigate(`/article/${localization.articleId}/${localization.languageCode}`)}
+      cursor={'pointer'}
     >
-      <Link href='#'>
-        <div className={cl.titleTime}>
-          <Text
-            as={'h2'}
-            className={cl.publicTitle}
-            color={useColorModeValue('#242D35', '#EFEFEF')}
-          >
-            {localization.title}
-          </Text>
-          <Text
-            as={'p'}
-            className={cl.timeAgo}
-            color={useColorModeValue('#757575', '#EFEFEF')}
-          >
-            {textBeforeTime ? `${textBeforeTime}: ${getTimeAgo()}` : getTimeAgo()}
-          </Text>
-        </div>
-        <Text
-          as={'p'} className={cl.description}
-          color={useColorModeValue('#4F5B67', '#EFEFEF')}
-        >
-          {localization.description}
-        </Text>
-      </Link>
-      <div className={cl.actions}>
-        <ArticlesRateCounter
-          actualVote={localization.vote ?? 'none'}
-          current={localization.rate}
-          setCurrent={setRate} articleId={localization.articleId}
-        />
-        <ArticleSavingActions
-          isSavedDefault={save.actual}
-          onSave={save.handle}
-          saveLink={`${window.location.href}article/${localization.articleId}/${localization.languageCode}`}
-        />
-      </div>
+      <ArticleShortHeader localization={localization} time={time}/>
+      {/*<ArticleShortContent/>*/}
+      <Text
+        as={'p'} className={cl.description}
+        color={useColorModeValue('#4F5B67', '#EFEFEF')}
+      >
+        {localization.description}
+      </Text>
+      <ArticleShortFooter localization={localization} save={save} setRate={setRate} variant={footerVariant}/>
     </FilledDiv>
   );
 };
