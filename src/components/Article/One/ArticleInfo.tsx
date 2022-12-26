@@ -95,6 +95,7 @@ const ArticleInfo = () => {
                 <Link
                   color={whiteTextColor}
                   href={articleAccessor.data.originalArticleLink}
+                  target={'_blank'}
                 >
                   {getDomain(articleAccessor.data.originalArticleLink)}
                 </Link>

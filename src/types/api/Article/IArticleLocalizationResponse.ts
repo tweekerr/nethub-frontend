@@ -5,7 +5,7 @@ export default interface IArticleLocalizationResponse {
   title: string,
   description: string,
   html: string,
-  status: 'draft' | 'pending' | 'published' | 'banned',
+  status: 'Draft' | 'Pending' | 'Published' | 'Banned',
   created: string,
   updated?: string,
   published?: string,
@@ -18,6 +18,6 @@ export default interface IArticleLocalizationResponse {
 }
 
 export interface IContributor {
-  role: 'author' | 'editor',
+  role: 'Author' | 'Editor',
   userId: number
 }

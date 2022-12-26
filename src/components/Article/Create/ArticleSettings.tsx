@@ -14,7 +14,7 @@ interface IArticleSettingsProps {
 
 const ArticleSettings: FC<IArticleSettingsProps> = ({createArticle}) => {
 
-  const {article, setArticle, images, errors, setErrors} = useArticleCreatingContext();
+  const {article, setArticle, images, errors} = useArticleCreatingContext();
 
   const handleSetLink = (event: React.ChangeEvent<HTMLInputElement>) => {
     setArticle({...article, originalLink: event.target.value});
@@ -63,8 +63,8 @@ const ArticleSettings: FC<IArticleSettingsProps> = ({createArticle}) => {
        </FilledDiv>
       }
       <Button onClick={createArticle}>Зберегти статтю</Button>
-      {<pre>{JSON.stringify(errors, null, 2)}</pre>}
-      {<pre>{JSON.stringify(article, null, 2)}</pre>}
+      {/*{<pre>{JSON.stringify(errors, null, 2)}</pre>}*/}
+      {/*{<pre>{JSON.stringify(article, null, 2)}</pre>}*/}
     </div>
   );
 };

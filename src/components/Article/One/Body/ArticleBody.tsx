@@ -7,10 +7,11 @@ import ArticleSavingActions from "../../Shared/ArticleSavingActions";
 import {DateToRelativeCalendar} from "../../../../utils/dateHelper";
 import {useQuery, useQueryClient} from "react-query";
 import FilledDiv from "../../../UI/FilledDiv";
-import {Badge, Box, Button, Skeleton, Text, useColorModeValue} from "@chakra-ui/react";
+import {Badge, Box, Button, Link, Skeleton, Text, useColorModeValue} from "@chakra-ui/react";
 import {useArticleContext} from "../../../../pages/Articles/One/ArticleSpace.Provider";
 import Actions from "../../../UI/Action/Actions";
 import {QueryClientConstants} from "../../../../constants/queryClientConstants";
+import {useNavigate} from "react-router-dom";
 
 const ArticleBody = () => {
   const {articleAccessor, setArticle, localizationAccessor, setLocalization} = useArticleContext();
@@ -36,24 +37,25 @@ const ArticleBody = () => {
     () => getArticleContributors(localization.contributors));
 
   const viewsBlockBg = useColorModeValue('whiteLight', 'whiteDark');
+  const navigate = useNavigate();
 
   const getDate = useCallback(() => {
     switch (localization.status) {
-      case ('draft' || 'pending'):
+      case ('Draft' || 'Pending'):
         return `Створено: ${DateToRelativeCalendar(localization.created)}`;
-      case 'published':
+      case 'Published':
         return `Опубліковано: ${DateToRelativeCalendar(localization.published!)}`;
-      case 'banned':
+      case 'Banned':
         return `Забанено: ${DateToRelativeCalendar(localization.banned!)}`;
     }
   }, [localization]);
 
   const getBadge = useCallback(() => {
-    if (localization.status === 'pending' || localization.status === 'draft')
+    if (localization.status === 'Draft' || localization.status === 'Pending')
       return <Badge ml={2} variant='outline' colorScheme='yellow'>
         Preview
       </Badge>;
-    if (localization.status === 'banned')
+    if (localization.status === 'Banned')
       return <Badge ml={2} variant={'outline'} colorScheme={'red'}>
         Banned
       </Badge>
@@ -112,7 +114,12 @@ const ArticleBody = () => {
           <Box display={'flex'} alignItems={'center'}>
             <Text as={'p'}>Автор:</Text>
             {!contributors.isSuccess ? <Skeleton width={'100px'} height={15}/> :
-              <a href={'#'}>{getAuthor(localization.contributors, contributors.data!)?.userName}</a>
+              <Box
+                onClick={() => navigate('/profile/' + getAuthor(localization.contributors, contributors.data!)?.id)}
+                cursor={'pointer'}
+              >
+                {getAuthor(localization.contributors, contributors.data!)?.userName}
+              </Box>
             }
           </Box>
         </div>
