@@ -5,12 +5,14 @@ import classes from './ArticleCreating.module.sass';
 import {articlesApi} from "../../../api/api";
 import {tinyConfig} from "../../../utils/constants";
 import ILocalization from "../../../types/ILocalization";
+import {Box, FormControl} from "@chakra-ui/react";
 
 interface ITinyInputProps {
   data: string;
   setData: (value: string) => void;
   editorTitle: string;
-  isInvalid: boolean
+  isInvalid: boolean,
+  errorMessage?: string
 }
 
 interface ITinyInputHandle {
@@ -18,11 +20,11 @@ interface ITinyInputHandle {
 }
 
 const TinyInput: ForwardRefRenderFunction<ITinyInputHandle, ITinyInputProps> =
-  ({data, setData, editorTitle, isInvalid}, ref) => {
+  ({data, setData, editorTitle, isInvalid, errorMessage}, ref) => {
     const editorRef = useRef<TinyEditor | null>(null);
 
     const saveImageCallback = useCallback(async (article: ILocalization, id?: string) => {
-      if (!id) id = (await articlesApi.createArticle(article.title, article.tags, article.originalLink)).id.toString();
+      if (!id) id = (await articlesApi.createArticle(article.title, article.tags, article.originalLink!)).id.toString();
       sessionStorage.setItem('articleId', id!);
       await editorRef.current!.uploadImages();
       sessionStorage.removeItem('articleId');
@@ -53,27 +55,33 @@ const TinyInput: ForwardRefRenderFunction<ITinyInputHandle, ITinyInputProps> =
     return (
       <div className={classes.tinyInput}>
         <p>{editorTitle}</p>
-        <div className={isInvalid ? classes.wrong : ''}>
-          <Editor
-            onInit={(evt, editor) => editorRef.current = editor}
-            value={data}
-            onEditorChange={(newValue, _) => {
-              setData(newValue);
-              // localStorage.setItem('articleBody', data)
-            }}
-            apiKey={tinyConfig.key}
-            init={{
-              height: 500,
-              menubar: true,
-              plugins: tinyConfig.plugins,
-              toolbar: tinyConfig.toolbar,
-              content_style:
-                'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
-              images_upload_handler: saveImages,
-              automatic_uploads: false,
-            }}
-          />
-        </div>
+        <FormControl width={'100%'} isInvalid={isInvalid}>
+          <div className={isInvalid ? classes.wrong : ''}>
+            <Editor
+              onInit={(evt, editor) => editorRef.current = editor}
+              value={data}
+              onEditorChange={(newValue, _) => {
+                setData(newValue);
+                // localStorage.setItem('articleBody', data)
+              }}
+              apiKey={tinyConfig.key}
+              init={{
+                height: 500,
+                menubar: true,
+                plugins: tinyConfig.plugins,
+                toolbar: tinyConfig.toolbar,
+                content_style:
+                  'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+                images_upload_handler: saveImages,
+                automatic_uploads: false,
+              }}
+            />
+          </div>
+          {isInvalid && !!errorMessage
+            ? <Box mt={'0.5rem'} color={'error'} fontSize={'0.875rem'}>{errorMessage}</Box>
+            : null
+          }
+        </FormControl>
       </div>
     );
   };

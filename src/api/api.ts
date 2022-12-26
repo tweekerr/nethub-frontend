@@ -19,19 +19,24 @@ import {IReduxUser} from "../types/IReduxUser";
 import {Operator} from "../types/Operators";
 import {ApiError} from "../types/ApiError";
 
+const baseUrl = import.meta.env.VITE_IS_DEVELOPMENT === 'true'
+  ? import.meta.env.VITE_TEST_BACK_POINT
+  : import.meta.env.VITE_GENERAL_BACK_POINT;
+
 export const _api = axios.create({
-  //TODO: must be general link
-  baseURL: import.meta.env.VITE_IS_DEVELOPMENT === 'true'
-    ? import.meta.env.VITE_TEST_BACK_POINT
-    : import.meta.env.VITE_GENERAL_BACK_POINT,
+  baseURL: baseUrl,
   withCredentials: true
 });
 
 //TODO: token must be saved in storage
 _api.interceptors.request.use((config) => {
-  config.headers = {
-    Authorization: `Bearer ${JWTStorage.getAccessToken()}`,
-  };
+
+  const accessToken = JWTStorage.getAccessToken();
+
+  if (accessToken !== null)
+    config.headers = {
+      Authorization: `Bearer ${accessToken}`,
+    };
   return config;
 });
 
@@ -39,7 +44,7 @@ _api.interceptors.response.use(
   (config) => {
     return config;
   },
-  async (error: AxiosError & {_isRetry: boolean}) => {
+  async (error: AxiosError & { _isRetry: boolean }) => {
 
     if (
       error.response?.status === 401 &&
@@ -49,9 +54,7 @@ _api.interceptors.response.use(
       error._isRetry = true;
       try {
         const response = await axios.post(
-          `${
-            process.env.REACT_APP_GENERAL_BACK_POINT
-          }/user/refresh-tokens`,
+          `${baseUrl}/user/refresh-tokens`,
           {
             accessToken: JWTStorage.getAccessToken(),
             refreshToken: JWTStorage.getRefreshToken(),
@@ -70,12 +73,12 @@ _api.interceptors.response.use(
 );
 
 export const articlesApi = {
-  createArticle: async (title: string, tags: string[], originalArticleLink?: string) => {
+  createArticle: async (title: string, tags: string[], originalArticleLink: string) => {
     const result: AxiosResponse<IArticleResponse> = await _api
       .post('/articles', {
         name: title,
         tags,
-        originalArticleLink: originalArticleLink,
+        originalArticleLink: originalArticleLink === '' ? undefined : originalArticleLink,
       });
     return result.data;
   },

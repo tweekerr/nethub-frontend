@@ -1,58 +1,41 @@
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import ArticleSettings from '../../../components/Article/Create/ArticleSettings';
 import Layout, {Page} from "../../../components/Layout/Layout";
 import CreateArticleForm from "../../../components/Article/Create/CreateArticleForm";
-import {IArticleFormErrors} from "../../../types/ILocalization";
-import {regexTest} from "../../../utils/validators";
-import {urlRegex} from "../../../utils/regex";
 import {useTranslation} from "react-i18next";
-import useValidator from "../../../hooks/useValidator";
 import useCustomSnackbar from "../../../hooks/useCustomSnackbar";
 import {ArticleStorage} from "../../../utils/localStorageProvider";
 import {useNavigate} from "react-router-dom";
 import {articlesApi} from "../../../api/api";
 import {useMutation} from 'react-query';
-import {getArticleValidators} from "./ArticleCreatingSpace.functions";
 import ArticleCreatingSpaceProvider, {useArticleCreatingContext} from "./ArticleCreatingSpace.Provider";
+import {CreateArticleFormSchema} from "../../../types/schemas/Article/CreateArticleFormSchema";
 
 type CreateArticleFormRef = React.ElementRef<typeof CreateArticleForm>
 
 const ArticleCreatingSpace: Page = () => {
   const {t} = useTranslation();
 
-  const {article, setArticle, defaultArticleState} = useArticleCreatingContext();
+  const {article, setArticle, defaultArticleState, setErrors} = useArticleCreatingContext();
 
   const createMutation = useMutation('createArticle', () => createArticle());
   const navigate = useNavigate();
 
-  const {subscribeValidator, unsubscribeValidator, validateAll, errors, setErrors} = useValidator<IArticleFormErrors>();
   const {enqueueSuccess, enqueueError, enqueueSnackBar} = useCustomSnackbar('info');
   const articleCreationRef = useRef<CreateArticleFormRef>(null);
 
-
-  const setTagsError = (flag: boolean) => {
-    setErrors(prev => {
-      return {...prev, tags: flag}
-    })
-  }
-
   async function validateArticleForm() {
-    getArticleValidators(article).forEach(v => subscribeValidator(v))
+    const validationResult = CreateArticleFormSchema.safeParse(article);
 
-    if (article.originalLink && article.originalLink !== '')
-      subscribeValidator({
-        value: article.originalLink,
-        field: 'originalLink',
-        validators: [regexTest(urlRegex)],
-        message: 'Не вірне посилання'
-      })
-    else
-      unsubscribeValidator('originalLink');
+    if (!validationResult.success) {
+      const errors = validationResult.error.format()
+      setErrors(errors);
+      return;
+    }
 
-    const {isSuccess, errors} = await validateAll();
-    if (!isSuccess) errors.forEach(enqueueError)
+    setErrors({_errors: []});
 
-    return isSuccess;
+    return validationResult.success;
   }
 
   const createArticle = async () => {
@@ -88,15 +71,8 @@ const ArticleCreatingSpace: Page = () => {
 
   return (
     <Layout Titles={titles}>
-      <CreateArticleForm
-        errors={errors}
-        ref={articleCreationRef}
-      />
-      <ArticleSettings
-        errors={errors}
-        setError={setTagsError}
-        createArticle={createMutation.mutateAsync}
-      />
+      <CreateArticleForm ref={articleCreationRef}/>
+      <ArticleSettings createArticle={createMutation.mutateAsync}/>
     </Layout>
   );
 }

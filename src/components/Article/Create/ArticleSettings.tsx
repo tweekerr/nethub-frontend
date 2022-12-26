@@ -2,7 +2,6 @@ import React, {FC} from 'react';
 import classes from './ArticleCreating.module.sass';
 import ArticleTagsSettings from "./ArticleTagsSettings";
 import TitleInput from "../../UI/TitleInput/TitleInput";
-import {IArticleFormErrors} from "../../../types/ILocalization";
 import ArticleImagesSettings from "./ArticleImagesSettings";
 import {ArticleStorage} from "../../../utils/localStorageProvider";
 import FilledDiv from '../../UI/FilledDiv';
@@ -11,13 +10,11 @@ import {useArticleCreatingContext} from "../../../pages/Articles/Create/ArticleC
 
 interface IArticleSettingsProps {
   createArticle: () => Promise<void>,
-  errors: IArticleFormErrors,
-  setError: (flag: boolean) => void;
 }
 
-const ArticleSettings: FC<IArticleSettingsProps> = ({createArticle, errors, setError}) => {
+const ArticleSettings: FC<IArticleSettingsProps> = ({createArticle}) => {
 
-  const {article, setArticle, images} = useArticleCreatingContext();
+  const {article, setArticle, images, errors, setErrors} = useArticleCreatingContext();
 
   const handleSetLink = (event: React.ChangeEvent<HTMLInputElement>) => {
     setArticle({...article, originalLink: event.target.value});
@@ -41,14 +38,13 @@ const ArticleSettings: FC<IArticleSettingsProps> = ({createArticle, errors, setE
         <ArticleTagsSettings
           addToAllTags={handleSetTags}
           deleteTag={handleDeleteTag}
-          error={errors.tags}
-          setError={setError}
         />
         <Text as={'p'} className={classes.specification}>*натисність на тег, для його видалення</Text>
       </FilledDiv>
       <FilledDiv className={classes.settingsItem}>
         <TitleInput
-          isInvalid={errors.originalLink}
+          isInvalid={!!errors.originalLink}
+          errorMessage={errors.originalLink?._errors.join(', ')}
           value={article.originalLink}
           onChange={handleSetLink}
           title={"Посилання на оригінал "}
@@ -60,13 +56,15 @@ const ArticleSettings: FC<IArticleSettingsProps> = ({createArticle, errors, setE
           оригінал</Text>
       </FilledDiv>
       {images?.data !== undefined && images.data.length > 0 &&
-        <FilledDiv className={classes.settingsItem}>
-          <Text as={'p'} className={classes.title}>Пропоновані зображення</Text>
-          <ArticleImagesSettings/>
-          <Text as={'p'} className={classes.specification}>*натисність, щоб скопіювати посилання на фото</Text>
-        </FilledDiv>
+       <FilledDiv className={classes.settingsItem}>
+         <Text as={'p'} className={classes.title}>Пропоновані зображення</Text>
+         <ArticleImagesSettings/>
+         <Text as={'p'} className={classes.specification}>*натисність, щоб скопіювати посилання на фото</Text>
+       </FilledDiv>
       }
       <Button onClick={createArticle}>Зберегти статтю</Button>
+      {<pre>{JSON.stringify(errors, null, 2)}</pre>}
+      {<pre>{JSON.stringify(article, null, 2)}</pre>}
     </div>
   );
 };

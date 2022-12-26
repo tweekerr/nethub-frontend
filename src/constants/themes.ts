@@ -51,6 +51,13 @@ const components = {
       },
     })
   },
+  FormError: {
+    baseStyle: {
+      text: {
+        color: 'error',
+      },
+    },
+  },
   Button: {
     baseStyle: (props: StyleFunctionProps) => ({
       background: mode('#896DC8', "#835ADF")(props),

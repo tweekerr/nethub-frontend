@@ -3,6 +3,7 @@ import {useQuery, useQueryClient, UseQueryResult} from "react-query";
 import IExtendedArticle from "../../types/IExtendedArticle";
 import {loadSavedArticles} from "../../components/Article/Saved/SavedArticles.functions";
 import {ApiError} from "../../types/ApiError";
+import {QueryClientConstants} from "../../constants/queryClientConstants";
 
 type ContextType = {
   savedArticles: UseQueryResult<IExtendedArticle[], ApiError>,
@@ -21,9 +22,9 @@ export const useSavedArticlesContext = (): ContextType => useContext<ContextType
 
 const SavedSpaceProvider: FC<PropsWithChildren> = ({children}) => {
   const queryClient = useQueryClient();
-  const savedArticles = useQuery<IExtendedArticle[], ApiError>('savedArticles', () => loadSavedArticles());
+  const savedArticles = useQuery<IExtendedArticle[], ApiError>(QueryClientConstants.savedArticles, () => loadSavedArticles());
 
-  const setSavedArticles = (articles: IExtendedArticle[]) => queryClient.setQueryData('savedArticles', articles);
+  const setSavedArticles = (articles: IExtendedArticle[]) => queryClient.setQueryData(QueryClientConstants.savedArticles, articles);
 
   const value: ContextType = useMemo(() => {
     return {

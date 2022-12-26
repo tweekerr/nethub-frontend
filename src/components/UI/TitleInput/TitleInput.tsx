@@ -1,19 +1,25 @@
 import React, {FC} from 'react';
 import cl from './TitleInput.module.sass';
-import {Input, InputProps, Text} from '@chakra-ui/react';
+import {FormControl, FormErrorMessage, Input, InputProps, Text} from '@chakra-ui/react';
 
 interface ITitleInputProps extends InputProps {
   title: string
+  errorMessage?: string
 }
 
 const TitleInput: FC<ITitleInputProps> = (props) => {
-  const {title, ...rest} = props;
+  const {title, isInvalid, errorMessage, ...rest} = props;
 
 
   return (
     <div className={cl.titleInput}>
       <Text as={'p'}>{title}</Text>
-      <Input{...rest}/>
+      <FormControl isInvalid={isInvalid}>
+        <Input{...rest}/>
+        {isInvalid && !!errorMessage
+          ? <FormErrorMessage>{errorMessage}</FormErrorMessage>
+          : null}
+      </FormControl>
     </div>
   );
 };

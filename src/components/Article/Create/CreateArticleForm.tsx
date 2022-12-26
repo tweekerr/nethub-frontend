@@ -2,7 +2,6 @@ import React, {forwardRef, ForwardRefRenderFunction, useImperativeHandle, useRef
 import classes from './ArticleCreating.module.sass';
 import TitleInput from '../../UI/TitleInput/TitleInput';
 import TinyInput from "./TinyInput";
-import ILocalization, {IArticleFormErrors} from "../../../types/ILocalization";
 import {ArticleStorage} from "../../../utils/localStorageProvider";
 import FilledDiv from "../../UI/FilledDiv";
 import {Box} from "@chakra-ui/react";
@@ -10,7 +9,6 @@ import AddContributorsBlock from "./AddContributorsBlock";
 import {useArticleCreatingContext} from "../../../pages/Articles/Create/ArticleCreatingSpace.Provider";
 
 interface IMainArticleProps {
-  errors: IArticleFormErrors,
 }
 
 interface IMainArticleHandle {
@@ -20,9 +18,9 @@ interface IMainArticleHandle {
 type TinyRef = React.ElementRef<typeof TinyInput>;
 
 const CreateArticleForm: ForwardRefRenderFunction<IMainArticleHandle, IMainArticleProps> =
-  ({errors}, ref) => {
+  ({}, ref) => {
 
-    const {article, setArticle, setArticleValue} = useArticleCreatingContext();
+    const {article, setArticle, setArticleValue, errors} = useArticleCreatingContext();
 
     const tinyRef = useRef<TinyRef>(null)
 
@@ -50,7 +48,8 @@ const CreateArticleForm: ForwardRefRenderFunction<IMainArticleHandle, IMainArtic
       <Box className={classes.createArticle}>
         <FilledDiv className={classes.mainArticleParams}>
           <TitleInput
-            isInvalid={errors.title}
+            isInvalid={!!errors.title}
+            errorMessage={errors.title?._errors?.join(', ')}
             value={article.title}
             onChange={handleUpdateTitle}
             title={'Заголовок статті'}
@@ -58,7 +57,8 @@ const CreateArticleForm: ForwardRefRenderFunction<IMainArticleHandle, IMainArtic
             width={'100%'}
           />
           <TitleInput
-            isInvalid={errors.description}
+            isInvalid={!!errors.description}
+            errorMessage={errors.description?._errors?.join(', ')}
             value={article.description}
             onChange={handleUpdateDescription}
             title={'Короткий опис статті'}
@@ -66,7 +66,8 @@ const CreateArticleForm: ForwardRefRenderFunction<IMainArticleHandle, IMainArtic
             width={'100%'}
           />
           <TinyInput
-            isInvalid={errors.html}
+            isInvalid={!!errors.html}
+            errorMessage={errors.html?._errors?.join(', ')}
             data={article.html}
             setData={handleUpdateHtml}
             editorTitle={'Тіло статті'}
