@@ -24,6 +24,7 @@ import {
   useColorModeValue
 } from "@chakra-ui/react";
 import {useAppStore} from "../../store/config";
+import axios from "axios";
 
 interface ISecondStep {
   isExpanded: boolean,
@@ -118,6 +119,8 @@ const Login = () => {
     }
   }
 
+  const _api = axios.create();
+
   return (
     <>
       <Accordion allowToggle>
@@ -176,6 +179,16 @@ const Login = () => {
           </AccordionPanel>
         </AccordionItem>
       </Accordion>
+      <Button
+        onClick={() => {
+          const result = _api.post('https://localhost:7002/v1/user/check-user-exists', {
+            provider: 'telegram',
+            key: '302865773'
+          });
+          console.log('result', result);
+        }
+        }
+      >Fetch</Button>
     </>
   );
 };

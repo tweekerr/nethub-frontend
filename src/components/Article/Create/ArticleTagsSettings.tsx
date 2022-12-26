@@ -4,31 +4,32 @@ import React, {FC, useState} from "react";
 import Tag from "../One/Body/Tag";
 import {regexTest} from "../../../utils/validators";
 import {tagRegex} from "../../../utils/regex";
-import useCustomSnackbar from "../../../hooks/useCustomSnackbar";
-import {Button, Input} from "@chakra-ui/react";
+import {Box, Button, FormControl, FormErrorMessage, Input} from "@chakra-ui/react";
 import {useArticleCreatingContext} from "../../../pages/Articles/Create/ArticleCreatingSpace.Provider";
 
 interface IArticleTagsSettingsProps {
   addToAllTags: (tag: string) => void,
   deleteTag: (tag: string) => void,
-  error: boolean
-  setError: (flag: boolean) => void;
 }
 
-const ArticleTagsSettings: FC<IArticleTagsSettingsProps> = ({addToAllTags, deleteTag, error, setError}) => {
+const ArticleTagsSettings: FC<IArticleTagsSettingsProps> = ({addToAllTags, deleteTag}) => {
 
-  const {article} = useArticleCreatingContext();
+  const {article, errors, setErrors} = useArticleCreatingContext();
 
   const [middleTag, setMiddleTag] = useState<string>('');
-  const {enqueueError} = useCustomSnackbar();
 
   const addTag = async () => {
-    setError(false);
     if (article.tags.includes(middleTag) || middleTag === '') return;
+    setErrors({...errors, tags: undefined});
     const isSuccess = regexTest(tagRegex)(middleTag);
     if (!isSuccess) {
-      enqueueError('Неправильний тег')
-      setError(true);
+
+      const newErrors = new Set(errors.tags?._errors ? [...errors.tags._errors] : []);
+      newErrors.add('Неправильний тег');
+      setErrors({
+        ...errors,
+        tags: {_errors: [...newErrors]}
+      });
       return;
     }
     addToAllTags(middleTag)
@@ -37,17 +38,24 @@ const ArticleTagsSettings: FC<IArticleTagsSettingsProps> = ({addToAllTags, delet
 
   return (
     <>
-      <div className={classes.fixedTags}>
-        <Input
-          placeholder={'Теги'}
-          value={middleTag}
-          onChange={(e) => setMiddleTag(e.target.value)}
-          width={'75%'}
-          isInvalid={error}
-        />
-        <Button onClick={addTag}>
-          <SvgSelector id={"AddIcon"}/>
-        </Button>
+      <div>
+        <FormControl isInvalid={!!errors.tags} className={classes.fixedTags}>
+          <Box display={'flex'} width={'100%'} justifyContent={'space-between'}>
+            <Input
+              placeholder={'Теги'}
+              value={middleTag}
+              onChange={(e) => setMiddleTag(e.target.value)}
+              width={'75%'}
+            />
+            <Button onClick={addTag}>
+              <SvgSelector id={"AddIcon"}/>
+            </Button>
+          </Box>
+          {!!errors.tags
+            ? <FormErrorMessage>{errors.tags?._errors?.join(', ')}
+            </FormErrorMessage>
+            : null}
+        </FormControl>
       </div>
       <div className={classes.addedTags}>
         {

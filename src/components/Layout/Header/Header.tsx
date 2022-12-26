@@ -28,7 +28,6 @@ const Header: React.FC = () => {
   const [searchValue, setSearchValue] = React.useState<string>('');
   const headerBackgroundColor = useColorModeValue("#FFFFFF", '#323232')
 
-
   return (
     <header className={cl.header} style={{backgroundColor: headerBackgroundColor}}>
       <Box className={layoutClasses.left}>
@@ -52,7 +51,7 @@ const Header: React.FC = () => {
             />
           </InputGroup>
 
-          <Button p={'11px 34px'} onClick={() => navigate('/article/20037/ua')}>
+          <Button p={'11px 34px'} onClick={() => navigate('/articles/add')}>
             Створити
             <SvgSelector id={'DriveFileRenameOutlineIcon'}/>
           </Button>
