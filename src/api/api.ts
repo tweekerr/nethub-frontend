@@ -116,7 +116,7 @@ export const articlesApi = {
     return response.data;
   },
   getLocalization: async (id: string, code: string): Promise<IArticleLocalizationResponse> => {
-    const response: AxiosResponse<IArticleLocalizationResponse> = await _api.get(`https://localhost:7002/v1/articles/${id}/${code}`);
+    const response: AxiosResponse<IArticleLocalizationResponse> = await _api.get(`articles/${id}/${code}`);
     return response.data;
   },
   isArticleSavedByUser: async (id: string, code: string): Promise<boolean> => {
