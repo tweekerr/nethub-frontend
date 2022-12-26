@@ -31,7 +31,7 @@ export async function getArticleActions(id: string, code: string) {
 }
 
 export function getAuthor(contributors: IContributor[], users: IUserInfoResponse[]) {
-  const userId = contributors.find(a => a.role === 'author')?.userId;
+  const userId = contributors.find(a => a.role === 'Author')?.userId;
 
   return users.find(u => u.id === userId);
 }

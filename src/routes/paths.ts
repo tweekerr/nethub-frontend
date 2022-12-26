@@ -7,6 +7,7 @@ import ProfileSpace from "../pages/Profile/ProfileSpace";
 import ContributorArticlesSpace from "../pages/Articles/Contributor/ContributorArticlesSpace";
 import TestSpace from "../pages/TestSpace";
 import AuthSpace from "../pages/Auth/AuthSpace";
+import TeamSpace from "../pages/Team/TeamSpace";
 
 interface IPath {
   path: string,
@@ -58,6 +59,11 @@ export const paths: IPath[] = [
   {
     path: '/articles/by/:contributorId',
     Component: ContributorArticlesSpace,
+    authorized: false
+  },
+  {
+    path: '/team',
+    Component: TeamSpace,
     authorized: false
   },
   {

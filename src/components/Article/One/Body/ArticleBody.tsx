@@ -4,10 +4,12 @@ import {
   Button,
   Skeleton,
   Text,
+  Link,
   useColorModeValue,
 } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
+import { useNavigate } from "react-router-dom";
 import { articlesApi } from '../../../../api/api';
 import { QueryClientConstants } from '../../../../constants/queryClientConstants';
 import {
@@ -58,34 +60,29 @@ const ArticleBody = () => {
   );
 
   const viewsBlockBg = useColorModeValue('whiteLight', 'whiteDark');
+  const navigate = useNavigate();
 
   const getDate = useCallback(() => {
     switch (localization.status) {
-      case 'draft' || 'pending':
+      case ('Draft' || 'Pending'):
         return `Створено: ${DateToRelativeCalendar(localization.created)}`;
-      case 'published':
-        return `Опубліковано: ${DateToRelativeCalendar(
-          localization.published!
-        )}`;
-      case 'banned':
+      case 'Published':
+        return `Опубліковано: ${DateToRelativeCalendar(localization.published!)}`;
+      case 'Banned':
         return `Забанено: ${DateToRelativeCalendar(localization.banned!)}`;
     }
   }, [localization]);
 
   const getBadge = useCallback(() => {
-    if (localization.status === 'pending' || localization.status === 'draft')
-      return (
-        <Badge ml={2} variant='outline' colorScheme='yellow'>
-          Preview
-        </Badge>
-      );
-    if (localization.status === 'banned')
-      return (
-        <Badge ml={2} variant={'outline'} colorScheme={'red'}>
-          Banned
-        </Badge>
-      );
-  }, [localization]);
+    if (localization.status === 'Draft' || localization.status === 'Pending')
+      return <Badge ml={2} variant='outline' colorScheme='yellow'>
+        Preview
+      </Badge>;
+    if (localization.status === 'Banned')
+      return <Badge ml={2} variant={'outline'} colorScheme={'red'}>
+        Banned
+      </Badge>
+  }, [localization])
 
   return (
     <FilledDiv className={cl.articleWrapper}>
@@ -149,16 +146,14 @@ const ArticleBody = () => {
         <div className={cl.author}>
           <Box display={'flex'} alignItems={'center'}>
             <Text as={'p'}>Автор:</Text>
-            {!contributors.isSuccess ? (
-              <Skeleton width={'100px'} height={15} />
-            ) : (
-              <a href={'#'}>
-                {
-                  getAuthor(localization.contributors, contributors.data!)
-                    ?.userName
-                }
-              </a>
-            )}
+            {!contributors.isSuccess ? <Skeleton width={'100px'} height={15}/> :
+              <Box
+                onClick={() => navigate('/profile/' + getAuthor(localization.contributors, contributors.data!)?.id)}
+                cursor={'pointer'}
+              >
+                {getAuthor(localization.contributors, contributors.data!)?.userName}
+              </Box>
+            }
           </Box>
         </div>
         <div className={cl.dates}>
