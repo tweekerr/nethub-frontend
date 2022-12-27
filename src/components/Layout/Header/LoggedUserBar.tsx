@@ -23,7 +23,7 @@ const LoggedUserBar: FC = () => {
 
     return (
       <div className={classes.loggedBar}>
-        <div className={classes.avatarBlock} onClick={() => navigate(`/profile/${user.id}`)}>
+        <div className={classes.avatarBlock} onClick={() => navigate(`/profile/${user.username}`)}>
           <Avatar
             size={'md'}
             maxW={40}
