@@ -121,7 +121,7 @@ const SearchContributor: FC<ISearchContributorProps> = ({contributors, setContri
                   <Box display={'flex'} alignItems={'center'}>
                     <Avatar
                       size='xs'
-                      src={u.profilePhotoLink ?? createImageFromInitials(500, u.userName)}
+                      src={u.profilePhotoUrl ?? createImageFromInitials(500, u.userName)}
                       mr={2}
                     />
                     {u.userName}

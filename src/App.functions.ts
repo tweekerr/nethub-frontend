@@ -1,18 +1,16 @@
 import {JWTStorage} from "./utils/localStorageProvider";
-import {isAccessTokenExpired, isAuthorized, isRefreshTokenExpired} from "./utils/JwtHelper";
+import {isAccessTokenExpired, isAccessTokenValid, isRefreshTokenValid} from "./utils/JwtHelper";
 import jwtDecode from "jwt-decode";
 import IJwtPayload from "./types/IJwtPayload";
 import {userApi} from "./api/api";
 
 export async function check() {
-  if (isAuthorized()) {
+  if (isAccessTokenValid()) {
     return jwtDecode<IJwtPayload>(JWTStorage.getAccessToken()!);
-    // login({username: data.username, profilePhotoLink: data.image})
   } else if (isAccessTokenExpired()) {
-    if (!isRefreshTokenExpired()) {
+    if (isRefreshTokenValid()) {
       if (await userApi.refresh()) {
         return jwtDecode<IJwtPayload>(JWTStorage.getAccessToken()!);
-        // login({username: data.username, profilePhotoLink: data.image})
       }
     }
   } else {

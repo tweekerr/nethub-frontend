@@ -1,6 +1,6 @@
 export interface IReduxUser {
-  id: string,
   username: string,
-  profilePhotoLink: string | null,
+  profilePhotoUrl: string | null,
   firstName: string
+  lastName?: string
 }

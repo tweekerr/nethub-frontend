@@ -19,17 +19,16 @@ import {IReduxUser} from "../types/IReduxUser";
 import {Operator} from "../types/Operators";
 import {ApiError} from "../types/ApiError";
 
-const baseUrl = import.meta.env.VITE_IS_DEVELOPMENT === 'true'
+export const baseApiUrl = import.meta.env.VITE_IS_DEVELOPMENT === 'true'
   ? import.meta.env.VITE_TEST_BACK_POINT
   : import.meta.env.VITE_GENERAL_BACK_POINT;
 
 export const _api = axios.create({
-  baseURL: baseUrl,
+  baseURL: baseApiUrl,
   withCredentials: true
 });
 
-//TODO: token must be saved in storage
-_api.interceptors.request.use((config) => {
+_api.interceptors.request.use(async (config) => {
 
   const accessToken = JWTStorage.getAccessToken();
 
@@ -40,37 +39,35 @@ _api.interceptors.request.use((config) => {
   return config;
 });
 
-_api.interceptors.response.use(
-  (config) => {
-    return config;
-  },
-  async (error: AxiosError & { _isRetry: boolean }) => {
-
-    if (
-      error.response?.status === 401 &&
-      error.config &&
-      !error._isRetry
-    ) {
-      error._isRetry = true;
-      try {
-        const response = await axios.post(
-          `${baseUrl}/user/refresh-tokens`,
-          {
-            accessToken: JWTStorage.getAccessToken(),
-            refreshToken: JWTStorage.getRefreshToken(),
-          },
-          {headers: {'Content-Type': 'application/json'}}
-        );
-        localStorage.setItem('token', response.data.accessToken);
-        return _api.request(error.config);
-      } catch (e) {
-        localStorage.removeItem('token');
-      }
-    }
-
-    throw new ApiError(error.message, error.response?.status);
-  }
-);
+// _api.interceptors.response.use(
+//   (config) => {
+//     return config;
+//   },
+//   async (error: AxiosError & { _isRetry: boolean }) => {
+//
+//     if (
+//       error.response?.status === 401 &&
+//       error.config &&
+//       !error._isRetry
+//     ) {
+//       error._isRetry = true;
+//       try {
+//         const response: AxiosResponse<IAuthResult> = await axios.post(`${baseApiUrl}/user/refresh-tokens`);
+//
+//         console.log('interceptor', response);
+//
+//         JWTStorage.setTokensData(response.data);
+//
+//         return _api.request(error.config);
+//       } catch (e) {
+//         JWTStorage.clearTokensData()
+//         return window.location.href = '/login'
+//       }
+//     }
+//
+//     throw new ApiError(error.message, error.response?.status);
+//   }
+// );
 
 export const articlesApi = {
   createArticle: async (title: string, tags: string[], originalArticleLink: string) => {
@@ -171,7 +168,7 @@ export const userApi = {
   },
   refresh: async (): Promise<boolean> => {
     try {
-      const response: AxiosResponse<IAuthResult> = await _api.post('user/refresh-tokens', {refreshToken: JWTStorage.getRefreshToken()});
+      const response: AxiosResponse<IAuthResult> = await _api.post('user/refresh-tokens');
       JWTStorage.setTokensData(response.data)
       return true;
     } catch (error) {

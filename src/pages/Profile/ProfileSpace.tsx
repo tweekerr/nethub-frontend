@@ -10,7 +10,7 @@ import ErrorBlock from "../../components/Layout/ErrorBlock";
 import {ErrorsHandler} from "../../utils/ErrorsHandler";
 
 const ProfileSpace: Page = () => {
-  const {id} = useParams();
+  const {username} = useParams();
   const {userAccessor, dashboardAccessor} = useProfileContext();
 
   const isSuccess = userAccessor.isSuccess && dashboardAccessor.isSuccess;
@@ -27,7 +27,7 @@ const ProfileSpace: Page = () => {
         ? <ErrorBlock>{ErrorsHandler.default(errorStatusCode!)}</ErrorBlock>
         : !isSuccess
           ? <Skeleton height={200}/>
-          : id
+          : username
             ? <PublicProfile/>
             : <PrivateProfile/>
     }

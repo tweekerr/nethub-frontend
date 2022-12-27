@@ -3,5 +3,6 @@ export const QueryClientConstants = {
   article: 'article',
   articleLocalization: 'articleLocalization',
   savedArticles: 'savedArticles',
-  contributors: 'contributors'
+  contributors: 'contributors',
+  authorization: 'authorization'
 }

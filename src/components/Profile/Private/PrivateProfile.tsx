@@ -89,7 +89,7 @@ const PrivateProfile = () => {
       ...reduxUser,
       firstName: newFirstName,
       username: newUserName,
-      profilePhotoLink: newProfileImage === '' ? reduxUser.profilePhotoLink : newProfileImage
+      profilePhotoUrl: newProfileImage === '' ? reduxUser.profilePhotoUrl : newProfileImage
     });
 
     await userApi.refresh()

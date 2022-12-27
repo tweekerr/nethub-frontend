@@ -5,7 +5,7 @@ export default interface IUserInfoResponse {
   lastName: string,
   middleName?: string,
   email: string,
-  profilePhotoLink?: string,
+  profilePhotoUrl?: string,
   emailConfirmed: boolean,
   description: string,
   registered: string
@@ -14,5 +14,5 @@ export default interface IUserInfoResponse {
 export interface IPrivateUserInfoResponse {
   id: number,
   userName: string,
-  profilePhotoLink?: string
+  profilePhotoUrl?: string
 }

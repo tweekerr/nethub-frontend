@@ -14,7 +14,7 @@ export default interface IArticleLocalizationResponse {
   rate: number,
   isSaved: boolean,
   savedDate?: string,
-  vote?: 'up' | 'down'
+  vote?: 'Up' | 'Down'
 }
 
 export interface IContributor {

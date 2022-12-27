@@ -4,11 +4,6 @@ export class JWTStorage {
   static getAccessToken() {
     return localStorage.getItem('accessToken');
   }
-
-  static getRefreshToken() {
-    return localStorage.getItem('refreshToken');
-  }
-
   static getAccessTokenExpires() {
     return localStorage.getItem('accessTokenExpires');
   }
@@ -20,12 +15,11 @@ export class JWTStorage {
   static setTokensData(data: IAuthResult) {
     localStorage.setItem('accessToken', data.token);
     localStorage.setItem('accessTokenExpires', data.tokenExpires);
-    localStorage.setItem('refreshToken', data.refreshToken);
+    localStorage.setItem('refreshTokenExpires', data.refreshTokenExpires);
   }
 
   static clearTokensData() {
     localStorage.removeItem('accessToken')
-    localStorage.removeItem('refreshToken')
     localStorage.removeItem('accessTokenExpires')
     localStorage.removeItem('refreshTokenExpires')
   }
