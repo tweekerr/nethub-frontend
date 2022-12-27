@@ -72,7 +72,7 @@ const ArticleInfo = () => {
                       <Text as={'p'} color={whiteTextColor}>{contributor.role}</Text>
                       <Text as={'p'} color={whiteTextColor}>{contributor.userName}</Text>
                     </div>
-                    <img src={contributor.profilePhotoLink ?? createImageFromInitials(25, contributor.userName)} alt={'damaged'}/>
+                    <img src={contributor.profilePhotoUrl ?? createImageFromInitials(25, contributor.userName)} alt={'damaged'}/>
                   </Button>
                 )}
               </div>

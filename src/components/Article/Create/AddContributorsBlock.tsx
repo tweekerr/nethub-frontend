@@ -51,7 +51,7 @@ const AddContributorsBlock: FC<IAddContributorsBlockProps> = ({article, setArtic
               <Box display={'flex'} alignItems={'center'}>
                 <Avatar
                   size='xs'
-                  src={c.user.profilePhotoLink ?? createImageFromInitials(500, c.user.userName)}
+                  src={c.user.profilePhotoUrl ?? createImageFromInitials(500, c.user.userName)}
                   mr={2}
                 />
                 <Box display={'flex'} flexDirection={'column'} alignItems={'flex-start'}>

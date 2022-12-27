@@ -1,10 +1,9 @@
 export default interface IAuthResult {
-  id: string,
-  token: string,
-  refreshToken: string,
   username: string,
   firstName: string,
-  profilePhotoLink: string | null
+  lastName?: string,
+  token: string,
   tokenExpires: string,
-  refreshTokenExpires: string
+  refreshTokenExpires: string,
+  profilePhotoUrl: string | null
 }

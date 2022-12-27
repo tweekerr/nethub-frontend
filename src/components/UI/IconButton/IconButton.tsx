@@ -2,7 +2,7 @@ import React, {FC, useEffect, useState} from 'react';
 import SvgSelector from "../SvgSelector/SvgSelector";
 import cl from '../UiComps.module.sass';
 import useCustomSnackbar from "../../../hooks/useCustomSnackbar";
-import {isAuthorized} from "../../../utils/JwtHelper";
+import {isAccessTokenValid} from "../../../utils/JwtHelper";
 
 interface IIconButtonProps {
   iconId: string,
@@ -22,7 +22,7 @@ const IconButton: FC<IIconButtonProps> = ({iconId, onClick, filledIconId, defaul
   const {enqueueError} = useCustomSnackbar();
 
   function authorizeCheck() {
-    if (!isAuthorized()) {
+    if (!isAccessTokenValid()) {
       enqueueError('Будь ласка, авторизуйтесь')
       return;
     }

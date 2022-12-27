@@ -9,18 +9,13 @@ const AppRouter: FC = () => {
   return (
     <ErrorBoundary main={true}>
       <Routes>
-        {paths.map(({path, Component, authorized}) => {
+        {paths.map(({path, Component, requireAuthorization}) => {
 
           return <Route
             key={path} path={path} element={
-            <Component.Provider>
-              {authorized
-                ? <AuthorizedHoc>
-                  <Component/>
-                </AuthorizedHoc>
-                : <Component/>}
-            </Component.Provider>
-          }
+            <AuthorizedHoc requireAuthorization={requireAuthorization}>
+              {Component}
+            </AuthorizedHoc>}
           />
         })}
         <Route

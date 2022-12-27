@@ -87,21 +87,27 @@ const Login = () => {
       accordionButtonRef.current?.click();
       isExpanded = !isExpanded;
     }
+
     setRegistrationStep({isExpanded: false, enableEmail: false});
 
     const providerRequest = await LoginService.ProviderHandle(provider);
     setRequest(providerRequest);
 
     const {isProviderRegistered} = await userApi.checkIfExists(providerRequest.providerKey, provider);
+
     if (!isProviderRegistered) {
       if (!isExpanded) {
         accordionButtonRef.current?.click();
-        isExpanded = !isExpanded
+        isExpanded = true;
       }
       setRegistrationStep({isExpanded, enableEmail: !providerRequest.email});
+
+      accordionButtonRef.current?.click();
       return;
     }
-    const user = await userApi.authenticate({...providerRequest, type: "login"});
+    const user = await userApi.authenticate({...providerRequest, type: 'login'});
+    accordionButtonRef.current?.click();
+
     login(user);
     navigate(-1);
   }
@@ -110,11 +116,11 @@ const Login = () => {
     if (!await validate())
       return;
     try {
-      const user = await userApi.authenticate({...request, type: "register"});
+      const user = await userApi.authenticate({...request, type: 'register'});
       login(user);
     } catch (e: any) {
       if (e.response.data.message.includes('already taken')) {
-        enqueueError('Користувач з такою електронною адресою вже зареєстрований')
+        enqueueError('Користувач з такою електронною адресою вже зареєстрований');
       }
     }
   }

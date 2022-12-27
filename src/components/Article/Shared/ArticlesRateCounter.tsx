@@ -2,7 +2,7 @@ import { Text } from '@chakra-ui/react';
 import React, { FC } from 'react';
 import { articlesApi } from '../../../api/api';
 import useCustomSnackbar from '../../../hooks/useCustomSnackbar';
-import { isAuthorized } from '../../../utils/JwtHelper';
+import { isAccessTokenValid } from '../../../utils/JwtHelper';
 import Actions from '../../UI/Action/Actions';
 import SvgSelector from '../../UI/SvgSelector/SvgSelector';
 import cl from './ArticleRateCounter.module.sass';
@@ -27,7 +27,7 @@ const ArticlesRateCounter: FC<IArticleRateCounterProps> = ({
   const { enqueueError } = useCustomSnackbar();
 
   function checkAuth() {
-    if (!isAuthorized()) {
+    if (!isAccessTokenValid()) {
       enqueueError('Будь ласка, авторизуйтесь');
       return false;
     }

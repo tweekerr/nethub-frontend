@@ -30,7 +30,7 @@ export default class LoginService {
       firstName: tokenResponse.firstName,
       lastName: tokenResponse.lastName,
       middleName: '',
-      profilePhotoLink: tokenResponse.photoUrl,
+      profilePhotoUrl: tokenResponse.photoUrl,
       email: tokenResponse.email,
       providerMetadata: {
         //@ts-ignore
@@ -59,7 +59,7 @@ export default class LoginService {
               firstName: data.first_name,
               lastName: data.last_name,
               middleName: '',
-              profilePhotoLink: data.photo_url,
+              profilePhotoUrl: data.photo_url,
               email: data.email ?? '',
               providerMetadata: {
                 id: data.id.toString(),
@@ -92,7 +92,7 @@ export default class LoginService {
       firstName: tokenResponse.firstName,
       lastName: tokenResponse.lastName,
       middleName: '',
-      profilePhotoLink: tokenResponse.photoUrl,
+      profilePhotoUrl: tokenResponse.photoUrl,
       email: tokenResponse.email ?? null,
       providerMetadata: {
         //@ts-ignore

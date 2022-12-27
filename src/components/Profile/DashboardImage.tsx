@@ -14,12 +14,12 @@ const DashboardImage: FC<IDashboardImageProps> = ({openModal, handleDrop: onDrop
 
   const user = useAppStore(state => state.user);
   const [drag, setDrag] = useState<boolean>(false);
-  const getImage = () => user.profilePhotoLink ?? createImageFromInitials(500, user.username);
+  const getImage = () => user.profilePhotoUrl ?? createImageFromInitials(500, user.username);
   const [image, setImage] = useState<string>(getImage());
 
   useEffect(() => {
     setImage(getImage())
-  }, [user.profilePhotoLink])
+  }, [user.profilePhotoUrl])
 
   const handleImageError = () => {
     setImage(createImageFromInitials(500, user.username));

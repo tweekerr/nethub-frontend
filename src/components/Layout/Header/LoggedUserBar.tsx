@@ -9,12 +9,12 @@ const LoggedUserBar: FC = () => {
     const {user, logout} = useAppStore();
 
     const navigate = useNavigate();
-    const getImage = () => user.profilePhotoLink ?? createImageFromInitials(500, user.username);
+    const getImage = () => user.profilePhotoUrl ?? createImageFromInitials(500, user.username);
     const [image, setImage] = useState<string>(getImage());
 
     useEffect(() => {
       setImage(getImage())
-    }, [user.profilePhotoLink])
+    }, [user.profilePhotoUrl])
 
     function handleLogout() {
       logout();
