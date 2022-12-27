@@ -19,10 +19,12 @@ import {IReduxUser} from "../types/IReduxUser";
 import {Operator} from "../types/Operators";
 import {ApiError} from "../types/ApiError";
 
-export const baseApiUrl = import.meta.env.VITE_IS_DEVELOPMENT === 'true'
-  ? import.meta.env.VITE_TEST_BACK_POINT
-  : import.meta.env.VITE_GENERAL_BACK_POINT;
+// export const baseApiUrl = import.meta.env.VITE_IS_DEVELOPMENT === 'true'
+//   ? import.meta.env.VITE_TEST_BACK_POINT
+//   : import.meta.env.VITE_GENERAL_BACK_POINT;
 
+
+export const baseApiUrl = 'https://localhost:7002/v1';
 export const _api = axios.create({
   baseURL: baseApiUrl,
   withCredentials: true
