@@ -6,7 +6,7 @@ import IJwtPayload from "../types/IJwtPayload";
 import {JWTStorage} from "../utils/localStorageProvider";
 import axios, {AxiosResponse} from "axios";
 import IAuthResult from "../types/api/Refresh/IAuthResult";
-import {baseApiUrl} from "../api/api";
+import {baseApiUrl, userApi} from "../api/api";
 import {useAppStore} from "../store/config";
 import {Page} from "../components/Layout/Layout";
 
@@ -30,7 +30,14 @@ const AuthorizedHoc = ({children: Children, requireAuthorization}: IAuthorizedPr
   // const authResult = useQuery<boolean, string>([],
   //   async () => await isUserSignedIn());
 
-  async function isUserSignedIn() {
+  async function isUserSignedIn(): Promise<boolean> {
+
+    if (window.isRefreshing) {
+      while (window.isRefreshing)
+        await new Promise(resolve => setTimeout(resolve, 300));
+
+      if (isAccessTokenValid()) return true;
+    }
 
     if (isAccessTokenValid()) {
       const jwt = jwtDecode<IJwtPayload>(JWTStorage.getAccessToken()!);
@@ -47,10 +54,10 @@ const AuthorizedHoc = ({children: Children, requireAuthorization}: IAuthorizedPr
       return false;
 
     try {
-      const response: AxiosResponse<IAuthResult> = await axios.post(`${baseApiUrl}/user/refresh-tokens`);
-      JWTStorage.setTokensData(response.data);
+      const result = await userApi.refresh();
+      JWTStorage.setTokensData(result)
+      const jwt = jwtDecode<IJwtPayload>(result.token);
 
-      const jwt = jwtDecode<IJwtPayload>(JWTStorage.getAccessToken()!);
       login({
         username: jwt.username,
         profilePhotoUrl: jwt.image,

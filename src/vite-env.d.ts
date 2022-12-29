@@ -14,6 +14,7 @@ declare global {
       Login: {
         auth: (config: any, callback: (data: any) => void) => void;
       }
-    };
+    },
+    isRefreshing: boolean
   }
 }
