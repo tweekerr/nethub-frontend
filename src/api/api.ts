@@ -48,16 +48,16 @@ _api.interceptors.request.use(async (config) => {
 
 _api.interceptors.request.use(
   async (config) => {
+    if (window.isRefreshing) {
+      while (window.isRefreshing)
+        await new Promise(resolve => setTimeout(resolve, 300));
+
+      if (isAccessTokenValid()) return config;
+    } else if (!JWTStorage.getAccessToken() || isAccessTokenValid()) {
+      return config;
+    }
+
     try {
-      if (window.isRefreshing) {
-        while (window.isRefreshing)
-          await new Promise(resolve => setTimeout(resolve, 300));
-
-        if (isAccessTokenValid()) return config;
-      } else if (!JWTStorage.getAccessToken() || isAccessTokenValid()) {
-        return config;
-      }
-
       window.isRefreshing = true
 
       const response: AxiosResponse<IAuthResult> = await _authApi.post('user/refresh-tokens');
@@ -65,8 +65,6 @@ _api.interceptors.request.use(
 
       return config;
     } catch (e) {
-      console.log('interceptor clear data')
-
       JWTStorage.clearTokensData()
       return window.location.href = '/login'
     } finally {
