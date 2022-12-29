@@ -5,7 +5,7 @@ import classes from './ArticleCreating.module.sass';
 import {articlesApi} from "../../../api/api";
 import {tinyConfig} from "../../../utils/constants";
 import ILocalization from "../../../types/ILocalization";
-import {Box, FormControl} from "@chakra-ui/react";
+import {Box, FormControl, useColorModeValue} from "@chakra-ui/react";
 
 interface ITinyInputProps {
   data: string;
@@ -52,6 +52,8 @@ const TinyInput: ForwardRefRenderFunction<ITinyInputHandle, ITinyInputProps> =
       return location;
     };
 
+    const errorColor = useColorModeValue('error', 'errorDark');
+
     return (
       <div className={classes.tinyInput}>
         <p>{editorTitle}</p>
@@ -78,7 +80,7 @@ const TinyInput: ForwardRefRenderFunction<ITinyInputHandle, ITinyInputProps> =
             />
           </div>
           {isInvalid && !!errorMessage
-            ? <Box mt={'0.5rem'} color={'error'} fontSize={'0.875rem'}>{errorMessage}</Box>
+            ? <Box mt={'0.5rem'} color={errorColor} fontSize={'0.875rem'}>{errorMessage}</Box>
             : null
           }
         </FormControl>

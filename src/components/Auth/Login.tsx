@@ -59,10 +59,7 @@ const Login = () => {
   const debounce = useDebounce(debounceLogic, 1000);
 
   const validate = async () => {
-    // validators: [isNotNullOrWhiteSpace, debounceLogic]
     const validationResult = await SsoRequestSchema.safeParseAsync(request);
-
-    console.log('validationResult', validationResult);
 
     if (!validationResult.success) {
       const errors = validationResult.error.format()
@@ -76,7 +73,7 @@ const Login = () => {
   }
 
   const updateRequest = (key: string, value: string | undefined) => {
-    setRequest((prev) => {
+    setRequest((prev: SsoRequest) => {
       return {...prev, [key]: value}
     })
   }
@@ -158,7 +155,7 @@ const Login = () => {
             <TitleInput
               title={'Email*'} placeholder={'Електронна пошта'} value={request.email!}
               isInvalid={!!errors.email}
-              errorMessage={errors.email?._errors?.join(', ')}
+              errorMessage={[...new Set(errors.email?._errors)].join(', ')}
               onChange={(e) => updateRequest('email', e.target.value)}
               width={'100%'}
               isDisabled={!registrationStep.enableEmail}
@@ -188,9 +185,6 @@ const Login = () => {
           </AccordionPanel>
         </AccordionItem>
       </Accordion>
-
-      <pre>{JSON.stringify(errors, null, 2)}</pre>
-      <pre>{JSON.stringify(request, null, 2)}</pre>
     </>
   );
 };

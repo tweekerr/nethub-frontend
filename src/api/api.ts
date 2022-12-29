@@ -1,6 +1,5 @@
 import axios, {AxiosError, AxiosResponse} from 'axios';
 import IAuthResult from "../types/api/Refresh/IAuthResult";
-import ISsoRequest from "../types/api/Sso/SsoRequest";
 import ICheckEmailResponse from "../types/api/CheckEmail/ICheckEmailRequest";
 import {ProviderType} from "../types/ProviderType";
 import ICheckUsernameResponse from "../types/api/CheckUsername/ICheckUsernameResponse";
@@ -19,6 +18,7 @@ import {IReduxUser} from "../types/IReduxUser";
 import {Operator} from "../types/Operators";
 import {ApiError} from "../types/ApiError";
 import {isAccessTokenValid} from "../utils/JwtHelper";
+import {SsoRequest} from "../types/api/Sso/SsoRequest";
 
 // export const baseApiUrl = import.meta.env.VITE_IS_DEVELOPMENT === 'true'
 //   ? import.meta.env.VITE_TEST_BACK_POINT
@@ -65,6 +65,8 @@ _api.interceptors.request.use(
 
       return config;
     } catch (e) {
+      console.log('interceptor clear data')
+
       JWTStorage.clearTokensData()
       return window.location.href = '/login'
     } finally {
@@ -159,7 +161,7 @@ export const userApi = {
     const result: AxiosResponse<IDashboardResponse> = await _api.get(`user/${username}/dashboard`)
     return result.data
   },
-  authenticate: async (request: ISsoRequest): Promise<IReduxUser> => {
+  authenticate: async (request: SsoRequest): Promise<IReduxUser> => {
     const response: AxiosResponse<IAuthResult> = await _authApi.post('/user/sso', request);
     JWTStorage.setTokensData(response.data);
 

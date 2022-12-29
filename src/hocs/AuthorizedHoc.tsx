@@ -67,6 +67,7 @@ const AuthorizedHoc = ({children: Children, requireAuthorization}: IAuthorizedPr
 
       return true;
     } catch (e) {
+      console.log('hoc clear data')
       JWTStorage.clearTokensData();
       return false;
     }

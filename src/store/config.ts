@@ -23,6 +23,7 @@ export const useAppStore = create<IStoreInitialState>(set => ({
     user: reduxUser
   }),
   logout: () => {
+    console.log('logout clear data')
     JWTStorage.clearTokensData();
     set({isLogin: false, user: {} as IReduxUser})
   },

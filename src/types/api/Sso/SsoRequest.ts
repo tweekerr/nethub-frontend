@@ -13,14 +13,14 @@ export const SsoRequestSchema = u.object({
       return await userApi.checkUsername(username);
     }, 'Ім\'я користувача вже використовується'),
   email: u.string()
-    .email()
+    .email('Невірна поштова скринька')
     .min(7, 'Невірна поштова скринька'),
   firstName: u.string().min(2, 'Занадто коротке')
-    .regex(onlyLettersRegex, 'Невірно введене ім\'я'),
+    .regex(onlyLettersRegex, 'Невірно введене'),
   lastName: u.string().min(2, 'Занадто коротке')
-    .regex(onlyLettersRegex, 'Невірно введене прізвище'),
+    .regex(onlyLettersRegex, 'Невірно введене'),
   middleName: u.string().min(5, 'Занадто коротке')
-    .regex(onlyLettersRegex, 'Невірно введено по-батькові')
+    .regex(onlyLettersRegex, 'Невірно введено')
     .optional(),
   profilePhotoUrl: u.string()
     .nullable(),
