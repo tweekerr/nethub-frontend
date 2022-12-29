@@ -8,21 +8,13 @@ const AuthSpace: Page = () => {
   const config = {Left: {showSidebar: false}}
 
   const titles = {
-    Center: <Box display={"flex"}>
-      <Text
-        mb={2}
-        fontWeight={700}
-        as={'h4'}
-      >
-        Вітаємо на
-      </Text>
-      <Text
-        as={'h4'}
-        fontWeight={700}
-      >
-        NetHub!
-      </Text>
-    </Box>
+    Center: <Text
+      mb={2}
+      fontWeight={700}
+      as={'h2'}
+    >
+      Вітаємо на NetHub!
+    </Text>
   }
 
   return <Layout Config={config} Titles={titles}>

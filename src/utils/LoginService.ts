@@ -1,12 +1,12 @@
-import ISsoRequest from "../types/api/Sso/ISsoRequest";
 import {auth, facebookProvider, googleProvider} from "../api/firebase";
 import {signInWithPopup} from "firebase/auth";
 import IProviderTokenResponse from "../types/IProviderTokenResponse";
 import {ProviderType} from "../types/ProviderType";
+import { SsoRequest } from "../types/api/Sso/SsoRequest";
 
 
 export default class LoginService {
-  static async ProviderHandle(provider: ProviderType): Promise<ISsoRequest> {
+  static async ProviderHandle(provider: ProviderType): Promise<SsoRequest> {
     switch (provider) {
       case ProviderType.GOOGLE:
         return await LoginService.googleHandle();
@@ -17,7 +17,7 @@ export default class LoginService {
     }
   }
 
-  private static async googleHandle(): Promise<ISsoRequest> {
+  private static async googleHandle(): Promise<SsoRequest> {
     googleProvider.addScope('profile')
     googleProvider.addScope('email')
     const credential = await signInWithPopup(auth, googleProvider);
@@ -27,9 +27,8 @@ export default class LoginService {
 
     return {
       username: tokenResponse.email.replace(/@.*$/, ""),
-      firstName: tokenResponse.firstName,
-      lastName: tokenResponse.lastName,
-      middleName: '',
+      firstName: tokenResponse.firstName ?? '',
+      lastName: tokenResponse.lastName ?? '',
       profilePhotoUrl: tokenResponse.photoUrl,
       email: tokenResponse.email,
       providerMetadata: {
@@ -41,11 +40,11 @@ export default class LoginService {
     };
   }
 
-  private static async telegramHandle(): Promise<ISsoRequest> {
+  private static async telegramHandle(): Promise<SsoRequest> {
 
     return new Promise((resolve, reject) => {
       window.Telegram.Login.auth(
-        {bot_id: '5533270293', request_access: true},
+        {bot_id: import.meta.env.VITE_TELEGRAM_BOT_ID, request_access: true},
         (data: any) => {
           console.log(data)
           if (!data) {
@@ -54,11 +53,10 @@ export default class LoginService {
           }
 
           setTimeout(() => {
-            const request: ISsoRequest = {
-              username: data.username,
-              firstName: data.first_name,
-              lastName: data.last_name,
-              middleName: '',
+            const request: SsoRequest = {
+              username: data.username ?? '',
+              firstName: data.first_name ?? '',
+              lastName: data.last_name ?? '',
               profilePhotoUrl: data.photo_url,
               email: data.email ?? '',
               providerMetadata: {
@@ -82,16 +80,15 @@ export default class LoginService {
     })
   }
 
-  private static async facebookHandle(): Promise<ISsoRequest> {
+  private static async facebookHandle(): Promise<SsoRequest> {
     const credential = await signInWithPopup(auth, facebookProvider);
 
     //@ts-ignore
     const tokenResponse: IProviderTokenResponse = credential._tokenResponse;
     return {
-      username: tokenResponse.email?.replace(/@.*$/, ""),
-      firstName: tokenResponse.firstName,
-      lastName: tokenResponse.lastName,
-      middleName: '',
+      username: tokenResponse.email?.replace(/@.*$/, "") ?? '',
+      firstName: tokenResponse.firstName ?? '',
+      lastName: tokenResponse.lastName ?? '',
       profilePhotoUrl: tokenResponse.photoUrl,
       email: tokenResponse.email ?? null,
       providerMetadata: {

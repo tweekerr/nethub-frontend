@@ -1,5 +1,5 @@
-import {z as u} from "zod";
-import {tagRegex, urlRegex} from "../../../utils/regex";
+import {z as u} from 'zod';
+import {tagRegex, urlRegex} from '../../../utils/regex';
 
 export const CreateArticleFormSchema = u.object({
   title: u.string()
