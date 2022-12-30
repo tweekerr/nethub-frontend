@@ -51,24 +51,26 @@ _api.interceptors.request.use(
     if (window.isRefreshing) {
       while (window.isRefreshing)
         await new Promise(resolve => setTimeout(resolve, 300));
+    }
 
-      if (isAccessTokenValid()) return config;
-    } else if (!JWTStorage.getAccessToken() || isAccessTokenValid()) {
+    if (!JWTStorage.getAccessToken() || isAccessTokenValid()) {
       return config;
     }
 
     try {
       window.isRefreshing = true
+      console.log('interceptor refreshing', window.isRefreshing);
 
       const response: AxiosResponse<IAuthResult> = await _authApi.post('user/refresh-tokens');
       JWTStorage.setTokensData(response.data);
 
       return config;
     } catch (e) {
-      JWTStorage.clearTokensData()
-      return window.location.href = '/login'
+      JWTStorage.clearTokensData();
+      return window.location.href = '/login';
     } finally {
       window.isRefreshing = false
+      console.log('interceptor end refreshing', window.isRefreshing);
     }
   },
   async (error: AxiosError) => {
