@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react';
+import React from 'react';
 import SvgSelector from '../../UI/SvgSelector/SvgSelector';
 import cl from './Header.module.sass'
 import layoutClasses from '../Layout.module.sass'
@@ -12,7 +12,6 @@ import {
   InputGroup,
   InputLeftElement,
   Link,
-  Switch,
   useColorMode,
   useColorModeValue
 } from "@chakra-ui/react";

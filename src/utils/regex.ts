@@ -3,3 +3,5 @@ export const urlRegex = /^(https?:\/\/)?((?:[-a-z0-9._~!$&\'()*+,;=]|%[0-9a-f]{2
 export const tagRegex = /^(?!-|_)(?!.*(-|_|-_|_-)\1{1,})[\w_-]{2,20}$/;
 
 export const imageLinkRegex = /^(?:(?<scheme>[^:\/?#]+):)?(?:\/\/(?<authority>[^\/?#]*))?(?<path>[^?#]*\/)?(?<file>[^?#]*\.(?<extension>[Jj][Pp][Ee]?[Gg]|[Pp][Nn][Gg]|[Gg][Ii][Ff]))(?:\?(?<query>[^#]*))?(?:#(?<fragment>.*))?$/;
+
+export const onlyLettersRegex = /^[^*|\":\-_=+~<>/[\]{}!?`#^%\\()'.,;@&$0-9]+$/;

@@ -13,10 +13,11 @@ interface IThemeTagProps extends PropsWithChildren {
 const Tag: FC<IThemeTagProps> = ({value, onClick, active, onHover, children}) => {
     const tagBgDefault = useColorModeValue('#896DC8', '#835ADF');
     const tagBg = active ? 'success' : tagBgDefault;
+    const errorColor = useColorModeValue('error', 'errorDark');
 
     return (
         <Text
-          _hover={{bg: (onHover ?? true) ? 'error' : tagBg}}
+          _hover={{bg: (onHover ?? true) ? errorColor : tagBg}}
           as={'p'} onClick={() => onClick ? onClick(value) : {}} className={cl.themeTag}
           bg={tagBg}
           display={'block'}

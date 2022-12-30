@@ -34,7 +34,7 @@ const Footer = () => {
             </Link>
           </Box>
           <Box width={'fit-content'}>
-            <Link fontWeight={'semibold'} color={linksColor}>
+            <Link onClick={() => navigate('/team')} fontWeight={'semibold'} color={linksColor}>
               Team
             </Link>
           </Box>

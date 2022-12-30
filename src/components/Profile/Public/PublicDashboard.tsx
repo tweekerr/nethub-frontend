@@ -13,7 +13,7 @@ const PublicDashboard = () => {
   const user = userAccessor.data!;
   const dashboard = dashboardAccessor.data!;
 
-  const getImage = () => user.profilePhotoLink ?? createImageFromInitials(500, user.userName);
+  const getImage = () => user.profilePhotoUrl ?? createImageFromInitials(500, user.userName);
   const [image, setImage] = useState<string>(getImage());
   const handleImageError = () => {
     setImage(createImageFromInitials(500, user.userName));

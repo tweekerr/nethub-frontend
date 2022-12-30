@@ -1,1 +1,1 @@
-export type ContentStatus = 'draft' | 'pending' | 'published' | 'banned';
+export type ContentStatus = 'Draft' | 'Pending' | 'Published' | 'Banned';

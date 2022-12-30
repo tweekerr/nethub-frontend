@@ -32,7 +32,7 @@ const ArticleInfo = () => {
         {
           !localizationAccessor.isSuccess || !articleAccessor.isSuccess ? <Skeleton height={100} className={cl.infoBlock}/> :
             <FilledDiv className={cl.infoBlock}>
-              <p className={cl.infoBlockTitle}>Переклади</p>
+              <p className={cl.infoBlockTitle}>Переклади:</p>
               <div className={cl.translates}>
                 {articleAccessor.data.localizations?.map(localization =>
                   <Button
@@ -55,7 +55,7 @@ const ArticleInfo = () => {
         {
           !localizationAccessor.isSuccess ? <Skeleton height={100} className={cl.infoBlock}/> :
             <FilledDiv className={cl.infoBlock}>
-              <Text as={'p'} className={cl.infoBlockTitle}>Автори</Text>
+              <Text as={'p'} className={cl.infoBlockTitle}>Автори:</Text>
               <div className={cl.contributors}>
                 {contributors.isLoading ? <ContributorsSkeleton/> : contributors.data!.map(contributor =>
                   <Button
@@ -72,7 +72,7 @@ const ArticleInfo = () => {
                       <Text as={'p'} color={whiteTextColor}>{contributor.role}</Text>
                       <Text as={'p'} color={whiteTextColor}>{contributor.userName}</Text>
                     </div>
-                    <img src={contributor.profilePhotoLink ?? createImageFromInitials(25, contributor.userName)} alt={'damaged'}/>
+                    <img src={contributor.profilePhotoUrl ?? createImageFromInitials(25, contributor.userName)} alt={'damaged'}/>
                   </Button>
                 )}
               </div>
@@ -83,7 +83,7 @@ const ArticleInfo = () => {
           !articleAccessor.isSuccess ? <Skeleton height={100} className={cl.infoBlock}/> :
             articleAccessor.data.originalArticleLink &&
             <FilledDiv className={cl.infoBlock}>
-              <Text as={'p'} className={cl.infoBlockTitle} color={whiteTextColor}>Перейти до оригіналу:</Text>
+              <Text as={'p'} className={cl.infoBlockTitle}>Перейти до оригіналу:</Text>
               <Button
                 background={'#896DC8'}
                 borderRadius={'10px'}

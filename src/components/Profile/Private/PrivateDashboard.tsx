@@ -36,7 +36,7 @@ const PrivateDashboard: FC<IPrivateDashboardProps> = ({request, setRequest, addC
   const articlesCount = () => millify(dashboard!.articlesCount);
   const articlesViews = () => millify(dashboard!.articlesViews);
   const handleModalButton = () => {
-    user.profilePhotoLink !== imageLink && addChanges('photo');
+    user.profilePhotoUrl !== imageLink && addChanges('photo');
     setRequest({...request, image: imageLink});
     setImageLink('');
   }

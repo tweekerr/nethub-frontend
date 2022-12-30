@@ -7,62 +7,68 @@ import ProfileSpace from "../pages/Profile/ProfileSpace";
 import ContributorArticlesSpace from "../pages/Articles/Contributor/ContributorArticlesSpace";
 import TestSpace from "../pages/TestSpace";
 import AuthSpace from "../pages/Auth/AuthSpace";
+import TeamSpace from "../pages/Team/TeamSpace";
 
 interface IPath {
   path: string,
   Component: Page,
-  authorized: boolean,
+  requireAuthorization: boolean,
 }
 
 export const paths: IPath[] = [
   {
     path: '/',
     Component: ArticlesThreadSpace,
-    authorized: false,
+    requireAuthorization: false,
   },
   {
     path: '/login',
     Component: AuthSpace,
-    authorized: false
+    requireAuthorization: false
   },
   {
     path: '/articles/add',
     Component: ArticleCreatingSpace,
-    authorized: true,
+    requireAuthorization: true,
   },
   {
     path: '/articles/:id/add-localization',
     Component: ArticleCreatingSpace,
-    authorized: true
+    requireAuthorization: true
   },
   {
     path: '/article/:id/:code',
     Component: ArticleSpace,
-    authorized: false
+    requireAuthorization: false
   },
   {
     path: '/saved',
     Component: SavedSpace,
-    authorized: true
+    requireAuthorization: true
   },
   {
     path: '/profile',
     Component: ProfileSpace,
-    authorized: true
+    requireAuthorization: true
   },
   {
-    path: '/profile/:id',
+    path: '/profile/:username',
     Component: ProfileSpace,
-    authorized: false
+    requireAuthorization: false
   },
   {
     path: '/articles/by/:contributorId',
     Component: ContributorArticlesSpace,
-    authorized: false
+    requireAuthorization: false
+  },
+  {
+    path: '/team',
+    Component: TeamSpace,
+    requireAuthorization: false
   },
   {
     path: '/test',
     Component: TestSpace,
-    authorized: false
+    requireAuthorization: false
   }
 ]

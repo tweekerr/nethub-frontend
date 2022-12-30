@@ -13,6 +13,7 @@ import {Button, Text} from '@chakra-ui/react';
 import AnimateHeight from "react-animate-height";
 import {useAppStore} from "../../../store/config";
 import {useProfileContext} from "../../../pages/Profile/ProfileSpace.Provider";
+import {JWTStorage} from "../../../utils/localStorageProvider";
 
 
 interface IProfileProps {
@@ -89,10 +90,12 @@ const PrivateProfile = () => {
       ...reduxUser,
       firstName: newFirstName,
       username: newUserName,
-      profilePhotoLink: newProfileImage === '' ? reduxUser.profilePhotoLink : newProfileImage
+      profilePhotoUrl: newProfileImage === '' ? reduxUser.profilePhotoUrl : newProfileImage
     });
 
-    await userApi.refresh()
+    const jwt = await userApi.refresh();
+    JWTStorage.setTokensData(jwt)
+
     setLockFlag(prev => !prev);
     setChanges([])
     setIsSettingsExpanded(false);

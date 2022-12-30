@@ -39,7 +39,7 @@ const components = {
         },
         _invalid: {
           border: '2px solid',
-          borderColor: mode('error', 'error')(props),
+          borderColor: mode('error', 'errorDark')(props),
         }
       }
     }),
@@ -51,10 +51,10 @@ const components = {
       },
     })
   },
-  FormError: {
+  FormError:{
     baseStyle: {
       text: {
-        color: 'error',
+        color: 'red'
       },
     },
   },
@@ -126,6 +126,7 @@ const colors = {
   whiteLight: '#FFFFFF',
   whiteDark: '#EFEFEF',
   error: '#DF2638',
+  errorDark: '#FF331F',
   success: '#09A552',
   warning: '#FEA613'
 };

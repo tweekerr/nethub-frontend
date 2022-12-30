@@ -4,26 +4,27 @@ import classes from './Header.module.sass';
 import {createImageFromInitials} from "../../../utils/logoGenerator";
 import {useNavigate} from "react-router-dom";
 import {useAppStore} from "../../../store/config";
+import {userApi} from "../../../api/api";
 
 const LoggedUserBar: FC = () => {
     const {user, logout} = useAppStore();
 
     const navigate = useNavigate();
-    const getImage = () => user.profilePhotoLink ?? createImageFromInitials(500, user.username);
+    const getImage = () => user.profilePhotoUrl ?? createImageFromInitials(500, user.username);
     const [image, setImage] = useState<string>(getImage());
 
     useEffect(() => {
       setImage(getImage())
-    }, [user.profilePhotoLink])
+    }, [user.profilePhotoUrl])
 
     function handleLogout() {
       logout();
-      navigate('/');
+      userApi.logout().then(() => navigate('/'));
     }
 
     return (
       <div className={classes.loggedBar}>
-        <div className={classes.avatarBlock} onClick={() => navigate(`/profile/${user.id}`)}>
+        <div className={classes.avatarBlock} onClick={() => navigate(`/profile/${user.username}`)}>
           <Avatar
             size={'md'}
             maxW={40}

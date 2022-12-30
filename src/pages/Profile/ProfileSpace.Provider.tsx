@@ -20,10 +20,12 @@ const ProfileContext = createContext<ContextType>(InitialContextValue);
 export const useProfileContext = (): ContextType => useContext<ContextType>(ProfileContext);
 
 const ProfileSpaceProvider: FC<PropsWithChildren> = ({children}) => {
-  const {id} = useParams();
+  const {username} = useParams();
 
-  const userAccessor = useQuery<IUserInfoResponse, ApiError>(['user', id], () => getUserInfo(id))
-  const dashboardAccessor = useQuery<IDashboardResponse, ApiError>(['dashboard', id], () => getUserDashboard(id));
+
+  //TODO: re-write
+  const userAccessor = useQuery<IUserInfoResponse, ApiError>(['user', username], () => getUserInfo(username))
+  const dashboardAccessor = useQuery<IDashboardResponse, ApiError>(['dashboard', username], () => getUserDashboard(username));
 
   const value: ContextType = useMemo(() => {
     return {
