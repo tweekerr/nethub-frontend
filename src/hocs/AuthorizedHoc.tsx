@@ -48,7 +48,6 @@ const AuthorizedHoc = ({children: Children, requireAuthorization}: IAuthorizedPr
 
     try {
       window.isRefreshing = true
-      console.log('hoc refreshing', window.isRefreshing);
 
       const result = await userApi.refresh();
       JWTStorage.setTokensData(result)
@@ -68,7 +67,6 @@ const AuthorizedHoc = ({children: Children, requireAuthorization}: IAuthorizedPr
     }
     finally {
       window.isRefreshing = false
-      console.log('hoc end refreshing', window.isRefreshing);
     }
   }
 

@@ -59,7 +59,6 @@ _api.interceptors.request.use(
 
     try {
       window.isRefreshing = true
-      console.log('interceptor refreshing', window.isRefreshing);
 
       const response: AxiosResponse<IAuthResult> = await _authApi.post('user/refresh-tokens');
       JWTStorage.setTokensData(response.data);
@@ -70,7 +69,6 @@ _api.interceptors.request.use(
       return window.location.href = '/login';
     } finally {
       window.isRefreshing = false
-      console.log('interceptor end refreshing', window.isRefreshing);
     }
   },
   async (error: AxiosError) => {

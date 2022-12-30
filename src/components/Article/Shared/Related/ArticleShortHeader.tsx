@@ -18,11 +18,11 @@ const ArticleShortHeader: FC<IArticleShortHeaderProps> = ({localization, time}) 
       return DateTime.fromISO(localization.savedDate!).toRelativeCalendar();
 
     switch (localization.status) {
-      case 'published':
+      case 'Published':
         return DateTime.fromISO(localization.published!).toRelativeCalendar();
-      case 'banned':
+      case 'Banned':
         return DateTime.fromISO(localization.banned!).toRelativeCalendar();
-      case 'draft' || 'pending':
+      case 'Draft' || 'Pending':
         return DateTime.fromISO(localization.created).toRelativeCalendar();
     }
   }, [localization, time])
