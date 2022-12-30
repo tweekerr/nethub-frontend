@@ -4,11 +4,9 @@ import {isAccessTokenValid, isRefreshTokenValid} from "../utils/JwtHelper";
 import jwtDecode from "jwt-decode";
 import IJwtPayload from "../types/IJwtPayload";
 import {JWTStorage} from "../utils/localStorageProvider";
-import axios, {AxiosResponse} from "axios";
-import IAuthResult from "../types/api/Refresh/IAuthResult";
-import {baseApiUrl} from "../api/api";
+import {userApi} from "../api/api";
 import {useAppStore} from "../store/config";
-import {Page} from "../components/Layout/Layout";
+import Layout, {Page} from "../components/Layout/Layout";
 
 interface IAuthorizedProps {
   children: Page,
@@ -19,9 +17,7 @@ interface IAuthorizedProps {
 const AuthorizedHoc = ({children: Children, requireAuthorization}: IAuthorizedProps) => {
   const login = useAppStore(state => state.login);
 
-
   const [authResult, setAuthResult] = useState<boolean | null>(null);
-  console.log('query', authResult)
 
   useEffect(() => {
     isUserSignedIn().then(setAuthResult);
@@ -30,7 +26,14 @@ const AuthorizedHoc = ({children: Children, requireAuthorization}: IAuthorizedPr
   // const authResult = useQuery<boolean, string>([],
   //   async () => await isUserSignedIn());
 
-  async function isUserSignedIn() {
+  async function isUserSignedIn(): Promise<boolean> {
+
+    if (window.isRefreshing) {
+      while (window.isRefreshing)
+        await new Promise(resolve => setTimeout(resolve, 300));
+
+      if (isAccessTokenValid()) return true;
+    }
 
     if (isAccessTokenValid()) {
       const jwt = jwtDecode<IJwtPayload>(JWTStorage.getAccessToken()!);
@@ -43,14 +46,13 @@ const AuthorizedHoc = ({children: Children, requireAuthorization}: IAuthorizedPr
       return true;
     }
 
-    if (!isRefreshTokenValid())
-      return false;
-
     try {
-      const response: AxiosResponse<IAuthResult> = await axios.post(`${baseApiUrl}/user/refresh-tokens`);
-      JWTStorage.setTokensData(response.data);
+      window.isRefreshing = true
 
-      const jwt = jwtDecode<IJwtPayload>(JWTStorage.getAccessToken()!);
+      const result = await userApi.refresh();
+      JWTStorage.setTokensData(result)
+      const jwt = jwtDecode<IJwtPayload>(result.token);
+
       login({
         username: jwt.username,
         profilePhotoUrl: jwt.image,
@@ -63,12 +65,18 @@ const AuthorizedHoc = ({children: Children, requireAuthorization}: IAuthorizedPr
       JWTStorage.clearTokensData();
       return false;
     }
+    finally {
+      window.isRefreshing = false
+    }
   }
 
   return <Children.Provider>
     {authResult === null
-      ? <>LOADER...</>
-      : authResult ? <Children/>
+      ? <Layout>
+        <></>
+      </Layout>
+      : authResult ?
+        <Children/>
         // doesn't signed in
         : requireAuthorization
           ? <Navigate to={'/login'}/>

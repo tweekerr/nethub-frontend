@@ -1,6 +1,5 @@
 import axios, {AxiosError, AxiosResponse} from 'axios';
 import IAuthResult from "../types/api/Refresh/IAuthResult";
-import ISsoRequest from "../types/api/Sso/ISsoRequest";
 import ICheckEmailResponse from "../types/api/CheckEmail/ICheckEmailRequest";
 import {ProviderType} from "../types/ProviderType";
 import ICheckUsernameResponse from "../types/api/CheckUsername/ICheckUsernameResponse";
@@ -18,6 +17,8 @@ import ICurrencyResponse from "../types/api/Currency/ICurrencyResponse";
 import {IReduxUser} from "../types/IReduxUser";
 import {Operator} from "../types/Operators";
 import {ApiError} from "../types/ApiError";
+import {isAccessTokenValid} from "../utils/JwtHelper";
+import {SsoRequest} from "../types/api/Sso/SsoRequest";
 
 // export const baseApiUrl = import.meta.env.VITE_IS_DEVELOPMENT === 'true'
 //   ? import.meta.env.VITE_TEST_BACK_POINT
@@ -27,8 +28,12 @@ import {ApiError} from "../types/ApiError";
 export const baseApiUrl = 'https://localhost:7002/v1';
 export const _api = axios.create({
   baseURL: baseApiUrl,
-  withCredentials: true
 });
+
+const _authApi = axios.create({
+  baseURL: baseApiUrl,
+  withCredentials: true
+})
 
 _api.interceptors.request.use(async (config) => {
 
@@ -41,35 +46,35 @@ _api.interceptors.request.use(async (config) => {
   return config;
 });
 
-// _api.interceptors.response.use(
-//   (config) => {
-//     return config;
-//   },
-//   async (error: AxiosError & { _isRetry: boolean }) => {
-//
-//     if (
-//       error.response?.status === 401 &&
-//       error.config &&
-//       !error._isRetry
-//     ) {
-//       error._isRetry = true;
-//       try {
-//         const response: AxiosResponse<IAuthResult> = await axios.post(`${baseApiUrl}/user/refresh-tokens`);
-//
-//         console.log('interceptor', response);
-//
-//         JWTStorage.setTokensData(response.data);
-//
-//         return _api.request(error.config);
-//       } catch (e) {
-//         JWTStorage.clearTokensData()
-//         return window.location.href = '/login'
-//       }
-//     }
-//
-//     throw new ApiError(error.message, error.response?.status);
-//   }
-// );
+_api.interceptors.request.use(
+  async (config) => {
+    if (window.isRefreshing) {
+      while (window.isRefreshing)
+        await new Promise(resolve => setTimeout(resolve, 300));
+    }
+
+    if (!JWTStorage.getAccessToken() || isAccessTokenValid()) {
+      return config;
+    }
+
+    try {
+      window.isRefreshing = true
+
+      const response: AxiosResponse<IAuthResult> = await _authApi.post('user/refresh-tokens');
+      JWTStorage.setTokensData(response.data);
+
+      return config;
+    } catch (e) {
+      JWTStorage.clearTokensData();
+      return window.location.href = '/login';
+    } finally {
+      window.isRefreshing = false
+    }
+  },
+  async (error: AxiosError) => {
+    throw new ApiError(error.message, error.response?.status);
+  }
+);
 
 export const articlesApi = {
   createArticle: async (title: string, tags: string[], originalArticleLink: string) => {
@@ -139,10 +144,10 @@ export const articlesApi = {
 }
 
 export const userApi = {
-  getUsersInfo: async (ids: number[] | string[]) => {
+  getUsersInfo: async (usernames: number[] | string[]) => {
     const result: AxiosResponse<IUserInfoResponse[]> = await _api.get('/user/users-info', {
       params: {
-        Ids: ids
+        userNames: usernames
       },
       paramsSerializer: params => {
         return qs.stringify(params)
@@ -150,12 +155,12 @@ export const userApi = {
     })
     return result.data;
   },
-  getUserDashboard: async (userId: string): Promise<IDashboardResponse> => {
-    const result: AxiosResponse<IDashboardResponse> = await _api.get(`user/${userId}/dashboard`)
+  getUserDashboard: async (username: string): Promise<IDashboardResponse> => {
+    const result: AxiosResponse<IDashboardResponse> = await _api.get(`user/${username}/dashboard`)
     return result.data
   },
-  authenticate: async (request: ISsoRequest): Promise<IReduxUser> => {
-    const response: AxiosResponse<IAuthResult> = await _api.post('/user/sso', request);
+  authenticate: async (request: SsoRequest): Promise<IReduxUser> => {
+    const response: AxiosResponse<IAuthResult> = await _authApi.post('/user/sso', request);
     JWTStorage.setTokensData(response.data);
 
     return response.data;
@@ -168,14 +173,12 @@ export const userApi = {
     const response: AxiosResponse<ICheckUsernameResponse> = await _api.post('/user/check-username', {username})
     return response.data.isAvailable;
   },
-  refresh: async (): Promise<boolean> => {
-    try {
-      const response: AxiosResponse<IAuthResult> = await _api.post('user/refresh-tokens');
-      JWTStorage.setTokensData(response.data)
-      return true;
-    } catch (error) {
-      return false;
-    }
+  refresh: async (): Promise<IAuthResult> => {
+    const response: AxiosResponse<IAuthResult> = await _authApi.post('user/refresh-tokens');
+    return response.data;
+  },
+  logout: async () => {
+    await _authApi.delete('user/logout');
   },
   me: async (): Promise<IUserInfoResponse> => {
     const result: AxiosResponse<IUserInfoResponse> = await _api.get('user/me');

@@ -2,15 +2,12 @@ import React, {useRef, useState} from 'react';
 import GoogleAuthButton from "./Buttons/GoogleAuthButton";
 import TelegramAuthButton from "./Buttons/TelegramAuthButton";
 import TitleInput from "../UI/TitleInput/TitleInput";
-import ISsoRequest from "../../types/api/Sso/ISsoRequest";
 import {userApi} from "../../api/api";
 import {useNavigate} from "react-router-dom";
 import FacebookAuthButton from "./Buttons/FacebookAuthButton";
 import LoginService from "../../utils/LoginService";
 import {ProviderType} from "../../types/ProviderType";
-import {isNotNullOrWhiteSpace} from "../../utils/validators";
 import {useDebounce} from "../../hooks/useDebounce";
-import useValidator from "../../hooks/useValidator";
 import useCustomSnackbar from "../../hooks/useCustomSnackbar";
 import {usernameDebounce} from '../../utils/debounceHelper';
 import {
@@ -24,7 +21,8 @@ import {
   useColorModeValue
 } from "@chakra-ui/react";
 import {useAppStore} from "../../store/config";
-import axios from "axios";
+import {SsoRequest, SsoRequestSchema} from "../../types/api/Sso/SsoRequest";
+import {z as u} from "zod";
 
 interface ISecondStep {
   isExpanded: boolean,
@@ -33,49 +31,49 @@ interface ISecondStep {
 
 const Login = () => {
   const [registrationStep, setRegistrationStep] = useState<ISecondStep>({isExpanded: false, enableEmail: false});
-  const [request, setRequest] = useState<ISsoRequest>({
+  const [request, setRequest] = useState<SsoRequest>({
     username: '',
     firstName: '',
     lastName: '',
     email: ''
-  } as ISsoRequest);
+  } as SsoRequest);
   const {login} = useAppStore();
   const {enqueueError} = useCustomSnackbar();
-  const {subscribeValidator, validateAll, errors, setErrors} = useValidator<ILoginErrors>();
   const navigate = useNavigate();
   const accordionButtonRef = useRef<HTMLButtonElement | null>(null);
+  const [errors, setErrors] = useState<u.ZodFormattedError<{
+    middleName?: string | undefined,
+    providerMetadata?: any,
+    username: string,
+    email: string,
+    firstName: string,
+    lastName: string,
+    profilePhotoUrl: string | null,
+    provider: ProviderType,
+    type: "register" | "login",
+    providerKey: string
+  }
+  >>({_errors: []});
 
   const debounceLogic = async (username: string | null) => await usernameDebounce(username, setErrors, errors, enqueueError);
   const debounce = useDebounce(debounceLogic, 1000);
 
   const validate = async () => {
-    subscribeValidator({
-      value: request.username,
-      field: 'username',
-      validators: [isNotNullOrWhiteSpace, debounceLogic]
-    })
-    subscribeValidator({
-      value: request.firstName,
-      field: 'firstName',
-      validators: [isNotNullOrWhiteSpace],
-      message: "Невірно введене ім'я"
-    })
-    subscribeValidator({
-      value: request.lastName,
-      field: 'lastName',
-      validators: [isNotNullOrWhiteSpace],
-      message: "Невірно введене прізвище"
-    })
-    subscribeValidator({value: request.email, field: 'email', validators: [isNotNullOrWhiteSpace]})
+    const validationResult = await SsoRequestSchema.safeParseAsync(request);
 
-    const {isSuccess, errors} = await validateAll();
-    if (!isSuccess) errors.forEach(enqueueError)
+    if (!validationResult.success) {
+      const errors = validationResult.error.format()
+      setErrors(errors);
+      return;
+    }
 
-    return isSuccess;
+    setErrors({_errors: []});
+
+    return validationResult.success;
   }
 
-  const updateRequest = (key: string, value: string) => {
-    setRequest((prev) => {
+  const updateRequest = (key: string, value: string | undefined) => {
+    setRequest((prev: SsoRequest) => {
       return {...prev, [key]: value}
     })
   }
@@ -101,15 +99,13 @@ const Login = () => {
         isExpanded = true;
       }
       setRegistrationStep({isExpanded, enableEmail: !providerRequest.email});
-
-      accordionButtonRef.current?.click();
+      // accordionButtonRef.current?.click();
       return;
     }
     const user = await userApi.authenticate({...providerRequest, type: 'login'});
-    accordionButtonRef.current?.click();
 
     login(user);
-    navigate(-1);
+    navigate('/');
   }
 
   const secondStep = async () => {
@@ -118,6 +114,7 @@ const Login = () => {
     try {
       const user = await userApi.authenticate({...request, type: 'register'});
       login(user);
+      navigate('/');
     } catch (e: any) {
       if (e.response.data.message.includes('already taken')) {
         enqueueError('Користувач з такою електронною адресою вже зареєстрований');
@@ -146,7 +143,8 @@ const Login = () => {
             <Box margin={'10px'}/>
             <TitleInput
               title={'Username*'} placeholder={'Ім\'я користувача'} value={request.username!}
-              isInvalid={errors.username}
+              isInvalid={!!errors.username}
+              errorMessage={errors.username?._errors?.join(', ')}
               onChange={(e) => {
                 updateRequest('username', e.target.value);
                 if (e.target.value !== null && e.target.value !== '')
@@ -156,27 +154,31 @@ const Login = () => {
             />
             <TitleInput
               title={'Email*'} placeholder={'Електронна пошта'} value={request.email!}
-              isInvalid={errors.email}
+              isInvalid={!!errors.email}
+              errorMessage={[...new Set(errors.email?._errors)].join(', ')}
               onChange={(e) => updateRequest('email', e.target.value)}
               width={'100%'}
               isDisabled={!registrationStep.enableEmail}
             />
             <TitleInput
               title={'Firstname*'} placeholder={'Iм\'я'} value={request.firstName!}
-              isInvalid={errors.firstName}
+              isInvalid={!!errors.firstName}
+              errorMessage={errors.firstName?._errors?.join(', ')}
               onChange={(e) => updateRequest('firstName', e.target.value)}
               width={'100%'}
             />
             <TitleInput
               title={'Lastname*'} placeholder={'Прізвище'} value={request.lastName!}
-              isInvalid={errors.lastName}
+              isInvalid={!!errors.lastName}
+              errorMessage={errors.lastName?._errors?.join(', ')}
               onChange={(e) => updateRequest('lastName', e.target.value)}
               width={'100%'}
             />
             <TitleInput
               title={'Middlename'} placeholder={'По-батькові'} value={request.middleName}
-              isInvalid={errors.middleName}
-              onChange={(e) => updateRequest('middleName', e.target.value)}
+              isInvalid={!!errors.middleName}
+              errorMessage={errors.middleName?._errors?.join(', ')}
+              onChange={(e) => updateRequest('middleName', e.target.value === '' ? undefined : e.target.value)}
               width={'100%'}
             />
             <Button onClick={secondStep}>Зареєструватись</Button>

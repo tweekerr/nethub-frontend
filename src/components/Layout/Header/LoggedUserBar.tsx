@@ -4,6 +4,7 @@ import classes from './Header.module.sass';
 import {createImageFromInitials} from "../../../utils/logoGenerator";
 import {useNavigate} from "react-router-dom";
 import {useAppStore} from "../../../store/config";
+import {userApi} from "../../../api/api";
 
 const LoggedUserBar: FC = () => {
     const {user, logout} = useAppStore();
@@ -18,7 +19,7 @@ const LoggedUserBar: FC = () => {
 
     function handleLogout() {
       logout();
-      navigate('/');
+      userApi.logout().then(() => navigate('/'));
     }
 
     return (

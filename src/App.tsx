@@ -5,7 +5,6 @@ import {switchLocal} from "./utils/localization";
 import AppRouter from './components/AppRouter';
 // import './i18n'
 import {SnackbarProvider} from 'notistack';
-import {check} from "./App.functions";
 import {QueryClient, QueryClientProvider} from 'react-query';
 import {ReactQueryDevtools} from "react-query/devtools";
 import {useAppStore} from "./store/config";
@@ -20,11 +19,6 @@ function App() {
 
   useEffect(() => {
     switchLocal(language);
-    // (async () => await check())().then((data) => {
-    //   if (data)
-    //
-    // })
-
   }, []);
 
   const [client] = useState<QueryClient>(new QueryClient({
