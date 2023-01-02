@@ -19,5 +19,5 @@ export default interface IArticleLocalizationResponse {
 
 export interface IContributor {
   role: 'Author' | 'Editor',
-  userId: number
+  userName: string
 }

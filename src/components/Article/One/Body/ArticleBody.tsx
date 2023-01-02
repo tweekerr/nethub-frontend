@@ -1,29 +1,16 @@
-import {
-  Badge,
-  Box,
-  Button,
-  Skeleton,
-  Text,
-  Link,
-  useColorModeValue,
-} from '@chakra-ui/react';
-import React, { useCallback } from 'react';
-import { useQuery, useQueryClient } from 'react-query';
-import { useNavigate } from "react-router-dom";
-import { articlesApi } from '../../../../api/api';
-import { QueryClientConstants } from '../../../../constants/queryClientConstants';
-import {
-  getArticleContributors,
-  getAuthor,
-} from '../../../../pages/Articles/One/ArticleSpace.functions';
-import { useArticleContext } from '../../../../pages/Articles/One/ArticleSpace.Provider';
-import { DateToRelativeCalendar } from '../../../../utils/dateHelper';
+import {Badge, Box, Button, Skeleton, Text,} from '@chakra-ui/react';
+import React, {useCallback} from 'react';
+import {useQuery, useQueryClient} from 'react-query';
+import {useNavigate} from "react-router-dom";
+import {articlesApi} from '../../../../api/api';
+import {QueryClientConstants} from '../../../../constants/queryClientConstants';
+import {getArticleContributors, getAuthor,} from '../../../../pages/Articles/One/ArticleSpace.functions';
+import {useArticleContext} from '../../../../pages/Articles/One/ArticleSpace.Provider';
+import {DateToRelativeCalendar} from '../../../../utils/dateHelper';
 import Actions from '../../../UI/Action/Actions';
 import FilledDiv from '../../../UI/FilledDiv';
 import ArticleSavingActions from '../../Shared/ArticleSavingActions';
-import ArticlesRateCounter, {
-  RateVariants,
-} from '../../Shared/ArticlesRateCounter';
+import ArticlesRateCounter, {RateVariants,} from '../../Shared/ArticlesRateCounter';
 import cl from './ArticleBody.module.sass';
 
 const ArticleBody = () => {
@@ -59,7 +46,7 @@ const ArticleBody = () => {
     () => getArticleContributors(localization.contributors)
   );
 
-  const viewsBlockBg = useColorModeValue('whiteLight', 'whiteDark');
+  // const viewsBlockBg = useColorModeValue('whiteLight', 'whiteDark');
   const navigate = useNavigate();
 
   const getDate = useCallback(() => {
@@ -148,7 +135,7 @@ const ArticleBody = () => {
             <Text as={'p'}>Автор:</Text>
             {!contributors.isSuccess ? <Skeleton width={'100px'} height={15}/> :
               <Box
-                onClick={() => navigate('/profile/' + getAuthor(localization.contributors, contributors.data!)?.id)}
+                onClick={() => navigate('/profile/' + getAuthor(localization.contributors, contributors.data!)?.userName)}
                 cursor={'pointer'}
               >
                 {getAuthor(localization.contributors, contributors.data!)?.userName}

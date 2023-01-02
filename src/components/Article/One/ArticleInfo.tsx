@@ -66,7 +66,7 @@ const ArticleInfo = () => {
                     borderRadius={'10px'}
                     padding={'6px 15px'}
                     color={whiteTextColor}
-                    onClick={() => navigate('/profile/' + contributor.id)}
+                    onClick={() => navigate('/profile/' + contributor.userName)}
                   >
                     <div className={cl.role}>
                       <Text as={'p'} color={whiteTextColor}>{contributor.role}</Text>

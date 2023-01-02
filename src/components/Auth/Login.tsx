@@ -21,8 +21,8 @@ import {
   useColorModeValue
 } from "@chakra-ui/react";
 import {useAppStore} from "../../store/config";
-import {SsoRequest, SsoRequestSchema} from "../../types/api/Sso/SsoRequest";
 import {z as u} from "zod";
+import {SsoRequest, SsoRequestSchema} from "../../types/api/Sso/SsoRequest";
 
 interface ISecondStep {
   isExpanded: boolean,

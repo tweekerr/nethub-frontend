@@ -70,11 +70,15 @@ _api.interceptors.request.use(
     } finally {
       window.isRefreshing = false
     }
-  },
-  async (error: AxiosError) => {
-    throw new ApiError(error.message, error.response?.status);
   }
 );
+
+_api.interceptors.response.use((config) => {
+    return config;
+  },
+  (error: AxiosError) => {
+    throw new ApiError(error.message, error.response?.status);
+  })
 
 export const articlesApi = {
   createArticle: async (title: string, tags: string[], originalArticleLink: string) => {
